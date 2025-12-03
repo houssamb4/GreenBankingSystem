@@ -1,0 +1,150 @@
+scalar UUID
+scalar BigDecimal
+scalar LocalDateTime
+
+type Query {
+    getUser(id: UUID!): User
+    getCurrentUser: User
+    getAllUsers: [User!]!
+    getTransaction(id: UUID!): Transaction
+    getUserTransactions(userId: UUID!): [Transaction!]!
+    getAllTransactions: [Transaction!]!
+    getTransactionsByCategory(category: String!): [Transaction!]!
+    getMonthlySummary(userId: UUID!, year: Int!, month: Int!): MonthlySummary!
+    getCarbonStats(userId: UUID!): CarbonStats!
+    getCategoryBreakdown(userId: UUID!): [CategoryBreakdown!]!
+}
+
+type Mutation {
+    # Auth Mutations
+    register(input: RegisterInput!): AuthResponse!
+    login(input: LoginInput!): AuthResponse!
+    refreshToken(token: String!): AuthResponse!
+    
+    # User Mutations
+    updateUserProfile(input: UpdateProfileInput!): User!
+    changePassword(oldPassword: String!, newPassword: String!): Boolean!
+    updateCarbonBudget(budget: BigDecimal!): User!
+    
+    # Transaction Mutations
+    createTransaction(input: TransactionInput!): Transaction!
+    updateTransaction(id: UUID!, input: TransactionInput!): Transaction!
+    deleteTransaction(id: UUID!): Boolean!
+    
+    # Admin Mutations
+    updateCarbonFactor(category: String!, factor: BigDecimal!): CarbonFactor!
+}
+
+type Subscription {
+    transactionCreated(userId: UUID!): Transaction!
+    carbonFootprintUpdated(userId: UUID!): CarbonUpdate!
+}
+
+# Input Types
+input RegisterInput {
+    email: String!
+    password: String!
+    firstName: String!
+    lastName: String!
+    phoneNumber: String
+}
+
+input LoginInput {
+    email: String!
+    password: String!
+}
+
+input UpdateProfileInput {
+    firstName: String
+    lastName: String
+    phoneNumber: String
+}
+
+input TransactionInput {
+    amount: BigDecimal!
+    currency: String
+    category: String!
+    merchant: String
+    description: String
+    location: String
+}
+
+# Response Types
+type AuthResponse {
+    token: String!
+    refreshToken: String!
+    user: User!
+}
+
+type User {
+    id: UUID!
+    email: String!
+    firstName: String
+    lastName: String
+    phoneNumber: String
+    ecoScore: Int!
+    totalCarbonSaved: BigDecimal!
+    monthlyCarbonBudget: BigDecimal!
+    transactions: [Transaction!]
+    createdAt: LocalDateTime!
+    updatedAt: LocalDateTime!
+}
+
+type Transaction {
+    id: UUID!
+    user: User!
+    amount: BigDecimal!
+    currency: String!
+    category: String!
+    merchant: String
+    description: String
+    location: String
+    carbonFootprint: BigDecimal!
+    blockchainHash: String
+    transactionDate: LocalDateTime!
+    createdAt: LocalDateTime!
+    updatedAt: LocalDateTime!
+}
+
+type CarbonFactor {
+    id: UUID!
+    category: String!
+    emissionFactor: BigDecimal!
+    description: String
+    lastUpdated: LocalDateTime!
+}
+
+type MonthlySummary {
+    userId: UUID!
+    year: Int!
+    month: Int!
+    totalCarbon: BigDecimal!
+    totalAmount: BigDecimal!
+    transactionCount: Int!
+    averageCarbonPerTransaction: BigDecimal!
+}
+
+type CarbonStats {
+    userId: UUID!
+    totalCarbon: BigDecimal!
+    monthlyCarbon: BigDecimal!
+    carbonBudget: BigDecimal!
+    carbonPercentage: Float!
+    ecoScore: Int!
+}
+
+type CategoryBreakdown {
+    category: String!
+    totalCarbon: BigDecimal!
+    totalAmount: BigDecimal!
+    transactionCount: Int!
+    percentage: Float!
+}
+
+type CarbonUpdate {
+    userId: UUID!
+    totalCarbon: BigDecimal!
+    monthlyCarbon: BigDecimal!
+    ecoScore: Int!
+    timestamp: LocalDateTime!
+}
