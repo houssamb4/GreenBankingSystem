@@ -86,8 +86,8 @@ mvn spring-boot:run
 
 ```bash
 # 1. Clone the repository
-git clone <repository-url>
-cd GreenBankingSystem-main
+git clone https://github.com/houssamb4/GreenBankingSystem.git
+cd GreenBankingSystem
 
 # 2. Start PostgreSQL with Docker
 ./database/setup.sh
