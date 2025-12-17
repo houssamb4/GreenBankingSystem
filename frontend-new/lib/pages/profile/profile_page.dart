@@ -1,190 +1,335 @@
-﻿import 'package:flareline_uikit/components/card/common_card.dart';
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:greenpay/core/theme/global_colors.dart';
 
-import 'package:greenpay/pages/layout.dart';
-import 'package:greenpay/flutter_gen/app_localizations.dart';
-
-class ProfilePage extends LayoutWidget {
-  const ProfilePage({super.key});
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
-  String breakTabTitle(BuildContext context) {
-    // TODO: implement title
-    return AppLocalizations.of(context)!.profile;
-  }
-
-  @override
-  Widget contentDesktopWidget(BuildContext context) {
-    return CommonCard(
-      margin: EdgeInsets.zero,
-      child: Stack(children: [
-        SizedBox(
-          height: 280,
-          child: Stack(children: [
-            Image.asset(
-              'assets/cover/cover-01.png',
-              height: 280,
-              width: double.maxFinite,
-              fit: BoxFit.cover,
-            ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Container(
-                margin: const EdgeInsets.all(10),
-                color: Colors.blueAccent,
-                child: TextButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.camera,
-                      color: Colors.white,
-                    ),
-                    label: const Text(
-                      'Edit',
-                      style: TextStyle(color: Colors.white),
-                    )),
-              ),
-            )
-          ]),
-        ),
-        Align(
-          alignment: Alignment.center,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(
-                height: 230,
-              ),
-              SizedBox(
-                width: 144,
-                height: 144,
-                child: Stack(children: [
-                  CircleAvatar(
-                    radius: 72,
-                    backgroundColor: Colors.greenAccent,
-                    child: Image.asset('assets/user/user-01.png'),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: 22,
-                      height: 22,
-                      decoration: BoxDecoration(
-                          color: Colors.blueAccent,
-                          borderRadius: BorderRadius.circular(45)),
-                      margin: EdgeInsets.all(2),
-                      child: const Icon(
-                        Icons.camera_enhance,
-                        color: Colors.white,
-                        size: 18,
-                      ),
-                    ),
-                  )
-                ]),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              const Text(
-                'Danish Heilium',
-                style: TextStyle(fontSize: 16),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              const Text(
-                'Ui/Ux Designer',
-                style: TextStyle(fontSize: 10),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 100),
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey, width: 1)),
-                child: Row(children: [
-                  Expanded(
-                      child: Container(
-                    alignment: Alignment.center,
-                    child: Text.rich(
-                      TextSpan(
-                          text: '259',
-                          children: [
-                            TextSpan(
-                                text:
-                                    ' ${AppLocalizations.of(context)!.posts}'),
-                          ],
-                          style: TextStyle(fontSize: 16)),
-                    ),
-                  )),
-                  const VerticalDivider(
-                    width: 1,
-                  ),
-                  Expanded(
-                      child: Container(
-                    alignment: Alignment.center,
-                    child: Text.rich(
-                      TextSpan(
-                          text: '129K',
-                          children: [
-                            TextSpan(
-                                text:
-                                    ' ${AppLocalizations.of(context)!.followers}')
-                          ],
-                          style: TextStyle(fontSize: 16)),
-                    ),
-                  )),
-                  const VerticalDivider(
-                    width: 1,
-                  ),
-                  Expanded(
-                      child: Container(
-                    alignment: Alignment.center,
-                    child: Text.rich(
-                      TextSpan(
-                          text: '2K',
-                          children: [TextSpan(text: ' Following')],
-                          style: TextStyle(fontSize: 16)),
-                    ),
-                  ))
-                ]),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              Text(
-                AppLocalizations.of(context)!.aboutMe,
-                style: const TextStyle(fontSize: 12),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              Container(
-                alignment: Alignment.center,
-                width: 400,
-                child: const Text(
-                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque posuere fermentum urna, eu condimentum mauris tempus ut. Donec fermentum blandit aliquet. Etiam dictum dapibus ultricies. Sed vel aliquet libero. Nunc a augue fermentum, pharetra ligula sed, aliquam lacus.',
-                  style: TextStyle(fontSize: 12),
-                  textAlign: TextAlign.center,
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Profile'),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        foregroundColor: GlobalColors.text,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            // Profile Header
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF0FDF4),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: const Color(0xFF10B981).withOpacity(0.3),
                 ),
               ),
-              const SizedBox(
-                height: 16,
+              child: Column(
+                children: [
+                  Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF10B981).withOpacity(0.2),
+                          blurRadius: 10,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.person,
+                      size: 50,
+                      color: Color(0xFF10B981),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'John Doe',
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF10B981),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  const Text(
+                    'john.doe@example.com',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Color(0xFF10B981),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      // TODO: Handle edit profile
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: const Color(0xFF10B981),
+                      side: const BorderSide(
+                        color: Color(0xFF10B981),
+                      ),
+                    ),
+                    icon: const Icon(Icons.edit),
+                    label: const Text('Edit Profile'),
+                  ),
+                ],
               ),
-              Text(
-                AppLocalizations.of(context)!.followMeOn,
-                style: const TextStyle(fontSize: 10),
+            ),
+            const SizedBox(height: 24),
+            // Stats
+            Row(
+              children: [
+                Expanded(
+                  child: _buildStatCard('Green Score', '78/100'),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _buildStatCard('Monthly CO₂', '42.5 kg'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            // Account Settings
+            _buildSettingsSection('Account Settings', [
+              _buildSettingsTile(
+                'Personal Information',
+                'Name, email, phone',
+                Icons.person_outline,
+                onTap: () {
+                  // TODO: Navigate to personal info
+                },
               ),
-              const SizedBox(
-                height: 30,
-              )
+              _buildSettingsTile(
+                'Security',
+                'Password, two-factor auth',
+                Icons.security,
+                onTap: () {
+                  // TODO: Navigate to security settings
+                },
+              ),
+              _buildSettingsTile(
+                'Payment Methods',
+                'Cards, bank accounts',
+                Icons.payment,
+                onTap: () {
+                  // TODO: Navigate to payment methods
+                },
+              ),
+            ]),
+            const SizedBox(height: 24),
+            // Preferences
+            _buildSettingsSection('Preferences', [
+              _buildSettingsTile(
+                'Notifications',
+                'Carbon alerts, offers',
+                Icons.notifications_outlined,
+                onTap: () {
+                  // TODO: Navigate to notifications
+                },
+              ),
+              _buildSettingsTile(
+                'Privacy',
+                'Data & privacy settings',
+                Icons.privacy_tip_outlined,
+                onTap: () {
+                  // TODO: Navigate to privacy
+                },
+              ),
+            ]),
+            const SizedBox(height: 24),
+            // Support
+            _buildSettingsSection('Support & About', [
+              _buildSettingsTile(
+                'Help & Support',
+                'FAQs, contact support',
+                Icons.help_outline,
+                onTap: () {
+                  // TODO: Navigate to help
+                },
+              ),
+              _buildSettingsTile(
+                'Terms & Privacy',
+                'Legal documents',
+                Icons.description_outlined,
+                onTap: () {
+                  // TODO: Navigate to terms
+                },
+              ),
+              _buildSettingsTile(
+                'About GreenPay',
+                'Version, company info',
+                Icons.info_outlined,
+                onTap: () {
+                  // TODO: Navigate to about
+                },
+              ),
+            ]),
+            const SizedBox(height: 24),
+            // Logout Button
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  _showLogoutConfirmation(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFEF4444),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                icon: const Icon(Icons.logout),
+                label: const Text('Logout'),
+              ),
+            ),
+            const SizedBox(height: 40),
+          ],
+        ),
+      ),
+    );
+  }
+
+  static Widget _buildStatCard(String label, String value) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFE5E7EB)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 4,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 12,
+              color: GlobalColors.textSecondary,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF10B981),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static Widget _buildSettingsSection(String title, List<Widget> items) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: GlobalColors.text,
+            letterSpacing: 0.5,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: const Color(0xFFE5E7EB)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 4,
+              ),
             ],
           ),
-        )
-      ]),
+          child: Column(children: items),
+        ),
+      ],
+    );
+  }
+
+  static Widget _buildSettingsTile(
+    String title,
+    String subtitle,
+    IconData icon, {
+    required VoidCallback onTap,
+  }) {
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: const Color(0xFF10B981),
+      ),
+      title: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          color: GlobalColors.text,
+        ),
+      ),
+      subtitle: Text(
+        subtitle,
+        style: const TextStyle(
+          fontSize: 12,
+          color: GlobalColors.textSecondary,
+        ),
+      ),
+      trailing: const Icon(
+        Icons.arrow_forward_ios,
+        size: 14,
+        color: GlobalColors.textSecondary,
+      ),
+      onTap: onTap,
+    );
+  }
+
+  static void _showLogoutConfirmation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Logout'),
+        content: const Text('Are you sure you want to logout?'),
+        actions: [
+          TextButton(
+            onPressed: () => context.pop(),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              context.go('/signIn');
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFEF4444),
+            ),
+            child: const Text('Logout'),
+          ),
+        ],
+      ),
     );
   }
 }
-

@@ -1,6 +1,6 @@
 ﻿import 'dart:ui';
 
-class GlobalColors{
+class GlobalColors {
   static const Color primary = Color(0xFF3C50E0);
 
   static const Color darkBackgroundColor = Color(0xff1E1C2A);
@@ -10,6 +10,8 @@ class GlobalColors{
   static const Color secondary = Color(0xFF80CAEE);
 
   static const Color text = Color(0xFF64748B);
+
+  static const Color textSecondary = Color(0xFF9CA3AF);
 
   static const Color background = Color(0xFFEFF4FB);
 
@@ -38,10 +40,4 @@ class GlobalColors{
   static const Color sideBar = Color(0xFF1C2434);
 
   static const Color lightGray = Color(0xFFF7F9FC);
-
-
 }
-
-
-
-

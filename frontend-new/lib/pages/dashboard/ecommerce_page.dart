@@ -1,4 +1,5 @@
 ﻿import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:greenpay/core/theme/global_colors.dart';
 import 'package:greenpay/pages/dashboard/analytics_widget.dart';
 import 'package:greenpay/pages/dashboard/channel_widget.dart';
@@ -18,35 +19,97 @@ class EcommercePage extends LayoutWidget {
   @override
   Widget contentDesktopWidget(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(children: [
-        // Interactive Header Banner
-        _buildInteractiveBanner(context),
-        const SizedBox(height: 24),
-
-        // Quick Action Buttons
-        _buildQuickActions(context),
-        const SizedBox(height: 24),
-
-        GridCard(),
-        const SizedBox(height: 16),
-
-        RevenueWidget(),
-        const SizedBox(height: 16),
-
-        AnalyticsWidget(),
-        const SizedBox(height: 16),
-
-        ChannelWidget(),
-        const SizedBox(height: 24),
-
-        // Carbon Tips Section
-        _buildCarbonTips(context),
-        const SizedBox(height: 24),
-      ]),
+      child: Column(
+        children: const [
+          TopBar(),
+          SizedBox(height: 16),
+          InteractiveBanner(),
+          SizedBox(height: 24),
+          BalanceCardsSection(),
+          SizedBox(height: 24),
+          QuickActionsSection(),
+          SizedBox(height: 24),
+          GridCard(),
+          SizedBox(height: 16),
+          RevenueWidget(),
+          SizedBox(height: 16),
+          AnalyticsWidget(),
+          SizedBox(height: 16),
+          ChannelWidget(),
+          SizedBox(height: 24),
+          CarbonTipsSection(),
+          SizedBox(height: 24),
+        ],
+      ),
     );
   }
+}
 
-  Widget _buildInteractiveBanner(BuildContext context) {
+/// Top navigation bar with profile and notifications
+class TopBar extends StatelessWidget {
+  const TopBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Profile avatar
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: const Color(0xFFF3F4F6),
+            ),
+            child: const Icon(Icons.person),
+          ),
+          // Title
+          const Text(
+            'GreenPay',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: GlobalColors.text,
+            ),
+          ),
+          // Notification icon
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: const Color(0xFFF3F4F6),
+            ),
+            child: const Stack(
+              alignment: Alignment.center,
+              children: [
+                Icon(Icons.notifications_none),
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: CircleAvatar(
+                    radius: 4,
+                    backgroundColor: Color(0xFFEF4444),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Interactive welcome banner with eco icon
+class InteractiveBanner extends StatelessWidget {
+  const InteractiveBanner({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return CommonCard(
       padding: const EdgeInsets.all(24),
       child: Container(
@@ -108,60 +171,277 @@ class EcommercePage extends LayoutWidget {
       ),
     );
   }
+}
 
-  Widget _buildQuickActions(BuildContext context) {
+/// Balance, Carbon Footprint, and Green Score cards
+class BalanceCardsSection extends StatelessWidget {
+  const BalanceCardsSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
-      children: [
-        Expanded(
-          child: _buildActionCard(
-            icon: Icons.paid,
-            title: 'Send Money',
-            subtitle: 'Low carbon transfer',
-            color: Colors.blue,
-            onTap: () {},
-          ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: _buildActionCard(
-            icon: Icons.shopping_cart,
-            title: 'Green Shopping',
-            subtitle: 'Eco-friendly merchants',
-            color: Colors.green,
-            onTap: () {},
-          ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: _buildActionCard(
-            icon: Icons.bar_chart,
-            title: 'View Reports',
-            subtitle: 'Carbon analytics',
-            color: Colors.orange,
-            onTap: () {},
-          ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: _buildActionCard(
-            icon: Icons.settings,
-            title: 'Settings',
-            subtitle: 'Manage preferences',
-            color: Colors.purple,
-            onTap: () {},
-          ),
-        ),
+      children: const [
+        Expanded(child: BalanceCard()),
+        SizedBox(width: 16),
+        Expanded(child: CarbonFootprintCard()),
+        SizedBox(width: 16),
+        Expanded(child: GreenScoreCard()),
       ],
     );
   }
+}
 
-  Widget _buildActionCard({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
+/// Balance card
+class BalanceCard extends StatelessWidget {
+  const BalanceCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonCard(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Available Balance',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: GlobalColors.textSecondary,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Icon(
+                Icons.account_balance_wallet,
+                color: GlobalColors.success,
+                size: 20,
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          const Text(
+            '\$4,250.50',
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: GlobalColors.text,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Ready to spend',
+            style: TextStyle(
+              fontSize: 12,
+              color: GlobalColors.text.withOpacity(0.6),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Carbon Footprint card
+class CarbonFootprintCard extends StatelessWidget {
+  const CarbonFootprintCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonCard(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Carbon Footprint',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: GlobalColors.textSecondary,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Icon(
+                Icons.eco,
+                color: Color(0xFFEF4444),
+                size: 20,
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          const Text(
+            '42.5 kg CO₂',
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: GlobalColors.text,
+            ),
+          ),
+          const SizedBox(height: 8),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: 0.42,
+              minHeight: 6,
+              backgroundColor: const Color(0xFFE5E7EB),
+              valueColor: const AlwaysStoppedAnimation<Color>(
+                Color(0xFFF59E0B),
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'This month',
+            style: TextStyle(
+              fontSize: 12,
+              color: GlobalColors.text.withOpacity(0.6),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Green Score card
+class GreenScoreCard extends StatelessWidget {
+  const GreenScoreCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonCard(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Green Score',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: GlobalColors.textSecondary,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Icon(
+                Icons.star,
+                color: Color(0xFFFCD34D),
+                size: 20,
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          const Text(
+            '78/100',
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: GlobalColors.text,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF0FDF4),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: const Text(
+              'Eco-friendly behavior',
+              style: TextStyle(
+                fontSize: 12,
+                color: GlobalColors.success,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Quick action buttons section
+class QuickActionsSection extends StatelessWidget {
+  const QuickActionsSection({super.key});
+
+  static const _actions = [
+    (
+      icon: Icons.paid,
+      title: 'Send Money',
+      subtitle: 'Low carbon transfer',
+      color: Colors.blue,
+      route: '/transactions',
+    ),
+    (
+      icon: Icons.shopping_cart,
+      title: 'Green Shopping',
+      subtitle: 'Eco-friendly merchants',
+      color: Colors.green,
+      route: '/transactions',
+    ),
+    (
+      icon: Icons.bar_chart,
+      title: 'View Reports',
+      subtitle: 'Carbon analytics',
+      color: Colors.orange,
+      route: '/impact',
+    ),
+    (
+      icon: Icons.settings,
+      title: 'Settings',
+      subtitle: 'Manage preferences',
+      color: Colors.purple,
+      route: '/settings',
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        for (int i = 0; i < _actions.length; i++) ...[
+          Expanded(
+            child: ActionCard(
+              icon: _actions[i].icon,
+              title: _actions[i].title,
+              subtitle: _actions[i].subtitle,
+              color: _actions[i].color,
+              onTap: () => context.push(_actions[i].route),
+            ),
+          ),
+          if (i < _actions.length - 1) const SizedBox(width: 16),
+        ]
+      ],
+    );
+  }
+}
+
+/// Individual action card widget
+class ActionCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final Color color;
+  final VoidCallback onTap;
+
+  const ActionCard({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Material(
       child: InkWell(
         onTap: onTap,
@@ -170,32 +450,11 @@ class EcommercePage extends LayoutWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Icon(icon, color: color, size: 24),
-              ),
+              _buildIconContainer(),
               const SizedBox(height: 12),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-                ),
-                textAlign: TextAlign.center,
-              ),
+              _buildTitle(),
               const SizedBox(height: 4),
-              Text(
-                subtitle,
-                style: TextStyle(
-                  fontSize: 10,
-                  color: GlobalColors.text,
-                ),
-                textAlign: TextAlign.center,
-              ),
+              _buildSubtitle(),
             ],
           ),
         ),
@@ -203,25 +462,64 @@ class EcommercePage extends LayoutWidget {
     );
   }
 
-  Widget _buildCarbonTips(BuildContext context) {
-    final tips = [
-      {
-        'title': 'Use Public Transport',
-        'description': 'Save 2.5 kg COâ‚‚ per week',
-        'icon': Icons.directions_bus,
-      },
-      {
-        'title': 'Shop Local',
-        'description': 'Reduce shipping emissions',
-        'icon': Icons.store,
-      },
-      {
-        'title': 'Paperless Banking',
-        'description': 'Go digital, save trees',
-        'icon': Icons.description_outlined,
-      },
-    ];
+  Widget _buildIconContainer() {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Icon(icon, color: color, size: 24),
+    );
+  }
 
+  Widget _buildTitle() {
+    return Text(
+      title,
+      style: const TextStyle(
+        fontWeight: FontWeight.w600,
+        fontSize: 12,
+      ),
+      textAlign: TextAlign.center,
+    );
+  }
+
+  Widget _buildSubtitle() {
+    return Text(
+      subtitle,
+      style: TextStyle(
+        fontSize: 10,
+        color: GlobalColors.text,
+      ),
+      textAlign: TextAlign.center,
+    );
+  }
+}
+
+/// Carbon reduction tips section
+class CarbonTipsSection extends StatelessWidget {
+  const CarbonTipsSection({super.key});
+
+  static const _tips = [
+    (
+      title: 'Use Public Transport',
+      description: 'Save 2.5 kg CO₂ per week',
+      icon: Icons.directions_bus,
+    ),
+    (
+      title: 'Shop Local',
+      description: 'Reduce shipping emissions',
+      icon: Icons.store,
+    ),
+    (
+      title: 'Paperless Banking',
+      description: 'Go digital, save trees',
+      icon: Icons.description_outlined,
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
     return CommonCard(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -236,51 +534,83 @@ class EcommercePage extends LayoutWidget {
           ),
           const SizedBox(height: 16),
           Column(
-            children: tips.map((tip) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: GlobalColors.success.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Icon(
-                        tip['icon'] as IconData,
-                        color: GlobalColors.success,
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            tip['title'] as String,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            tip['description'] as String,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: GlobalColors.text,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }).toList(),
+            children: [
+              for (final tip in _tips)
+                TipCard(
+                  title: tip.title,
+                  description: tip.description,
+                  icon: tip.icon,
+                )
+            ],
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Individual tip card
+class TipCard extends StatelessWidget {
+  final String title;
+  final String description;
+  final IconData icon;
+
+  const TipCard({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Row(
+        children: [
+          _buildIconContainer(),
+          const SizedBox(width: 16),
+          Expanded(
+            child: _buildContent(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildIconContainer() {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: GlobalColors.success.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Icon(
+        icon,
+        color: GlobalColors.success,
+      ),
+    );
+  }
+
+  Widget _buildContent() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          description,
+          style: TextStyle(
+            fontSize: 12,
+            color: GlobalColors.text,
+          ),
+        ),
+      ],
     );
   }
 }

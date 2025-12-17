@@ -51,10 +51,10 @@ class MyApp extends StatelessWidget {
               AppLocalizations.supportedLocales;
           return MaterialApp(
             navigatorKey: RouteConfiguration.navigatorKey,
-            restorationScopeId: 'rootFlareLine',
+            restorationScopeId: 'rootGreenPay',
             title: 'GreenPay',
             debugShowCheckedModeBanner: false,
-            initialRoute: '/signIn',
+            initialRoute: '/splash',
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             locale: context.watch<LocalizationProvider>().locale,
             supportedLocales: AppLocalizations.supportedLocales,
@@ -76,4 +76,3 @@ class MyApp extends StatelessWidget {
         }));
   }
 }
-
