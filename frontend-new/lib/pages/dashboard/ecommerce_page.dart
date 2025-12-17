@@ -1,103 +1,67 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:greenpay/core/theme/global_colors.dart';
-import 'package:greenpay/pages/dashboard/analytics_widget.dart';
-import 'package:greenpay/pages/dashboard/channel_widget.dart';
-import 'package:greenpay/pages/dashboard/grid_card.dart';
-import 'package:greenpay/pages/dashboard/revenue_widget.dart';
-import 'package:greenpay/pages/layout.dart';
+import 'package:greenpay/widgets/app_drawer.dart';
 import 'package:flareline_uikit/components/card/common_card.dart';
 
-class EcommercePage extends LayoutWidget {
+class EcommercePage extends StatelessWidget {
   const EcommercePage({super.key});
 
   @override
-  String breakTabTitle(BuildContext context) {
-    return 'Carbon Dashboard';
-  }
-
-  @override
-  Widget contentDesktopWidget(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: const [
-          TopBar(),
-          SizedBox(height: 16),
-          InteractiveBanner(),
-          SizedBox(height: 24),
-          BalanceCardsSection(),
-          SizedBox(height: 24),
-          QuickActionsSection(),
-          SizedBox(height: 24),
-          GridCard(),
-          SizedBox(height: 16),
-          RevenueWidget(),
-          SizedBox(height: 16),
-          AnalyticsWidget(),
-          SizedBox(height: 16),
-          ChannelWidget(),
-          SizedBox(height: 24),
-          CarbonTipsSection(),
-          SizedBox(height: 24),
-        ],
-      ),
-    );
-  }
-}
-
-/// Top navigation bar with profile and notifications
-class TopBar extends StatelessWidget {
-  const TopBar({super.key});
-
-  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // Profile avatar
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: const Color(0xFFF3F4F6),
-            ),
-            child: const Icon(Icons.person),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'GreenPay Dashboard',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
-          // Title
-          const Text(
-            'GreenPay',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: GlobalColors.text,
-            ),
-          ),
+        ),
+        backgroundColor: Colors.white,
+        foregroundColor: GlobalColors.text,
+        elevation: 0,
+        actions: [
           // Notification icon
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: const Color(0xFFF3F4F6),
-            ),
-            child: const Stack(
-              alignment: Alignment.center,
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: Stack(
               children: [
-                Icon(Icons.notifications_none),
+                IconButton(
+                  icon: const Icon(Icons.notifications_outlined),
+                  onPressed: () {},
+                ),
                 Positioned(
-                  top: 8,
                   right: 8,
-                  child: CircleAvatar(
-                    radius: 4,
-                    backgroundColor: Color(0xFFEF4444),
+                  top: 8,
+                  child: Container(
+                    width: 8,
+                    height: 8,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFEF4444),
+                      shape: BoxShape.circle,
+                    ),
                   ),
                 ),
               ],
             ),
           ),
         ],
+      ),
+      drawer: const AppDrawer(currentRoute: '/dashboard'),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: const [
+            InteractiveBanner(),
+            SizedBox(height: 24),
+            BalanceCardsSection(),
+            SizedBox(height: 24),
+            QuickActionsSection(),
+            SizedBox(height: 24),
+            CarbonTipsSection(),
+            SizedBox(height: 24),
+          ],
+        ),
       ),
     );
   }

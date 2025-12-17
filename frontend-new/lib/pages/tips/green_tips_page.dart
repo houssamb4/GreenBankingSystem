@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:greenpay/core/theme/global_colors.dart';
+import 'package:greenpay/widgets/app_drawer.dart';
 
 class GreenTipsPage extends StatelessWidget {
   const GreenTipsPage({Key? key}) : super(key: key);
@@ -73,6 +74,7 @@ class GreenTipsPage extends StatelessWidget {
         foregroundColor: GlobalColors.text,
         elevation: 0,
       ),
+      drawer: const AppDrawer(currentRoute: '/tips'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

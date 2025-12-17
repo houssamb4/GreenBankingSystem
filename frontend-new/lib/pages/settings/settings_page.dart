@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:greenpay/core/theme/global_colors.dart';
+import 'package:greenpay/widgets/app_drawer.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -22,6 +23,7 @@ class _SettingsPageState extends State<SettingsPage> {
         foregroundColor: GlobalColors.text,
         elevation: 0,
       ),
+      drawer: const AppDrawer(currentRoute: '/settings'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

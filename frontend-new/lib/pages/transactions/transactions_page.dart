@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:greenpay/core/theme/global_colors.dart';
+import 'package:greenpay/widgets/app_drawer.dart';
 
 class TransactionsPage extends StatefulWidget {
   const TransactionsPage({Key? key}) : super(key: key);
@@ -97,6 +98,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
           ),
         ],
       ),
+      drawer: const AppDrawer(currentRoute: '/transactions'),
       body: SingleChildScrollView(
         child: Column(
           children: [

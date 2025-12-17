@@ -64,7 +64,7 @@ class TransactionDetailsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    transaction['merchant'],
+                    transaction['merchant'] as String,
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -73,7 +73,7 @@ class TransactionDetailsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    transaction['date'],
+                    transaction['date'] as String,
                     style: const TextStyle(
                       fontSize: 13,
                       color: GlobalColors.textSecondary,
@@ -96,7 +96,7 @@ class TransactionDetailsPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            transaction['amount'],
+                            transaction['amount'] as String,
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -116,7 +116,7 @@ class TransactionDetailsPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            transaction['totalCarbon'],
+                            transaction['totalCarbon'] as String,
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,

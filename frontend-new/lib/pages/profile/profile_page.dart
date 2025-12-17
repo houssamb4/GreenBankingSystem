@@ -1,5 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:greenpay/core/theme/global_colors.dart';
+import 'package:greenpay/widgets/app_drawer.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -13,8 +14,8 @@ class ProfilePage extends StatelessWidget {
         backgroundColor: Colors.white,
         foregroundColor: GlobalColors.text,
         elevation: 0,
-        automaticallyImplyLeading: false,
       ),
+      drawer: const AppDrawer(currentRoute: '/profile'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
