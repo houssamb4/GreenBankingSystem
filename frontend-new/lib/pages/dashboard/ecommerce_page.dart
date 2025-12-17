@@ -192,7 +192,7 @@ class EcommercePage extends LayoutWidget {
                 subtitle,
                 style: TextStyle(
                   fontSize: 10,
-                  color: GlobalColors.textSecondary,
+                  color: GlobalColors.text,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -244,12 +244,12 @@ class EcommercePage extends LayoutWidget {
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: GlobalColors.primaryGreen.withOpacity(0.1),
+                        color: GlobalColors.success.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Icon(
                         tip['icon'] as IconData,
-                        color: GlobalColors.primaryGreen,
+                        color: GlobalColors.success,
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -268,7 +268,7 @@ class EcommercePage extends LayoutWidget {
                             tip['description'] as String,
                             style: TextStyle(
                               fontSize: 12,
-                              color: GlobalColors.textSecondary,
+                              color: GlobalColors.text,
                             ),
                           ),
                         ],
