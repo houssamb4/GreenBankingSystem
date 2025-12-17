@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:greenpay/core/theme/global_colors.dart';
 
 class TransactionsPage extends StatefulWidget {
@@ -129,8 +128,9 @@ class _TransactionsPageState extends State<TransactionsPage> {
               itemBuilder: (context, index) {
                 final transaction = _mockTransactions[index];
                 return GestureDetector(
-                  onTap: () =>
-                      context.push('/transaction-details/${transaction['id']}'),
+                  onTap: () => Navigator.of(context).pushNamed(
+                      '/transaction-details',
+                      arguments: transaction['id']),
                   child: Container(
                     margin:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

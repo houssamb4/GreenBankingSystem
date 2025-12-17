@@ -1,5 +1,4 @@
 ﻿import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:greenpay/core/theme/global_colors.dart';
 import 'package:greenpay/pages/dashboard/analytics_widget.dart';
 import 'package:greenpay/pages/dashboard/channel_widget.dart';
@@ -413,7 +412,7 @@ class QuickActionsSection extends StatelessWidget {
               title: _actions[i].title,
               subtitle: _actions[i].subtitle,
               color: _actions[i].color,
-              onTap: () => context.push(_actions[i].route),
+              onTap: () => Navigator.of(context).pushNamed(_actions[i].route),
             ),
           ),
           if (i < _actions.length - 1) const SizedBox(width: 16),

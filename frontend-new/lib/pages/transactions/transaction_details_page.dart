@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:greenpay/core/theme/global_colors.dart';
 
 class TransactionDetailsPage extends StatelessWidget {
@@ -13,7 +12,7 @@ class TransactionDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Mock data - in real app, fetch based on transactionId
-    const transaction = {
+    final transaction = {
       'merchant': 'Amazon Shopping',
       'amount': '\$47.99',
       'date': 'Yesterday, 3:45 PM',
@@ -57,9 +56,9 @@ class TransactionDetailsPage extends StatelessWidget {
                       color: const Color(0xFFF3F4F6),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       transaction['icon'] as IconData,
-                      color: Color(0xFF10B981),
+                      color: const Color(0xFF10B981),
                       size: 40,
                     ),
                   ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:greenpay/core/theme/global_colors.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -65,7 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
           backgroundColor: Color(0xFF10B981),
         ),
       );
-      context.go('/');
+      Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
     }
   }
 
@@ -88,7 +87,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     alignment: Alignment.topLeft,
                     child: IconButton(
                       icon: const Icon(Icons.arrow_back),
-                      onPressed: () => context.pop(),
+                      onPressed: () => Navigator.of(context).pop(),
                       color: GlobalColors.text,
                     ),
                   ),
@@ -353,7 +352,8 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () => context.go('/signIn'),
+                              onTap: () =>
+                                  Navigator.of(context).pushNamed('/signIn'),
                               child: const Text(
                                 'Login',
                                 style: TextStyle(

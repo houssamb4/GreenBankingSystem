@@ -1,5 +1,4 @@
 ﻿import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:greenpay/core/theme/global_colors.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -316,12 +315,13 @@ class ProfilePage extends StatelessWidget {
         content: const Text('Are you sure you want to logout?'),
         actions: [
           TextButton(
-            onPressed: () => context.pop(),
+            onPressed: () => Navigator.of(context).pop(),
             child: const Text('Cancel'),
           ),
           ElevatedButton(
             onPressed: () {
-              context.go('/signIn');
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil('/signIn', (route) => false);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFEF4444),
