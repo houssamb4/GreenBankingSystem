@@ -189,7 +189,7 @@ class _AdminCategoriesTab extends StatelessWidget {
               borderRadius: BorderRadius.circular(AppTheme.cornerRadius),
               boxShadow: const [AppTheme.softShadow],
             ),
-            child: const SingleChildScrollView(
+            child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: DataTable(
                 columns: [
@@ -240,7 +240,7 @@ class _AdminEmissionFactorsTab extends StatelessWidget {
               borderRadius: BorderRadius.circular(AppTheme.cornerRadius),
               boxShadow: const [AppTheme.softShadow],
             ),
-            child: const SingleChildScrollView(
+            child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: DataTable(
                 columns: [
@@ -311,7 +311,7 @@ class _AdminMerchantRulesTab extends StatelessWidget {
               borderRadius: BorderRadius.circular(AppTheme.cornerRadius),
               boxShadow: const [AppTheme.softShadow],
             ),
-            child: const SingleChildScrollView(
+            child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: DataTable(
                 columns: [
@@ -397,7 +397,7 @@ class _AdminLogsTab extends StatelessWidget {
               borderRadius: BorderRadius.circular(AppTheme.cornerRadius),
               boxShadow: const [AppTheme.softShadow],
             ),
-            child: const SingleChildScrollView(
+            child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: DataTable(
                 columns: [

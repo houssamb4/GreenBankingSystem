@@ -193,65 +193,68 @@ class _SuggestionCardState extends State<_SuggestionCard> {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: AppTheme.primaryLightGreen.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(
-                    AppTheme.smallCornerRadius,
+          children: <Widget>[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: AppTheme.primaryLightGreen.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(
+                      AppTheme.smallCornerRadius,
+                    ),
+                  ),
+                  child: Icon(
+                    widget.icon,
+                    color: AppTheme.primaryDarkGreen,
+                    size: 24,
                   ),
                 ),
-                child: Icon(
-                  widget.icon,
-                  color: AppTheme.primaryDarkGreen,
-                  size: 24,
-                ),
-              ),
-              const SizedBox(width: AppTheme.paddingMedium),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.title,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        decoration: _isDone ? TextDecoration.lineThrough : null,
+                const SizedBox(width: AppTheme.paddingMedium),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        widget.title,
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          decoration: _isDone
+                              ? TextDecoration.lineThrough
+                              : null,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Potential savings: ${widget.impact}',
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: AppTheme.successGreen,
-                        fontWeight: FontWeight.w600,
+                      const SizedBox(height: 4),
+                      Text(
+                        'Potential savings: ${widget.impact}',
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: AppTheme.successGreen,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Checkbox(
-                value: _isDone,
-                onChanged: (value) {
-                  setState(() => _isDone = value ?? false);
-                  if (_isDone) widget.onDone();
-                },
-                activeColor: AppTheme.primaryDarkGreen,
-              ),
-            ],
-          ),
-          const SizedBox(height: AppTheme.paddingMedium),
-          Text(
-            widget.description,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: _isDone ? AppTheme.textLight : AppTheme.textMedium,
+                Checkbox(
+                  value: _isDone,
+                  onChanged: (value) {
+                    setState(() => _isDone = value ?? false);
+                    if (_isDone) widget.onDone();
+                  },
+                  activeColor: AppTheme.primaryDarkGreen,
+                ),
+              ],
             ),
-          ),
-        ],
+            const SizedBox(height: AppTheme.paddingMedium),
+            Text(
+              widget.description,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: _isDone ? AppTheme.textLight : AppTheme.textMedium,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
