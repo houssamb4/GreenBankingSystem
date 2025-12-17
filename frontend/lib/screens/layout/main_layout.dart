@@ -225,7 +225,7 @@ class _DesktopLayout extends StatelessWidget {
                 ),
                 const Divider(height: 1, color: AppTheme.borderLight),
                 // Page Content
-                Expanded(child: widget.child),
+                Expanded(child: child),
               ],
             ),
           ),

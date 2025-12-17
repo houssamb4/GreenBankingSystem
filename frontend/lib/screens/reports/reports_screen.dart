@@ -115,7 +115,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                     label: 'Total CO₂',
                     value: '45.2',
                     unit: 'kg',
-                    icon: Icons.leaf,
+                    icon: Icons.eco,
                     iconColor: AppTheme.primaryDarkGreen,
                   ),
                 ),

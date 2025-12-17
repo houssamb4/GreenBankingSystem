@@ -675,11 +675,7 @@ class _CarbonEstimatePreview extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(
-                Icons.leaf,
-                color: AppTheme.primaryDarkGreen,
-                size: 24,
-              ),
+              const Icon(Icons.eco, color: AppTheme.primaryDarkGreen, size: 24),
               const SizedBox(width: AppTheme.paddingMedium),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

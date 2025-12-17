@@ -182,17 +182,18 @@ class _SuggestionCardState extends State<_SuggestionCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppTheme.paddingMedium),
-      decoration: BoxDecoration(
-        color: AppTheme.white,
-        borderRadius: BorderRadius.circular(AppTheme.cornerRadius),
-        boxShadow: const [AppTheme.softShadow],
-        opacity: _isDone ? 0.6 : 1.0,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+    return Opacity(
+      opacity: _isDone ? 0.6 : 1.0,
+      child: Container(
+        padding: const EdgeInsets.all(AppTheme.paddingMedium),
+        decoration: BoxDecoration(
+          color: AppTheme.white,
+          borderRadius: BorderRadius.circular(AppTheme.cornerRadius),
+          boxShadow: const [AppTheme.softShadow],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

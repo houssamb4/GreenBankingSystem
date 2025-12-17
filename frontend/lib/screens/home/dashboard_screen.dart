@@ -138,7 +138,7 @@ class _KpiCardsSection extends StatelessWidget {
                       label: 'Total CO₂ This Month',
                       value: report.totalCO2kg.toStringAsFixed(2),
                       unit: 'kg',
-                      icon: Icons.leaf,
+                      icon: Icons.eco,
                       iconColor: AppTheme.primaryDarkGreen,
                     ),
                   ),
