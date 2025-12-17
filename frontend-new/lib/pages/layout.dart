@@ -1,4 +1,4 @@
-
+﻿
 import 'package:flareline_uikit/components/toolbar/toolbar.dart';
 import 'package:flareline_uikit/service/localization_provider.dart';
 import 'package:flareline_uikit/widget/flareline_layout.dart';
@@ -42,3 +42,4 @@ abstract class LayoutWidget extends FlarelineLayoutWidget {
     );
   }
 }
+

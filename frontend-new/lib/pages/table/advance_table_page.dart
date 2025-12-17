@@ -1,7 +1,7 @@
-import 'package:flareline/pages/layout.dart';
+﻿import 'package:greenpay/pages/layout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flareline/flutter_gen/app_localizations.dart';
+import 'package:greenpay/flutter_gen/app_localizations.dart';
 
 class AdvanceTablePage extends LayoutWidget {
   const AdvanceTablePage({super.key});
@@ -18,3 +18,4 @@ class AdvanceTablePage extends LayoutWidget {
     );
   }
 }
+

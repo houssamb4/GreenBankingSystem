@@ -1,3 +1,5 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -13,7 +15,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get alertsTitle => 'Attention nécessaire';
 
   @override
-  String get alertsMessage => 'Lorem Ipsum n\'est simplement qu\'un texte factice de l\'imprimerie et de la composition typographique';
+  String get alertsMessage =>
+      'Lorem Ipsum n\'est simplement qu\'un texte factice de l\'imprimerie et de la composition typographique';
 
   @override
   String get appName => 'FlareLine';
@@ -253,7 +256,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get resetPwd => 'Réinitialiser le mot de passe';
 
   @override
-  String get emailReceiveResetLink => 'Entrez votre adresse e-mail pour recevoir un lien de réinitialisation de mot de passe.';
+  String get emailReceiveResetLink =>
+      'Entrez votre adresse e-mail pour recevoir un lien de réinitialisation de mot de passe.';
 
   @override
   String get sendPwdResetLink => 'Envoyer le lien de réinitialisation';
@@ -427,7 +431,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get rflutterAlert => 'ALERTE RFLUTTER';
 
   @override
-  String get rflutterTip => 'Flutter est encore plus génial avec RFlutter Alert.';
+  String get rflutterTip =>
+      'Flutter est encore plus génial avec RFlutter Alert.';
 
   @override
   String get cool => 'COOL';

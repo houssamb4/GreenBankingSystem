@@ -1,4 +1,4 @@
-import 'package:flareline/core/theme/global_colors.dart';
+﻿import 'package:greenpay/core/theme/global_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,7 +15,7 @@ class GlobalTheme {
       darkAppBarThemd, GlobalColors.darkText, darkCardTheme);
 
   static ThemeData theme(ColorScheme colorScheme, Color focusColor,
-      AppBarTheme appBarTheme, Color hintColor, CardTheme cardTheme) {
+      AppBarTheme appBarTheme, Color hintColor, CardThemeData cardTheme) {
     return ThemeData(
         useMaterial3: true,
         colorScheme: colorScheme,
@@ -26,15 +26,15 @@ class GlobalTheme {
         cardTheme: cardTheme);
   }
 
-  static CardTheme lightCardTheme = const CardTheme(
+  static CardThemeData lightCardTheme = const CardThemeData(
     margin: EdgeInsets.zero,
     color: Colors.white,
-    surfaceTintColor:  Color(0xFFE2E8F0),
+    surfaceTintColor: Color(0xFFE2E8F0),
     shadowColor: Color(0x11000000),
     elevation: 0,
   );
 
-  static CardTheme darkCardTheme = CardTheme(
+  static CardThemeData darkCardTheme = CardThemeData(
     margin: EdgeInsets.zero,
     color: GlobalColors.darkAppBar,
     surfaceTintColor: GlobalColors.border.withOpacity(0.05),
@@ -100,3 +100,4 @@ class GlobalTheme {
     labelLarge: GoogleFonts.montserrat(fontWeight: _semiBold, fontSize: 14.0),
   );
 }
+

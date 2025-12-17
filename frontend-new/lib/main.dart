@@ -1,9 +1,9 @@
-import 'package:flareline/core/theme/global_theme.dart';
+﻿import 'package:greenpay/core/theme/global_theme.dart';
 import 'package:flareline_uikit/service/localization_provider.dart';
-import 'package:flareline/routes.dart';
+import 'package:greenpay/routes.dart';
 import 'package:flareline_uikit/service/theme_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flareline/flutter_gen/app_localizations.dart';
+import 'package:greenpay/flutter_gen/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
@@ -52,9 +52,9 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             navigatorKey: RouteConfiguration.navigatorKey,
             restorationScopeId: 'rootFlareLine',
-            title: 'FlareLine',
+            title: 'GreenPay',
             debugShowCheckedModeBanner: false,
-            initialRoute: '/',
+            initialRoute: '/signIn',
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             locale: context.watch<LocalizationProvider>().locale,
             supportedLocales: AppLocalizations.supportedLocales,
@@ -76,3 +76,4 @@ class MyApp extends StatelessWidget {
         }));
   }
 }
+

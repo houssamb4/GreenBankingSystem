@@ -1,3 +1,5 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -13,7 +15,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get alertsTitle => 'Cần sự chú ý';
 
   @override
-  String get alertsMessage => 'Lorem Ipsum chỉ đơn giản là văn bản giả của ngành in ấn và sắp chữ';
+  String get alertsMessage =>
+      'Lorem Ipsum chỉ đơn giản là văn bản giả của ngành in ấn và sắp chữ';
 
   @override
   String get appName => 'FlareLine';
@@ -253,7 +256,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get resetPwd => 'Đặt lại mật khẩu';
 
   @override
-  String get emailReceiveResetLink => 'Nhập địa chỉ email của bạn để nhận liên kết đặt lại mật khẩu.';
+  String get emailReceiveResetLink =>
+      'Nhập địa chỉ email của bạn để nhận liên kết đặt lại mật khẩu.';
 
   @override
   String get sendPwdResetLink => 'Gửi liên kết đặt lại mật khẩu';

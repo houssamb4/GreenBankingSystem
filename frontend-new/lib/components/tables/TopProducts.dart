@@ -1,10 +1,10 @@
-import 'package:flareline_uikit/components/loading/loading.dart';
+﻿import 'package:flareline_uikit/components/loading/loading.dart';
 import 'package:flareline_uikit/components/tags/tag_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flareline_uikit/components/card/common_card.dart';
 import 'package:provider/provider.dart';
-import 'package:flareline/flutter_gen/app_localizations.dart';
+import 'package:greenpay/flutter_gen/app_localizations.dart';
 
 class TopProductsWidget extends StatelessWidget {
   const TopProductsWidget({super.key});
@@ -137,3 +137,4 @@ class _DataProvider extends ChangeNotifier {
   }
 
 }
+

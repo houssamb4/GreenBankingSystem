@@ -1,4 +1,4 @@
-library flareline_uikit;
+﻿library flareline_uikit;
 
 
 import 'package:flareline_uikit/core/mvvm/bloc/bloc_base_state.dart';
@@ -43,3 +43,4 @@ abstract class BlocBaseStlessWidget<VM extends BlocBaseViewModel<ST>, ST extends
   void blocListener(BuildContext context, ST state) {
   }
 }
+

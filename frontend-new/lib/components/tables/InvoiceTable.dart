@@ -1,9 +1,9 @@
-import 'package:flareline/flutter_gen/app_localizations.dart';
+﻿import 'package:greenpay/flutter_gen/app_localizations.dart';
 import 'package:flareline_uikit/components/loading/loading.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flareline_uikit/components/card/common_card.dart';
-import 'package:flareline/core/theme/global_colors.dart';
+import 'package:greenpay/core/theme/global_colors.dart';
 import 'package:provider/provider.dart';
 
 class InvoiceTableWidget extends StatelessWidget {
@@ -142,3 +142,4 @@ class _DataProvider extends ChangeNotifier {
     return channels;
   }
 }
+

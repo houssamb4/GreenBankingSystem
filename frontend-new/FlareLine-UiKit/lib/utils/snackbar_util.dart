@@ -1,4 +1,4 @@
-
+﻿
 import 'package:flareline_uikit/core/theme/flareline_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -16,3 +16,4 @@ class SnackBarUtil {
     showSnack(context, msg, color: ButtonColors.success);
   }
 }
+

@@ -1,4 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
+﻿// GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'cache_entity.dart';
 
@@ -18,3 +18,4 @@ Map<String, dynamic> _$CacheEntityToJson(CacheEntity instance) =>
       'expire': instance.expire,
       'value': instance.value,
     };
+

@@ -1,4 +1,4 @@
-import 'package:flareline_uikit/components/forms/select_widget.dart';
+﻿import 'package:flareline_uikit/components/forms/select_widget.dart';
 import 'package:flareline_uikit/core/mvvm/base_viewmodel.dart';
 import 'package:flareline_uikit/core/mvvm/base_widget.dart';
 import 'package:flareline_uikit/core/theme/flareline_colors.dart';
@@ -168,3 +168,4 @@ class LineChartWidget extends BaseWidget<LineChartProvider> {
 class LineChartProvider extends BaseViewModel {
   LineChartProvider(super.context);
 }
+

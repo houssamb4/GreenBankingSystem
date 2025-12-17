@@ -1,4 +1,4 @@
-
+﻿
 import 'package:flareline_uikit/core/mvvm/base_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -32,3 +32,4 @@ class SignUpProvider extends BaseViewModel {
     Navigator.of(context).popAndPushNamed('/signIn');
   }
 }
+

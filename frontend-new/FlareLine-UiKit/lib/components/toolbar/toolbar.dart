@@ -1,4 +1,4 @@
-library flareline_uikit;
+﻿library flareline_uikit;
 import 'package:flareline_uikit/components/badge/anim_badge.dart';
 import 'package:flareline_uikit/components/buttons/button_widget.dart';
 import 'package:flareline_uikit/components/forms/search_widget.dart';
@@ -256,3 +256,4 @@ class ToggleWidget extends StatelessWidget {
     );
   }
 }
+

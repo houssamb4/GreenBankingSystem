@@ -1,4 +1,4 @@
-import 'package:flareline/core/theme/global_colors.dart';
+﻿import 'package:greenpay/core/theme/global_colors.dart';
 import 'package:flareline_uikit/components/forms/checkbox_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -58,3 +58,4 @@ class SingleCheckboxWidget extends StatelessWidget {
         });
   }
 }
+

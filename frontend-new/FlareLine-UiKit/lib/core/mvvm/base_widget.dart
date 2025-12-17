@@ -1,4 +1,4 @@
-library flareline_uikit;
+﻿library flareline_uikit;
 
 import 'package:flareline_uikit/core/mvvm/base_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -35,3 +35,4 @@ abstract class BaseWidget<VM extends BaseViewModel>
     return null;
   }
 }
+

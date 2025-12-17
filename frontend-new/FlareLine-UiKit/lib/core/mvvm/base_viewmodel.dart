@@ -1,4 +1,4 @@
-library flareline_uikit;
+﻿library flareline_uikit;
 import 'dart:async';
 
 import 'package:flareline_uikit/core/event/global_event.dart';
@@ -96,3 +96,4 @@ abstract class BaseViewModel extends ChangeNotifier {
 
   void onSafeDispose() {}
 }
+

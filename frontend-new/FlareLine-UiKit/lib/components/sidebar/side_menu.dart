@@ -1,4 +1,4 @@
-import 'package:flareline_uikit/core/theme/flareline_colors.dart';
+﻿import 'package:flareline_uikit/core/theme/flareline_colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -187,3 +187,4 @@ class SideMenuWidget extends StatelessWidget {
     Navigator.of(context).pushNamed(path);
   }
 }
+

@@ -1,12 +1,12 @@
-import 'package:flutter/cupertino.dart';
+﻿import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flareline_uikit/components/buttons/button_widget.dart';
 import 'package:flareline_uikit/components/card/common_card.dart';
 import 'package:flareline_uikit/components/forms/outborder_text_form_field.dart';
-import 'package:flareline/pages/layout.dart';
-import 'package:flareline/flutter_gen/app_localizations.dart';
+import 'package:greenpay/pages/layout.dart';
+import 'package:greenpay/flutter_gen/app_localizations.dart';
 
 class FormLayoutPage extends LayoutWidget {
   FormLayoutPage({super.key});
@@ -164,7 +164,7 @@ class FormLayoutPage extends LayoutWidget {
                     builder: (ctx, res, widget) {
                       return Checkbox(
                         value: res,
-                        activeColor: Colors.red, //选中时的颜色
+                        activeColor: Colors.red, //é€‰ä¸­æ—¶çš„é¢œè‰²
                         onChanged: (value) {
                           checkNotifier1.value = value ?? false;
                         },
@@ -217,3 +217,4 @@ class FormLayoutPage extends LayoutWidget {
     );
   }
 }
+

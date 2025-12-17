@@ -1,4 +1,4 @@
-library flareline_uikit;
+﻿library flareline_uikit;
 import 'package:flutter/material.dart';
 
 class SwitchWidget extends StatelessWidget {
@@ -27,3 +27,4 @@ class SwitchWidget extends StatelessWidget {
         });
   }
 }
+

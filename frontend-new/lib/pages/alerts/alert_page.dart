@@ -1,12 +1,12 @@
-import 'package:flareline/core/theme/global_colors.dart';
+﻿import 'package:greenpay/core/theme/global_colors.dart';
 import 'package:flareline_uikit/components/buttons/button_widget.dart';
 import 'package:flareline_uikit/components/card/title_card.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flareline_uikit/components/card/common_card.dart';
-import 'package:flareline/pages/layout.dart';
+import 'package:greenpay/pages/layout.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:flareline/flutter_gen/app_localizations.dart';
+import 'package:greenpay/flutter_gen/app_localizations.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -398,3 +398,4 @@ class AlertPage extends LayoutWidget {
     );
   }
 }
+

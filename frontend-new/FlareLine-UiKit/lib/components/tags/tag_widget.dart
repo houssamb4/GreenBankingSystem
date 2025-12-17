@@ -1,4 +1,4 @@
-library flareline_uikit;
+﻿library flareline_uikit;
 import 'package:flareline_uikit/core/theme/flareline_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -60,3 +60,4 @@ class TagWidget extends StatelessWidget {
     );
   }
 }
+

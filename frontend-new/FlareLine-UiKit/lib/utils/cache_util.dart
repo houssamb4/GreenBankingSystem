@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 
 import 'package:flareline_uikit/entity/cache_entity.dart';
 import 'package:get_storage/get_storage.dart';
@@ -104,3 +104,4 @@ class CacheUtil {
     _box.remove(getCacheKey(key));
   }
 }
+

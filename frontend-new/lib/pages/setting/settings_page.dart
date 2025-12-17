@@ -1,13 +1,13 @@
-import 'package:flareline/pages/setting/personal_avatar_widget.dart';
-import 'package:flareline/pages/setting/personal_info_widget.dart';
+﻿import 'package:greenpay/pages/setting/personal_avatar_widget.dart';
+import 'package:greenpay/pages/setting/personal_info_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 
-import 'package:flareline/pages/layout.dart';
+import 'package:greenpay/pages/layout.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'package:flareline/flutter_gen/app_localizations.dart';
+import 'package:greenpay/flutter_gen/app_localizations.dart';
 
 class SettingsPage extends LayoutWidget {
   SettingsPage({super.key});
@@ -95,3 +95,4 @@ class SettingsPage extends LayoutWidget {
     return const PersonalAvatarWidget();
   }
 }
+

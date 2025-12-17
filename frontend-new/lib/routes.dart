@@ -1,24 +1,24 @@
-import 'package:flareline/deferred_widget.dart';
-import 'package:flareline/pages/modal/modal_page.dart' deferred as modal;
-import 'package:flareline/pages/table/contacts_page.dart' deferred as contacts;
-import 'package:flareline/pages/toast/toast_page.dart' deferred as toast;
-import 'package:flareline/pages/tools/tools_page.dart' deferred as tools;
+﻿import 'package:greenpay/deferred_widget.dart';
+import 'package:greenpay/pages/modal/modal_page.dart' deferred as modal;
+import 'package:greenpay/pages/table/contacts_page.dart' deferred as contacts;
+import 'package:greenpay/pages/toast/toast_page.dart' deferred as toast;
+import 'package:greenpay/pages/tools/tools_page.dart' deferred as tools;
 import 'package:flutter/material.dart';
-import 'package:flareline/pages/alerts/alert_page.dart' deferred as alert;
-import 'package:flareline/pages/button/button_page.dart' deferred as button;
-import 'package:flareline/pages/form/form_elements_page.dart' deferred as formElements;
-import 'package:flareline/pages/form/form_layout_page.dart' deferred as formLayout;
-import 'package:flareline/pages/auth/sign_in/sign_in_page.dart' deferred as signIn;
-import 'package:flareline/pages/auth/sign_up/sign_up_page.dart' deferred as signUp;
-import 'package:flareline/pages/calendar/calendar_page.dart' deferred as calendar;
-import 'package:flareline/pages/chart/chart_page.dart' deferred as chart;
-import 'package:flareline/pages/dashboard/ecommerce_page.dart';
-import 'package:flareline/pages/inbox/index.dart' deferred as inbox;
-import 'package:flareline/pages/invoice/invoice_page.dart' deferred as invoice;
-import 'package:flareline/pages/profile/profile_page.dart' deferred as profile;
-import 'package:flareline/pages/resetpwd/reset_pwd_page.dart' deferred as resetPwd;
-import 'package:flareline/pages/setting/settings_page.dart' deferred as settings;
-import 'package:flareline/pages/table/tables_page.dart' deferred as tables;
+import 'package:greenpay/pages/alerts/alert_page.dart' deferred as alert;
+import 'package:greenpay/pages/button/button_page.dart' deferred as button;
+import 'package:greenpay/pages/form/form_elements_page.dart' deferred as formElements;
+import 'package:greenpay/pages/form/form_layout_page.dart' deferred as formLayout;
+import 'package:greenpay/pages/auth/sign_in/sign_in_page.dart' deferred as signIn;
+import 'package:greenpay/pages/auth/sign_up/sign_up_page.dart' deferred as signUp;
+import 'package:greenpay/pages/calendar/calendar_page.dart' deferred as calendar;
+import 'package:greenpay/pages/chart/chart_page.dart' deferred as chart;
+import 'package:greenpay/pages/dashboard/ecommerce_page.dart';
+import 'package:greenpay/pages/inbox/index.dart' deferred as inbox;
+import 'package:greenpay/pages/invoice/invoice_page.dart' deferred as invoice;
+import 'package:greenpay/pages/profile/profile_page.dart' deferred as profile;
+import 'package:greenpay/pages/resetpwd/reset_pwd_page.dart' deferred as resetPwd;
+import 'package:greenpay/pages/setting/settings_page.dart' deferred as settings;
+import 'package:greenpay/pages/table/tables_page.dart' deferred as tables;
 
 typedef PathWidgetBuilder = Widget Function(BuildContext, String?);
 
@@ -100,3 +100,4 @@ class NoAnimationMaterialPageRoute<T> extends MaterialPageRoute<T> {
     return child;
   }
 }
+

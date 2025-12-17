@@ -1,4 +1,4 @@
-library flareline_uikit;
+﻿library flareline_uikit;
 
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
@@ -25,3 +25,4 @@ class AnimBadge extends StatelessWidget {
     );
   }
 }
+

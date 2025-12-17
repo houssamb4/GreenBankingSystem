@@ -16,9 +16,9 @@ dependencies:
 
   provider: ^6.1.2
 
-  syncfusion_flutter_charts: ^27.1.58
+  syncfusion_flutter_charts: ^32.1.19
 
-  syncfusion_flutter_datagrid: ^27.1.58
+  syncfusion_flutter_datagrid: ^32.1.19
 
   flutter_svg: ^2.0.14
 

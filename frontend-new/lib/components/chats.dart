@@ -1,6 +1,6 @@
-
-import 'package:flareline/core/theme/global_colors.dart';
-import 'package:flareline/flutter_gen/app_localizations.dart';
+﻿
+import 'package:greenpay/core/theme/global_colors.dart';
+import 'package:greenpay/flutter_gen/app_localizations.dart';
 import 'package:flareline_uikit/components/badge/anim_badge.dart';
 import 'package:flutter/material.dart';
 
@@ -201,3 +201,4 @@ class _DataProvider extends ChangeNotifier {
     return employees;
   }
 }
+

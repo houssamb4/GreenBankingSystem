@@ -1,4 +1,4 @@
-import 'package:desktop_drop/desktop_drop.dart';
+﻿import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flareline_uikit/core/theme/flareline_colors.dart';
 import 'package:flutter/material.dart';
@@ -93,3 +93,4 @@ class DropZoneWidget extends StatelessWidget {
     );
   }
 }
+

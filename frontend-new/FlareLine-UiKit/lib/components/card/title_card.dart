@@ -1,4 +1,4 @@
-library flareline_uikit;
+﻿library flareline_uikit;
 
 import 'package:flareline_uikit/components/card/common_card.dart';
 import 'package:flutter/material.dart';
@@ -29,3 +29,4 @@ class TitleCard extends StatelessWidget {
     ]);
   }
 }
+

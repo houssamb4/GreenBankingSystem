@@ -1,4 +1,4 @@
-library flareline_uikit;
+﻿library flareline_uikit;
 import 'package:json_annotation/json_annotation.dart';
 import 'dart:convert';
 

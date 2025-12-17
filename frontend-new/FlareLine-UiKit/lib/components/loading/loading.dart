@@ -1,4 +1,4 @@
-library flareline_uikit;
+﻿library flareline_uikit;
 import 'package:flutter/material.dart';
 
 class LoadingWidget extends StatelessWidget {
@@ -11,3 +11,4 @@ class LoadingWidget extends StatelessWidget {
     );
   }
 }
+

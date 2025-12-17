@@ -1,7 +1,7 @@
-
+﻿
 import 'package:flareline_uikit/components/tables/table_widget.dart';
 import 'package:flareline_uikit/entity/table_data_entity.dart';
-import 'package:flareline/pages/layout.dart';
+import 'package:greenpay/pages/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
@@ -78,3 +78,4 @@ class ContactsViewModel extends BaseTableProvider {
     tableDataEntity = data;
   }
 }
+

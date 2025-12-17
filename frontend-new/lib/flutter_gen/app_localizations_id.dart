@@ -1,3 +1,5 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -13,7 +15,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get alertsTitle => 'Perlu Perhatian';
 
   @override
-  String get alertsMessage => 'Lorem Ipsum hanyalah teks palsu dari industri percetakan dan penataan huruf';
+  String get alertsMessage =>
+      'Lorem Ipsum hanyalah teks palsu dari industri percetakan dan penataan huruf';
 
   @override
   String get appName => 'FlareLine';
@@ -253,7 +256,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get resetPwd => 'Atur Ulang Kata Sandi';
 
   @override
-  String get emailReceiveResetLink => 'Masukkan alamat email Anda untuk menerima tautan setel ulang kata sandi.';
+  String get emailReceiveResetLink =>
+      'Masukkan alamat email Anda untuk menerima tautan setel ulang kata sandi.';
 
   @override
   String get sendPwdResetLink => 'Kirim Tautan Setel Ulang';

@@ -1,4 +1,4 @@
-import 'package:flareline_uikit/core/mvvm/base_viewmodel.dart';
+﻿import 'package:flareline_uikit/core/mvvm/base_viewmodel.dart';
 import 'package:flutter/material.dart';
 
 class ThemeProvider extends BaseViewModel {
@@ -25,3 +25,4 @@ class ThemeProvider extends BaseViewModel {
     // TODO: implement init
   }
 }
+

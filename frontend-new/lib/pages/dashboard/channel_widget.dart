@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flareline/components/chats.dart';
-import 'package:flareline/components/tables/TopChannel.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:greenpay/components/chats.dart';
+import 'package:greenpay/components/tables/TopChannel.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class ChannelWidget extends StatelessWidget {
@@ -53,3 +53,4 @@ class ChannelWidget extends StatelessWidget {
     );
   }
 }
+

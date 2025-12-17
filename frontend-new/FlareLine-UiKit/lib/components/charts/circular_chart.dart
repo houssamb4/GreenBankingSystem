@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -93,3 +93,4 @@ class _BarChartProvider extends ChangeNotifier {
     super.dispose();
   }
 }
+

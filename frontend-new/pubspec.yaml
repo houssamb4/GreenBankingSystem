@@ -1,5 +1,5 @@
-name: flareline
-description: "A new Flutter project."
+name: greenpay
+description: "GreenPay - Carbon-aware Banking & Payment App"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -43,13 +43,13 @@ dependencies:
 
   popover: ^0.2.9
 
-  syncfusion_flutter_charts: ^27.1.58
+  syncfusion_flutter_charts: ^32.1.19
 
-  syncfusion_flutter_datagrid: ^27.1.58
+  syncfusion_flutter_datagrid: ^32.1.19
 
-  syncfusion_flutter_maps: ^27.1.58
+  syncfusion_flutter_maps: ^32.1.19
 
-  syncfusion_flutter_calendar: ^27.1.58
+  syncfusion_flutter_calendar: ^32.1.19
 
   transparent_image: ^2.0.1
 

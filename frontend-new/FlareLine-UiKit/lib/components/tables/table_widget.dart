@@ -1,4 +1,4 @@
-library flareline_uikit;
+﻿library flareline_uikit;
 
 import 'package:flareline_uikit/components/card/common_card.dart';
 import 'package:flareline_uikit/components/forms/switch_widget.dart';
@@ -440,3 +440,4 @@ abstract class BaseTableProvider extends BaseViewModel {
     return column;
   }
 }
+

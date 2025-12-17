@@ -1,9 +1,9 @@
-
-import 'package:flareline/core/theme/global_colors.dart';
+﻿
+import 'package:greenpay/core/theme/global_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flareline_uikit/components/card/common_card.dart';
 import 'package:flareline_uikit/components/charts/circular_chart.dart';
-import 'package:flareline/components/charts/map_chart.dart';
+import 'package:greenpay/components/charts/map_chart.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class AnalyticsWidget extends StatelessWidget {
@@ -105,3 +105,4 @@ class AnalyticsWidget extends StatelessWidget {
     );
   }
 }
+

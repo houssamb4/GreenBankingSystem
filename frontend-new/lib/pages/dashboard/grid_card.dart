@@ -1,9 +1,9 @@
-
-import 'package:flareline/core/theme/global_colors.dart';
+﻿
+import 'package:greenpay/core/theme/global_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flareline_uikit/components/card/common_card.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'package:flareline/flutter_gen/app_localizations.dart';
+import 'package:greenpay/flutter_gen/app_localizations.dart';
 
 class GridCard extends StatelessWidget {
   const GridCard({super.key});
@@ -130,3 +130,4 @@ class GridCard extends StatelessWidget {
     );
   }
 }
+

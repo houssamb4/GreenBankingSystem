@@ -1,4 +1,4 @@
-library flareline_uikit;
+﻿library flareline_uikit;
 
 import 'dart:convert';
 
@@ -143,3 +143,4 @@ class SideBarWidget extends StatelessWidget {
     );
   }
 }
+

@@ -1,5 +1,5 @@
-import 'package:flareline/core/theme/global_colors.dart';
-import 'package:flareline/pages/layout.dart';
+﻿import 'package:greenpay/core/theme/global_colors.dart';
+import 'package:greenpay/pages/layout.dart';
 import 'package:flareline_uikit/components/buttons/button_widget.dart';
 import 'package:flareline_uikit/components/card/title_card.dart';
 import 'package:flareline_uikit/components/modal/modal_dialog.dart';
@@ -138,3 +138,4 @@ class ModalPage extends LayoutWidget {
     );
   }
 }
+

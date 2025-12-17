@@ -1,4 +1,4 @@
-import 'dart:ui';
+﻿import 'dart:ui';
 
 class FlarelineColors{
   static const Color primary = Color(0xFF3C50E0);

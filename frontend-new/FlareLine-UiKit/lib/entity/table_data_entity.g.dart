@@ -1,4 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
+﻿// GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'table_data_entity.dart';
 
@@ -49,3 +49,4 @@ Map<String, dynamic> _$TableDataRowsTableDataRowsToJson(
       'data': instance.data,
       'id': instance.id,
     };
+

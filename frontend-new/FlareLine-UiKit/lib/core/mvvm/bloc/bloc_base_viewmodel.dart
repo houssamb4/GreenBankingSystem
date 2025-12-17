@@ -1,4 +1,4 @@
-library flareline_uikit;
+﻿library flareline_uikit;
 
 import 'dart:async';
 
@@ -92,3 +92,4 @@ abstract class BlocBaseViewModel<S extends BlocBaseState> extends Cubit<S> {
 
   void onSafeDispose() {}
 }
+

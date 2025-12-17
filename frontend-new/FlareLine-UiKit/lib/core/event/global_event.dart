@@ -1,4 +1,4 @@
-library flareline_uikit;
+﻿library flareline_uikit;
 import 'package:rx_event_bus/rx_event_bus.dart';
 
 class GlobalEvent {
@@ -14,3 +14,4 @@ class EventInfo{
 
   EventInfo(this.obj, this.eventType);
 }
+

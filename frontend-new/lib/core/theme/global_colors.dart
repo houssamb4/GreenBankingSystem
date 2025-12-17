@@ -1,4 +1,4 @@
-import 'dart:ui';
+﻿import 'dart:ui';
 
 class GlobalColors{
   static const Color primary = Color(0xFF3C50E0);
@@ -41,6 +41,7 @@ class GlobalColors{
 
 
 }
+
 
 
 

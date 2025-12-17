@@ -1,4 +1,4 @@
-library flareline_uikit;
+﻿library flareline_uikit;
 
 import 'package:flareline_uikit/components/sidebar/side_bar.dart';
 import 'package:flareline_uikit/core/theme/flareline_colors.dart';
@@ -191,3 +191,4 @@ abstract class FlarelineLayoutWidget extends StatelessWidget {
     ]);
   }
 }
+

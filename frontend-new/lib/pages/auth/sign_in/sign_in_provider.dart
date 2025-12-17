@@ -1,4 +1,4 @@
-
+﻿
 
 import 'package:flareline_uikit/core/mvvm/base_viewmodel.dart';
 import 'package:flareline_uikit/utils/snackbar_util.dart';
@@ -25,3 +25,4 @@ class SignInProvider extends BaseViewModel {
     Navigator.of(context).pushNamed('/');
   }
 }
+
