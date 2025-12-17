@@ -1,0 +1,22 @@
+[
+  {
+    "groupName": "AI",
+    "menuList":[
+      {
+        "icon": "assets/icon/ai.png",
+        "menuName": "AI Tools",
+        "path": "https://flare-line-firebase.vercel.app"
+      }
+    ]
+  },
+  {
+    "groupName": "Project",
+    "menuList":[
+      {
+        "icon": "assets/crm/crm.png",
+        "menuName": "CRM",
+        "path": "https://flare-line-crm.vercel.app"
+      }
+    ]
+  }
+]
