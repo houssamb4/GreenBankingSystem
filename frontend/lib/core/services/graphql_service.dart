@@ -1,4 +1,5 @@
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:greenpay/core/services/token_storage_service.dart';
 
 class GraphQLService {
@@ -11,25 +12,53 @@ class GraphQLService {
 
   final TokenStorageService _tokenStorage = TokenStorageService.instance;
 
-  GraphQLClient getClient() {
-    final HttpLink httpLink = HttpLink(_endpoint);
-
-    final AuthLink authLink = AuthLink(
-      getToken: () async {
-        final token = await _tokenStorage.getToken();
-        return token != null ? 'Bearer $token' : null;
-      },
-    );
-
-    final Link link = authLink.concat(httpLink);
-
-    return GraphQLClient(
-      cache: GraphQLCache(store: InMemoryStore()),
-      link: link,
-    );
+  Future<Map<String, dynamic>> query(String query,
+      {Map<String, dynamic>? variables}) async {
+    return await _executeRequest(query, variables);
   }
 
-  ValueNotifier<GraphQLClient> getClientNotifier() {
-    return ValueNotifier(getClient());
+  Future<Map<String, dynamic>> mutate(String mutation,
+      {Map<String, dynamic>? variables}) async {
+    return await _executeRequest(mutation, variables);
+  }
+
+  Future<Map<String, dynamic>> _executeRequest(
+      String query, Map<String, dynamic>? variables) async {
+    try {
+      final token = await _tokenStorage.getToken();
+
+      final headers = {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      };
+
+      final body = json.encode({
+        'query': query,
+        if (variables != null && variables.isNotEmpty) 'variables': variables,
+      });
+
+      final response = await http.post(
+        Uri.parse(_endpoint),
+        headers: headers,
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body) as Map<String, dynamic>;
+
+        if (responseData.containsKey('errors')) {
+          final errors = responseData['errors'] as List;
+          if (errors.isNotEmpty) {
+            throw Exception(errors[0]['message']);
+          }
+        }
+
+        return responseData;
+      } else {
+        throw Exception('HTTP ${response.statusCode}: ${response.body}');
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 }

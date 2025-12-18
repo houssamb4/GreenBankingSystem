@@ -104,8 +104,8 @@ dependencies:
 
   flex_color_scheme: ^8.0.0
 
-  # GraphQL
-  graphql_flutter: ^5.1.0
+  # HTTP client for API requests
+  http: ^1.2.0
   
   # Secure storage for tokens
   flutter_secure_storage: ^9.0.0

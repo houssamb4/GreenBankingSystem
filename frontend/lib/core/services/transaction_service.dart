@@ -1,4 +1,3 @@
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:greenpay/core/models/transaction.dart';
 import 'package:greenpay/core/services/graphql_service.dart';
 
@@ -94,25 +93,17 @@ class TransactionService {
     String? description,
   }) async {
     try {
-      final GraphQLClient client = _graphQLService.getClient();
-
-      final QueryResult result = await client.mutate(
-        MutationOptions(
-          document: gql(createTransactionMutation),
-          variables: {
-            'amount': amount,
-            'category': category,
-            'merchant': merchant,
-            if (description != null) 'description': description,
-          },
-        ),
+      final result = await _graphQLService.mutate(
+        createTransactionMutation,
+        variables: {
+          'amount': amount,
+          'category': category,
+          'merchant': merchant,
+          if (description != null) 'description': description,
+        },
       );
 
-      if (result.hasException) {
-        throw Exception(result.exception.toString());
-      }
-
-      final transactionData = result.data?['createTransaction'];
+      final transactionData = result['data']?['createTransaction'];
       if (transactionData != null) {
         return Transaction.fromJson(transactionData);
       }
@@ -125,20 +116,12 @@ class TransactionService {
 
   Future<List<Transaction>> getUserTransactions(String userId) async {
     try {
-      final GraphQLClient client = _graphQLService.getClient();
-
-      final QueryResult result = await client.query(
-        QueryOptions(
-          document: gql(getUserTransactionsQuery),
-          variables: {'userId': userId},
-        ),
+      final result = await _graphQLService.query(
+        getUserTransactionsQuery,
+        variables: {'userId': userId},
       );
 
-      if (result.hasException) {
-        throw Exception(result.exception.toString());
-      }
-
-      final transactionsData = result.data?['getUserTransactions'] as List?;
+      final transactionsData = result['data']?['getUserTransactions'] as List?;
       if (transactionsData != null) {
         return transactionsData
             .map((json) => Transaction.fromJson(json))
@@ -153,20 +136,12 @@ class TransactionService {
 
   Future<CarbonStats?> getCarbonStats(String userId) async {
     try {
-      final GraphQLClient client = _graphQLService.getClient();
-
-      final QueryResult result = await client.query(
-        QueryOptions(
-          document: gql(getCarbonStatsQuery),
-          variables: {'userId': userId},
-        ),
+      final result = await _graphQLService.query(
+        getCarbonStatsQuery,
+        variables: {'userId': userId},
       );
 
-      if (result.hasException) {
-        throw Exception(result.exception.toString());
-      }
-
-      final statsData = result.data?['getCarbonStats'];
+      final statsData = result['data']?['getCarbonStats'];
       if (statsData != null) {
         return CarbonStats.fromJson(statsData);
       }
@@ -179,20 +154,12 @@ class TransactionService {
 
   Future<List<CategoryBreakdown>> getCategoryBreakdown(String userId) async {
     try {
-      final GraphQLClient client = _graphQLService.getClient();
-
-      final QueryResult result = await client.query(
-        QueryOptions(
-          document: gql(getCategoryBreakdownQuery),
-          variables: {'userId': userId},
-        ),
+      final result = await _graphQLService.query(
+        getCategoryBreakdownQuery,
+        variables: {'userId': userId},
       );
 
-      if (result.hasException) {
-        throw Exception(result.exception.toString());
-      }
-
-      final breakdownData = result.data?['getCategoryBreakdown'] as List?;
+      final breakdownData = result['data']?['getCategoryBreakdown'] as List?;
       if (breakdownData != null) {
         return breakdownData
             .map((json) => CategoryBreakdown.fromJson(json))
@@ -207,20 +174,12 @@ class TransactionService {
 
   Future<Map<String, dynamic>?> updateCarbonBudget(double budget) async {
     try {
-      final GraphQLClient client = _graphQLService.getClient();
-
-      final QueryResult result = await client.mutate(
-        MutationOptions(
-          document: gql(updateCarbonBudgetMutation),
-          variables: {'budget': budget},
-        ),
+      final result = await _graphQLService.mutate(
+        updateCarbonBudgetMutation,
+        variables: {'budget': budget},
       );
 
-      if (result.hasException) {
-        throw Exception(result.exception.toString());
-      }
-
-      return result.data?['updateCarbonBudget'];
+      return result['data']?['updateCarbonBudget'];
     } catch (e) {
       rethrow;
     }

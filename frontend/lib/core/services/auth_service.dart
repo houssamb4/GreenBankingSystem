@@ -1,4 +1,3 @@
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:greenpay/core/services/graphql_service.dart';
 import 'package:greenpay/core/services/token_storage_service.dart';
 
@@ -73,23 +72,15 @@ class AuthService {
 
   Future<Map<String, dynamic>?> login(String email, String password) async {
     try {
-      final GraphQLClient client = _graphQLService.getClient();
-
-      final QueryResult result = await client.mutate(
-        MutationOptions(
-          document: gql(loginMutation),
-          variables: {
-            'email': email,
-            'password': password,
-          },
-        ),
+      final result = await _graphQLService.mutate(
+        loginMutation,
+        variables: {
+          'email': email,
+          'password': password,
+        },
       );
 
-      if (result.hasException) {
-        throw Exception(result.exception.toString());
-      }
-
-      final loginData = result.data?['login'];
+      final loginData = result['data']?['login'];
       if (loginData != null) {
         // Save tokens
         await _tokenStorage.saveToken(loginData['token']);
@@ -111,25 +102,17 @@ class AuthService {
     required String lastName,
   }) async {
     try {
-      final GraphQLClient client = _graphQLService.getClient();
-
-      final QueryResult result = await client.mutate(
-        MutationOptions(
-          document: gql(registerMutation),
-          variables: {
-            'email': email,
-            'password': password,
-            'firstName': firstName,
-            'lastName': lastName,
-          },
-        ),
+      final result = await _graphQLService.mutate(
+        registerMutation,
+        variables: {
+          'email': email,
+          'password': password,
+          'firstName': firstName,
+          'lastName': lastName,
+        },
       );
 
-      if (result.hasException) {
-        throw Exception(result.exception.toString());
-      }
-
-      final registerData = result.data?['register'];
+      final registerData = result['data']?['register'];
       if (registerData != null) {
         // Save tokens
         await _tokenStorage.saveToken(registerData['token']);
@@ -146,19 +129,8 @@ class AuthService {
 
   Future<Map<String, dynamic>?> getCurrentUser() async {
     try {
-      final GraphQLClient client = _graphQLService.getClient();
-
-      final QueryResult result = await client.query(
-        QueryOptions(
-          document: gql(getCurrentUserQuery),
-        ),
-      );
-
-      if (result.hasException) {
-        throw Exception(result.exception.toString());
-      }
-
-      return result.data?['getCurrentUser'];
+      final result = await _graphQLService.query(getCurrentUserQuery);
+      return result['data']?['getCurrentUser'];
     } catch (e) {
       rethrow;
     }
