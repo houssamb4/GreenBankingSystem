@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:greenpay/core/theme/global_colors.dart';
+import 'package:greenpay/pages/auth/register/register_provider.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -55,37 +57,57 @@ class _RegisterPageState extends State<RegisterPage> {
     return null;
   }
 
-  void _handleRegister() {
+  void _handleRegister() async {
     if (_formKey.currentState!.validate()) {
-      // TODO: Implement actual registration logic
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Account created successfully!'),
-          backgroundColor: Color(0xFF10B981),
-        ),
+      final provider = Provider.of<RegisterProvider>(context, listen: false);
+      
+      // Split full name into first and last name
+      final nameParts = _fullNameController.text.trim().split(' ');
+      final firstName = nameParts.first;
+      final lastName = nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '';
+
+      final success = await provider.register(
+        context: context,
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+        firstName: firstName,
+        lastName: lastName,
       );
-      Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+
+      if (success && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Account created successfully!'),
+            backgroundColor: Color(0xFF10B981),
+          ),
+        );
+        Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-        ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Column(
-                children: [
-                  const SizedBox(height: 40),
-                  // Back button
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: IconButton(
+    return ChangeNotifierProvider(
+      create: (_) => RegisterProvider(),
+      child: Consumer<RegisterProvider>(
+        builder: (context, provider, _) {
+          return Scaffold(
+            body: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
+              child: SafeArea(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 40),
+                        // Back button
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: IconButton(
                       icon: const Icon(Icons.arrow_back),
                       onPressed: () => Navigator.of(context).pop(),
                       color: GlobalColors.text,
@@ -374,6 +396,8 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
           ),
         ),
+      );
+        },
       ),
     );
   }

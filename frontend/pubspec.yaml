@@ -104,6 +104,12 @@ dependencies:
 
   flex_color_scheme: ^8.0.0
 
+  # GraphQL
+  graphql_flutter: ^5.1.0
+  
+  # Secure storage for tokens
+  flutter_secure_storage: ^9.0.0
+
   flareline_uikit:
    path: FlareLine-UiKit
 

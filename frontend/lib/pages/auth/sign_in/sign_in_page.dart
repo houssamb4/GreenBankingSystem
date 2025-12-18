@@ -24,7 +24,7 @@ class SignInWidget extends BaseWidget<SignInProvider> {
           );
         }
 
-        return contentMobileWidget(context,viewModel);
+        return contentMobileWidget(context, viewModel);
       },
     ));
   }
@@ -34,7 +34,7 @@ class SignInWidget extends BaseWidget<SignInProvider> {
     return SignInProvider(context);
   }
 
-  Widget contentDesktopWidget(BuildContext context,SignInProvider viewModel) {
+  Widget contentDesktopWidget(BuildContext context, SignInProvider viewModel) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -44,32 +44,32 @@ class SignInWidget extends BaseWidget<SignInProvider> {
           child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
             Expanded(
                 child: Column(
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)!.appName,
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    Text(AppLocalizations.of(context)!.slogan),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    SizedBox(
-                      width: 350,
-                      child: SvgPicture.asset('assets/signin/main.svg',
-                          semanticsLabel: ''),
-                    )
-                  ],
-                )),
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.appName,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Text(AppLocalizations.of(context)!.slogan),
+                const SizedBox(
+                  height: 16,
+                ),
+                SizedBox(
+                  width: 350,
+                  child: SvgPicture.asset('assets/signin/main.svg',
+                      semanticsLabel: ''),
+                )
+              ],
+            )),
             const VerticalDivider(
               width: 1,
               color: GlobalColors.background,
             ),
             Expanded(
-              child: _signInFormWidget(context,viewModel),
+              child: _signInFormWidget(context, viewModel),
             )
           ]),
         )
@@ -78,13 +78,13 @@ class SignInWidget extends BaseWidget<SignInProvider> {
   }
 
   @override
-  Widget contentMobileWidget(BuildContext context,SignInProvider viewModel) {
+  Widget contentMobileWidget(BuildContext context, SignInProvider viewModel) {
     return CommonCard(
         padding: const EdgeInsets.symmetric(vertical: 60),
-        child: _signInFormWidget(context,viewModel));
+        child: _signInFormWidget(context, viewModel));
   }
 
-  Widget _signInFormWidget(BuildContext context,SignInProvider viewModel) {
+  Widget _signInFormWidget(BuildContext context, SignInProvider viewModel) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 50),
         child: Column(
@@ -142,10 +142,14 @@ class SignInWidget extends BaseWidget<SignInProvider> {
             ),
             ButtonWidget(
               type: ButtonType.primary.type,
-              btnText: AppLocalizations.of(context)!.signIn,
-              onTap: () {
-                viewModel.signIn(context);
-              },
+              btnText: viewModel.isLoading
+                  ? 'Signing in...'
+                  : AppLocalizations.of(context)!.signIn,
+              onTap: viewModel.isLoading
+                  ? null
+                  : () {
+                      viewModel.signIn(context);
+                    },
             ),
             const SizedBox(
               height: 20,
@@ -154,18 +158,18 @@ class SignInWidget extends BaseWidget<SignInProvider> {
               children: [
                 const Expanded(
                     child: Divider(
-                      height: 1,
-                      color: GlobalColors.border,
-                    )),
+                  height: 1,
+                  color: GlobalColors.border,
+                )),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(AppLocalizations.of(context)!.or),
                 ),
                 const Expanded(
                     child: Divider(
-                      height: 1,
-                      color: GlobalColors.border,
-                    )),
+                  height: 1,
+                  color: GlobalColors.border,
+                )),
               ],
             ),
             const SizedBox(
@@ -222,4 +226,3 @@ class SignInWidget extends BaseWidget<SignInProvider> {
         ));
   }
 }
-
