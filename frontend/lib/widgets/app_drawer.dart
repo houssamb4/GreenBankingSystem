@@ -4,7 +4,10 @@ import '../core/theme/global_colors.dart';
 class AppDrawer extends StatelessWidget {
   final String currentRoute;
 
-  const AppDrawer({Key? key, required this.currentRoute}) : super(key: key);
+  const AppDrawer({
+    Key? key,
+    required this.currentRoute,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +18,10 @@ class AppDrawer extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.white, const Color(0xFF10B981).withOpacity(0.02)],
+            colors: [
+              Colors.white,
+              const Color(0xFF10B981).withOpacity(0.02),
+            ],
           ),
         ),
         child: Column(
@@ -100,6 +106,41 @@ class AppDrawer extends StatelessWidget {
 
             const Spacer(),
 
+            // Version info
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Row(
+                children: [
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF10B981).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: const Text(
+                      'v1.0.0',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF10B981),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  const Expanded(
+                    child: Text(
+                      'GreenPay © 2025',
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: GlobalColors.textSecondary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
             // 6️⃣ Logout (Bottom, Isolated)
             const Divider(height: 1, thickness: 1),
             _buildLogoutItem(context),
@@ -119,25 +160,42 @@ class AppDrawer extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            const Color(0xFF10B981).withOpacity(0.1),
+            const Color(0xFF10B981).withOpacity(0.15),
             const Color(0xFF10B981).withOpacity(0.05),
           ],
         ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF10B981).withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              // Circular Avatar
+              // Circular Avatar with shadow
               Container(
                 width: 56,
                 height: 56,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: LinearGradient(
-                    colors: [const Color(0xFF10B981), const Color(0xFF059669)],
+                    colors: [
+                      const Color(0xFF10B981),
+                      const Color(0xFF059669),
+                    ],
                   ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF10B981).withOpacity(0.4),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 child: const Center(
                   child: Text(
@@ -179,6 +237,38 @@ class AppDrawer extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: 12),
+          // Green Score Badge
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: const Color(0xFF10B981).withOpacity(0.15),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: const Color(0xFF10B981).withOpacity(0.3),
+                width: 1,
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                Icon(
+                  Icons.eco,
+                  size: 14,
+                  color: Color(0xFF10B981),
+                ),
+                SizedBox(width: 6),
+                Text(
+                  'Green Score: 78/100',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF10B981),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -217,12 +307,12 @@ class AppDrawer extends StatelessWidget {
           onTap: isComingSoon
               ? () => _showComingSoonSnackbar(context, label)
               : (onTap ??
-                    () {
-                      Navigator.pop(context); // Close drawer
-                      if (!isActive) {
-                        Navigator.pushReplacementNamed(context, route);
-                      }
-                    }),
+                  () {
+                    Navigator.pop(context); // Close drawer
+                    if (!isActive) {
+                      Navigator.pushReplacementNamed(context, route);
+                    }
+                  }),
           borderRadius: BorderRadius.circular(8),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -262,10 +352,8 @@ class AppDrawer extends StatelessWidget {
                 ),
                 if (isComingSoon)
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 6,
-                      vertical: 2,
-                    ),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                       color: const Color(0xFFF59E0B).withOpacity(0.1),
                       borderRadius: BorderRadius.circular(4),
@@ -299,7 +387,11 @@ class AppDrawer extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
             child: Row(
               children: const [
-                Icon(Icons.logout, size: 22, color: Color(0xFFEF4444)),
+                Icon(
+                  Icons.logout,
+                  size: 22,
+                  color: Color(0xFFEF4444),
+                ),
                 SizedBox(width: 12),
                 Text(
                   'Logout',
@@ -327,11 +419,17 @@ class AppDrawer extends StatelessWidget {
           ),
           title: const Text(
             'Logout Confirmation',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           content: const Text(
             'Are you sure you want to logout?',
-            style: TextStyle(fontSize: 14, color: GlobalColors.textSecondary),
+            style: TextStyle(
+              fontSize: 14,
+              color: GlobalColors.textSecondary,
+            ),
           ),
           actions: [
             TextButton(
@@ -379,7 +477,9 @@ class AppDrawer extends StatelessWidget {
         content: Text('$feature - Coming Soon!'),
         backgroundColor: const Color(0xFFF59E0B),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
       ),
     );
   }
@@ -399,7 +499,10 @@ class AppDrawer extends StatelessWidget {
               SizedBox(width: 8),
               Text(
                 'Export Reports',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -482,7 +585,11 @@ class AppDrawer extends StatelessWidget {
                 color: const Color(0xFF10B981).withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Icon(icon, color: const Color(0xFF10B981), size: 24),
+              child: Icon(
+                icon,
+                color: const Color(0xFF10B981),
+                size: 24,
+              ),
             ),
             const SizedBox(width: 12),
             Expanded(
