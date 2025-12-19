@@ -2,14 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:greenpay/pages/auth/sign_in/sign_in_page.dart'
     deferred as signIn;
-import 'package:greenpay/pages/auth/register/register_page.dart';
+import 'package:greenpay/pages/auth/sign_in/asana_sign_in_page.dart';
+import 'package:greenpay/pages/auth/register/asana_register_page.dart';
 import 'package:greenpay/pages/dashboard/asana_dashboard_page.dart';
 import 'package:greenpay/pages/profile/asana_profile_page.dart';
-import 'package:greenpay/pages/settings/settings_page.dart';
+import 'package:greenpay/pages/settings/asana_settings_page.dart';
 import 'package:greenpay/pages/transactions/asana_transactions_page.dart';
 import 'package:greenpay/pages/transactions/transaction_details_page.dart';
-import 'package:greenpay/pages/impact/carbon_impact_page.dart';
-import 'package:greenpay/pages/tips/green_tips_page.dart';
+import 'package:greenpay/pages/impact/asana_impact_page.dart';
+import 'package:greenpay/pages/tips/asana_tips_page.dart';
 import 'package:greenpay/pages/splash_screen.dart';
 import 'package:greenpay/core/services/auth_service.dart';
 
@@ -23,12 +24,11 @@ final Map<String, _RouteBuilder> _staticRoutes = {
   '/dashboard': (_) => const AsanaDashboardPage(),
   '/profile': (_) => const AsanaProfilePage(),
   '/transactions': (_) => const AsanaTransactionsPage(),
-  '/impact': (_) => const CarbonImpactPage(),
-  '/tips': (_) => const GreenTipsPage(),
-  '/settings': (_) => const SettingsPage(),
-  '/signIn': (_) =>
-      DeferredWidget(signIn.loadLibrary, () => signIn.SignInWidget()),
-  '/register': (_) => const RegisterPage(),
+  '/impact': (_) => const AsanaImpactPage(),
+  '/tips': (_) => const AsanaTipsPage(),
+  '/settings': (_) => const AsanaSettingsPage(),
+  '/signIn': (_) => const AsanaSignInPage(),
+  '/register': (_) => const AsanaRegisterPage(),
 };
 
 final Set<String> _publicRoutes = {
@@ -141,8 +141,7 @@ class ProtectedRoute extends StatelessWidget {
 
         final bool loggedIn = snapshot.data == true;
         if (!loggedIn) {
-          return DeferredWidget(
-              signIn.loadLibrary, () => signIn.SignInWidget());
+          return const AsanaSignInPage();
         }
 
         return child;
