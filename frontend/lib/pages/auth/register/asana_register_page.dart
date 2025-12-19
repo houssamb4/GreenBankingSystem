@@ -237,33 +237,6 @@ class _AsanaRegisterPageState extends State<AsanaRegisterPage> {
                                     ],
                                   ),
                                   const SizedBox(height: 40),
-                                  if (provider.errorMessage != null)
-                                    Container(
-                                      padding: const EdgeInsets.all(12),
-                                      margin: const EdgeInsets.only(bottom: 24),
-                                      decoration: BoxDecoration(
-                                        color: AsanaColors.red.withOpacity(0.1),
-                                        borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(
-                                            color: AsanaColors.red
-                                                .withOpacity(0.3)),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Icon(Icons.error_outline,
-                                              color: AsanaColors.red, size: 20),
-                                          const SizedBox(width: 8),
-                                          Expanded(
-                                            child: Text(
-                                              provider.errorMessage!,
-                                              style: TextStyle(
-                                                  color: AsanaColors.red,
-                                                  fontSize: 14),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
                                   Row(
                                     children: [
                                       Expanded(

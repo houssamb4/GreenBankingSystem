@@ -1,7 +1,4 @@
-﻿import 'package:greenpay/deferred_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:greenpay/pages/auth/sign_in/sign_in_page.dart'
-    deferred as signIn;
+﻿import 'package:flutter/material.dart';
 import 'package:greenpay/pages/auth/sign_in/asana_sign_in_page.dart';
 import 'package:greenpay/pages/auth/register/asana_register_page.dart';
 import 'package:greenpay/pages/dashboard/asana_dashboard_page.dart';
@@ -36,18 +33,6 @@ final Set<String> _publicRoutes = {
   '/signIn',
   '/register',
 };
-
-// Wrapper to handle dynamic route parameters
-class _TransactionDetailsWrapper extends StatelessWidget {
-  const _TransactionDetailsWrapper();
-
-  @override
-  Widget build(BuildContext context) {
-    final transactionId =
-        ModalRoute.of(context)?.settings.arguments as String? ?? '1';
-    return TransactionDetailsPage(transactionId: transactionId);
-  }
-}
 
 class RouteConfiguration {
   static final GlobalKey<NavigatorState> navigatorKey =

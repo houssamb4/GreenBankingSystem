@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:greenpay/core/services/auth_service.dart';
 import 'package:greenpay/core/services/transaction_service.dart';
+import 'package:greenpay/core/services/token_storage_service.dart';
 import 'package:greenpay/core/models/transaction.dart';
 import 'package:greenpay/widgets/asana_sidebar.dart';
 
 class ImpactProvider extends ChangeNotifier {
   final AuthService _authService = AuthService.instance;
   final TransactionService _transactionService = TransactionService.instance;
+  final TokenStorageService _tokenStorage = TokenStorageService.instance;
+
+  Future<String?> _getUserId() async {
+    return await _tokenStorage.getUserId();
+  }
 
   bool _isLoading = true;
   String _userName = 'User';
@@ -65,15 +71,19 @@ class ImpactProvider extends ChangeNotifier {
         _carbonBudget = (userData['carbonBudget'] ?? 100).toDouble();
       }
 
-      // Load carbon stats
-      final stats = await _transactionService.getCarbonStats();
-      if (stats != null) {
-        _totalCarbon = stats.totalCarbon;
-        _monthlyCarbon = stats.monthlyCarbon;
-      }
+      // Load carbon stats - need userId from token storage
+      final userId = await _getUserId();
+      if (userId != null) {
+        final stats = await _transactionService.getCarbonStats(userId);
+        if (stats != null) {
+          _totalCarbon = stats.totalCarbon;
+          _monthlyCarbon = stats.monthlyCarbon;
+        }
 
-      // Load category breakdown
-      _categoryBreakdown = await _transactionService.getCategoryBreakdown();
+        // Load category breakdown
+        _categoryBreakdown =
+            await _transactionService.getCategoryBreakdown(userId);
+      }
     } catch (e) {
       // Ignore errors
     }
@@ -536,13 +546,29 @@ class _AsanaImpactPageState extends State<AsanaImpactPage> {
         ? provider.categoryBreakdown
         : [
             CategoryBreakdown(
-                category: 'Transport', totalCarbon: 25.5, percentage: 35),
+                category: 'Transport',
+                totalCarbon: 25.5,
+                totalAmount: 150.0,
+                transactionCount: 5,
+                percentage: 35),
             CategoryBreakdown(
-                category: 'Food', totalCarbon: 18.2, percentage: 25),
+                category: 'Food',
+                totalCarbon: 18.2,
+                totalAmount: 120.0,
+                transactionCount: 8,
+                percentage: 25),
             CategoryBreakdown(
-                category: 'Shopping', totalCarbon: 14.6, percentage: 20),
+                category: 'Shopping',
+                totalCarbon: 14.6,
+                totalAmount: 80.0,
+                transactionCount: 3,
+                percentage: 20),
             CategoryBreakdown(
-                category: 'Travel', totalCarbon: 14.6, percentage: 20),
+                category: 'Travel',
+                totalCarbon: 14.6,
+                totalAmount: 200.0,
+                transactionCount: 2,
+                percentage: 20),
           ];
 
     final colors = [

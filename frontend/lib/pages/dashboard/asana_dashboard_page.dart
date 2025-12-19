@@ -69,7 +69,7 @@ class _AsanaDashboardPageState extends State<AsanaDashboardPage> {
         _buildTopBar(provider),
         Expanded(
           child: provider.isLoading
-              ? const Center(
+              ? Center(
                   child: CircularProgressIndicator(
                     color: AsanaColors.green,
                   ),
