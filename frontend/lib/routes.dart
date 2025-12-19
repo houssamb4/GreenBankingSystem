@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:greenpay/pages/auth/sign_in/sign_in_page.dart'
     deferred as signIn;
 import 'package:greenpay/pages/auth/register/register_page.dart';
-import 'package:greenpay/pages/dashboard/ecommerce_page.dart';
-import 'package:greenpay/pages/profile/profile_page.dart';
+import 'package:greenpay/pages/dashboard/asana_dashboard_page.dart';
+import 'package:greenpay/pages/profile/asana_profile_page.dart';
 import 'package:greenpay/pages/settings/settings_page.dart';
-import 'package:greenpay/pages/transactions/transactions_page.dart';
+import 'package:greenpay/pages/transactions/asana_transactions_page.dart';
 import 'package:greenpay/pages/transactions/transaction_details_page.dart';
 import 'package:greenpay/pages/impact/carbon_impact_page.dart';
 import 'package:greenpay/pages/tips/green_tips_page.dart';
@@ -19,10 +19,10 @@ typedef _RouteBuilder = Widget Function(BuildContext);
 
 final Map<String, _RouteBuilder> _staticRoutes = {
   '/splash': (_) => const SplashScreen(),
-  '/': (_) => const EcommercePage(),
-  '/dashboard': (_) => const EcommercePage(),
-  '/profile': (_) => const ProfilePage(),
-  '/transactions': (_) => const TransactionsPage(),
+  '/': (_) => const AsanaDashboardPage(),
+  '/dashboard': (_) => const AsanaDashboardPage(),
+  '/profile': (_) => const AsanaProfilePage(),
+  '/transactions': (_) => const AsanaTransactionsPage(),
   '/impact': (_) => const CarbonImpactPage(),
   '/tips': (_) => const GreenTipsPage(),
   '/settings': (_) => const SettingsPage(),
