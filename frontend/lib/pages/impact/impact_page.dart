@@ -4,7 +4,7 @@ import 'package:greenpay/core/services/auth_service.dart';
 import 'package:greenpay/core/services/transaction_service.dart';
 import 'package:greenpay/core/services/token_storage_service.dart';
 import 'package:greenpay/core/models/transaction.dart';
-import 'package:greenpay/widgets/asana_sidebar.dart';
+import 'package:greenpay/widgets/sidebar.dart';
 
 class ImpactProvider extends ChangeNotifier {
   final AuthService _authService = AuthService.instance;
@@ -106,14 +106,14 @@ class ImpactProvider extends ChangeNotifier {
   }
 }
 
-class AsanaImpactPage extends StatefulWidget {
-  const AsanaImpactPage({Key? key}) : super(key: key);
+class ImpactPage extends StatefulWidget {
+  const ImpactPage({Key? key}) : super(key: key);
 
   @override
-  State<AsanaImpactPage> createState() => _AsanaImpactPageState();
+  State<ImpactPage> createState() => _ImpactPageState();
 }
 
-class _AsanaImpactPageState extends State<AsanaImpactPage> {
+class _ImpactPageState extends State<ImpactPage> {
   late ImpactProvider _provider;
   bool _sidebarExpanded = true;
 

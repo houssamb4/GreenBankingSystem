@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:greenpay/widgets/asana_sidebar.dart';
+import 'package:greenpay/widgets/sidebar.dart';
 import 'package:greenpay/core/services/auth_service.dart';
 
-class AsanaSignInPage extends StatefulWidget {
-  const AsanaSignInPage({Key? key}) : super(key: key);
+class SignInPage extends StatefulWidget {
+  const SignInPage({Key? key}) : super(key: key);
 
   @override
-  State<AsanaSignInPage> createState() => _AsanaSignInPageState();
+  State<SignInPage> createState() => _SignInPageState();
 }
 
-class _AsanaSignInPageState extends State<AsanaSignInPage> {
+class _SignInPageState extends State<SignInPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();

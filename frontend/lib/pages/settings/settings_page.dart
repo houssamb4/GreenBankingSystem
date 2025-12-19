@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:greenpay/core/services/auth_service.dart';
 import 'package:greenpay/core/services/token_storage_service.dart';
-import 'package:greenpay/widgets/asana_sidebar.dart';
+import 'package:greenpay/widgets/sidebar.dart';
 
 class SettingsProvider extends ChangeNotifier {
   final AuthService _authService = AuthService.instance;
@@ -85,14 +85,14 @@ class SettingsProvider extends ChangeNotifier {
   }
 }
 
-class AsanaSettingsPage extends StatefulWidget {
-  const AsanaSettingsPage({Key? key}) : super(key: key);
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({Key? key}) : super(key: key);
 
   @override
-  State<AsanaSettingsPage> createState() => _AsanaSettingsPageState();
+  State<SettingsPage> createState() => _SettingsPageState();
 }
 
-class _AsanaSettingsPageState extends State<AsanaSettingsPage> {
+class _SettingsPageState extends State<SettingsPage> {
   late SettingsProvider _provider;
   bool _sidebarExpanded = true;
 

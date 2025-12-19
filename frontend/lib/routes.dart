@@ -1,13 +1,13 @@
 ﻿import 'package:flutter/material.dart';
-import 'package:greenpay/pages/auth/sign_in/asana_sign_in_page.dart';
-import 'package:greenpay/pages/auth/register/asana_register_page.dart';
-import 'package:greenpay/pages/dashboard/asana_dashboard_page.dart';
-import 'package:greenpay/pages/profile/asana_profile_page.dart';
-import 'package:greenpay/pages/settings/asana_settings_page.dart';
-import 'package:greenpay/pages/transactions/asana_transactions_page.dart';
+import 'package:greenpay/pages/auth/sign_in/sign_in_page.dart';
+import 'package:greenpay/pages/auth/register/register_page.dart';
+import 'package:greenpay/pages/dashboard/dashboard_page.dart';
+import 'package:greenpay/pages/profile/profile_page.dart';
+import 'package:greenpay/pages/settings/settings_page.dart';
+import 'package:greenpay/pages/transactions/transactions_page.dart';
 import 'package:greenpay/pages/transactions/transaction_details_page.dart';
-import 'package:greenpay/pages/impact/asana_impact_page.dart';
-import 'package:greenpay/pages/tips/asana_tips_page.dart';
+import 'package:greenpay/pages/impact/impact_page.dart';
+import 'package:greenpay/pages/tips/tips_page.dart';
 import 'package:greenpay/pages/splash_screen.dart';
 import 'package:greenpay/core/services/auth_service.dart';
 
@@ -17,15 +17,15 @@ typedef _RouteBuilder = Widget Function(BuildContext);
 
 final Map<String, _RouteBuilder> _staticRoutes = {
   '/splash': (_) => const SplashScreen(),
-  '/': (_) => const AsanaDashboardPage(),
-  '/dashboard': (_) => const AsanaDashboardPage(),
-  '/profile': (_) => const AsanaProfilePage(),
-  '/transactions': (_) => const AsanaTransactionsPage(),
-  '/impact': (_) => const AsanaImpactPage(),
-  '/tips': (_) => const AsanaTipsPage(),
-  '/settings': (_) => const AsanaSettingsPage(),
-  '/signIn': (_) => const AsanaSignInPage(),
-  '/register': (_) => const AsanaRegisterPage(),
+  '/': (_) => const DashboardPage(),
+  '/dashboard': (_) => const DashboardPage(),
+  '/profile': (_) => const ProfilePage(),
+  '/transactions': (_) => const TransactionsPage(),
+  '/impact': (_) => const ImpactPage(),
+  '/tips': (_) => const TipsPage(),
+  '/settings': (_) => const SettingsPage(),
+  '/signIn': (_) => const SignInPage(),
+  '/register': (_) => const RegisterPage(),
 };
 
 final Set<String> _publicRoutes = {

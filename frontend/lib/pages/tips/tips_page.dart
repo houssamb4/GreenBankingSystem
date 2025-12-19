@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:greenpay/core/services/auth_service.dart';
-import 'package:greenpay/widgets/asana_sidebar.dart';
+import 'package:greenpay/widgets/sidebar.dart';
 
 class TipsProvider extends ChangeNotifier {
   final AuthService _authService = AuthService.instance;
@@ -167,14 +167,14 @@ class TipsProvider extends ChangeNotifier {
   }
 }
 
-class AsanaTipsPage extends StatefulWidget {
-  const AsanaTipsPage({Key? key}) : super(key: key);
+class TipsPage extends StatefulWidget {
+  const TipsPage({Key? key}) : super(key: key);
 
   @override
-  State<AsanaTipsPage> createState() => _AsanaTipsPageState();
+  State<TipsPage> createState() => _TipsPageState();
 }
 
-class _AsanaTipsPageState extends State<AsanaTipsPage> {
+class _TipsPageState extends State<TipsPage> {
   late TipsProvider _provider;
   bool _sidebarExpanded = true;
 

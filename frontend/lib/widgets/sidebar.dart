@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:greenpay/core/theme/global_colors.dart';
 
-/// Asana-style sidebar navigation component
-class AsanaSidebar extends StatefulWidget {
+/// App sidebar navigation component
+class Sidebar extends StatefulWidget {
   final String currentRoute;
   final String userName;
   final String userEmail;
@@ -11,7 +11,7 @@ class AsanaSidebar extends StatefulWidget {
   final bool isExpanded;
   final Function(bool)? onExpandedChanged;
 
-  const AsanaSidebar({
+  const Sidebar({
     Key? key,
     required this.currentRoute,
     this.userName = 'User',
@@ -23,10 +23,10 @@ class AsanaSidebar extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<AsanaSidebar> createState() => _AsanaSidebarState();
+  State<Sidebar> createState() => _SidebarState();
 }
 
-class _AsanaSidebarState extends State<AsanaSidebar> {
+class _SidebarState extends State<Sidebar> {
   late bool _isExpanded;
   bool _isHovering = false;
 
@@ -639,8 +639,8 @@ class _NavItem {
   });
 }
 
-/// Asana-inspired color palette
-class AsanaColors {
+/// App color palette
+class AppColors {
   // Background colors
   static Color get sidebarBg => const Color(0xFFFAFAFA);
   static Color get inputBg => const Color(0xFFF6F8F9);
@@ -659,7 +659,7 @@ class AsanaColors {
   static Color get border => const Color(0xFFE8ECEE);
   static Color get borderHover => const Color(0xFFD1D5DB);
 
-  // Accent colors (Asana-inspired)
+  // Accent colors
   static Color get green => const Color(0xFF10B981);
   static Color get teal => const Color(0xFF14B8A6);
   static Color get blue => const Color(0xFF3B82F6);

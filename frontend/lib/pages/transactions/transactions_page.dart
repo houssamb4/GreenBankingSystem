@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:greenpay/core/models/transaction.dart';
 import 'package:greenpay/core/services/token_storage_service.dart';
 import 'package:greenpay/core/services/transaction_service.dart';
-import 'package:greenpay/widgets/asana_sidebar.dart';
+import 'package:greenpay/widgets/sidebar.dart';
 
 class TransactionsProvider extends ChangeNotifier {
   final TransactionService _transactionService = TransactionService.instance;
@@ -77,14 +77,14 @@ class TransactionsProvider extends ChangeNotifier {
   }
 }
 
-class AsanaTransactionsPage extends StatefulWidget {
-  const AsanaTransactionsPage({Key? key}) : super(key: key);
+class TransactionsPage extends StatefulWidget {
+  const TransactionsPage({Key? key}) : super(key: key);
 
   @override
-  State<AsanaTransactionsPage> createState() => _AsanaTransactionsPageState();
+  State<TransactionsPage> createState() => _TransactionsPageState();
 }
 
-class _AsanaTransactionsPageState extends State<AsanaTransactionsPage> {
+class _TransactionsPageState extends State<TransactionsPage> {
   late TransactionsProvider _provider;
   bool _sidebarExpanded = true;
 

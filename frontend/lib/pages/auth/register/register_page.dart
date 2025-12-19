@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:greenpay/pages/auth/register/register_provider.dart';
-import 'package:greenpay/widgets/asana_sidebar.dart';
+import 'package:greenpay/widgets/sidebar.dart';
 
-class AsanaRegisterPage extends StatefulWidget {
-  const AsanaRegisterPage({Key? key}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  State<AsanaRegisterPage> createState() => _AsanaRegisterPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _AsanaRegisterPageState extends State<AsanaRegisterPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:greenpay/pages/dashboard/dashboard_provider.dart';
-import 'package:greenpay/widgets/asana_sidebar.dart';
+import 'package:greenpay/widgets/sidebar.dart';
 import 'package:greenpay/core/models/transaction.dart';
 import 'package:intl/intl.dart';
 
-class AsanaDashboardPage extends StatefulWidget {
-  const AsanaDashboardPage({super.key});
+class DashboardPage extends StatefulWidget {
+  const DashboardPage({super.key});
 
   @override
-  State<AsanaDashboardPage> createState() => _AsanaDashboardPageState();
+  State<DashboardPage> createState() => _DashboardPageState();
 }
 
-class _AsanaDashboardPageState extends State<AsanaDashboardPage> {
+class _DashboardPageState extends State<DashboardPage> {
   late DashboardProvider _provider;
   bool _sidebarExpanded = true;
 

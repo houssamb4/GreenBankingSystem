@@ -5,7 +5,7 @@ import 'package:greenpay/core/services/auth_service.dart';
 import 'package:greenpay/core/services/token_storage_service.dart';
 import 'package:greenpay/core/services/transaction_service.dart';
 import 'package:greenpay/core/models/transaction.dart';
-import 'package:greenpay/widgets/asana_sidebar.dart';
+import 'package:greenpay/widgets/sidebar.dart';
 
 class ProfileProvider extends ChangeNotifier {
   final AuthService _authService = AuthService.instance;
@@ -76,14 +76,14 @@ class ProfileProvider extends ChangeNotifier {
   }
 }
 
-class AsanaProfilePage extends StatefulWidget {
-  const AsanaProfilePage({Key? key}) : super(key: key);
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
-  State<AsanaProfilePage> createState() => _AsanaProfilePageState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _AsanaProfilePageState extends State<AsanaProfilePage> {
+class _ProfilePageState extends State<ProfilePage> {
   late ProfileProvider _provider;
   bool _sidebarExpanded = true;
 
