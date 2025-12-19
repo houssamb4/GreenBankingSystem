@@ -86,6 +86,55 @@ class TransactionService {
     }
   ''';
 
+  // Update transaction mutation
+  static const String updateTransactionMutation = r'''
+    mutation UpdateTransaction($id: ID!, $amount: Float, $category: String, $merchant: String, $description: String) {
+      updateTransaction(
+        id: $id
+        input: {
+          amount: $amount
+          category: $category
+          merchant: $merchant
+          description: $description
+        }
+      ) {
+        id
+        amount
+        currency
+        category
+        merchant
+        description
+        carbonFootprint
+        transactionDate
+        createdAt
+      }
+    }
+  ''';
+
+  // Delete transaction mutation
+  static const String deleteTransactionMutation = r'''
+    mutation DeleteTransaction($id: ID!) {
+      deleteTransaction(id: $id)
+    }
+  ''';
+
+  // Get single transaction query
+  static const String getTransactionQuery = r'''
+    query GetTransaction($id: ID!) {
+      getTransaction(id: $id) {
+        id
+        amount
+        currency
+        category
+        merchant
+        description
+        carbonFootprint
+        transactionDate
+        createdAt
+      }
+    }
+  ''';
+
   Future<Transaction?> createTransaction({
     required double amount,
     required String category,
@@ -180,6 +229,67 @@ class TransactionService {
       );
 
       return result['data']?['updateCarbonBudget'];
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Transaction?> getTransaction(String id) async {
+    try {
+      final result = await _graphQLService.query(
+        getTransactionQuery,
+        variables: {'id': id},
+      );
+
+      final transactionData = result['data']?['getTransaction'];
+      if (transactionData != null) {
+        return Transaction.fromJson(transactionData);
+      }
+
+      return null;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Transaction?> updateTransaction({
+    required String id,
+    double? amount,
+    String? category,
+    String? merchant,
+    String? description,
+  }) async {
+    try {
+      final variables = <String, dynamic>{'id': id};
+      if (amount != null) variables['amount'] = amount;
+      if (category != null) variables['category'] = category;
+      if (merchant != null) variables['merchant'] = merchant;
+      if (description != null) variables['description'] = description;
+
+      final result = await _graphQLService.mutate(
+        updateTransactionMutation,
+        variables: variables,
+      );
+
+      final transactionData = result['data']?['updateTransaction'];
+      if (transactionData != null) {
+        return Transaction.fromJson(transactionData);
+      }
+
+      return null;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> deleteTransaction(String id) async {
+    try {
+      final result = await _graphQLService.mutate(
+        deleteTransactionMutation,
+        variables: {'id': id},
+      );
+
+      return result['data']?['deleteTransaction'] == true;
     } catch (e) {
       rethrow;
     }

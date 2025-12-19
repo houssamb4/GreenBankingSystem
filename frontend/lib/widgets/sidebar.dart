@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:greenpay/core/theme/global_colors.dart';
+import 'package:greenpay/core/theme/asana_colors.dart';
+
+/// Alias for Sidebar widget for backwards compatibility
+typedef AsanaSidebar = Sidebar;
 
 /// App sidebar navigation component
 class Sidebar extends StatefulWidget {

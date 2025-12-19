@@ -126,7 +126,7 @@ class ProtectedRoute extends StatelessWidget {
 
         final bool loggedIn = snapshot.data == true;
         if (!loggedIn) {
-          return const AsanaSignInPage();
+          return const SignInPage();
         }
 
         return child;
