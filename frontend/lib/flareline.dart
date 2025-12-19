@@ -1,8 +1,7 @@
-﻿
-import 'package:greenpay/routes.dart';
+﻿import 'package:greenpay/routes.dart';
 
 class Flareline {
-
-  static var routes = MAIN_PAGES;
+  // Kept for backward compatibility with older FlareLine template code.
+  // Route generation is handled by RouteConfiguration.onGenerateRoute.
+  static var routes = <String>[];
 }
-

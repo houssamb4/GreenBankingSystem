@@ -24,7 +24,12 @@ class SignInWidget extends BaseWidget<SignInProvider> {
           );
         }
 
-        return contentMobileWidget(context, viewModel);
+        return SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+            child: contentMobileWidget(context, viewModel),
+          ),
+        );
       },
     ));
   }
@@ -217,7 +222,7 @@ class SignInWidget extends BaseWidget<SignInProvider> {
                     style: const TextStyle(color: Colors.blue),
                   ),
                   onTap: () {
-                    Navigator.of(context).popAndPushNamed('/signUp');
+                    Navigator.of(context).popAndPushNamed('/register');
                   },
                 )
               ],

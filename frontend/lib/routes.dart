@@ -11,28 +11,31 @@ import 'package:greenpay/pages/transactions/transaction_details_page.dart';
 import 'package:greenpay/pages/impact/carbon_impact_page.dart';
 import 'package:greenpay/pages/tips/green_tips_page.dart';
 import 'package:greenpay/pages/splash_screen.dart';
+import 'package:greenpay/core/services/auth_service.dart';
 
 typedef PathWidgetBuilder = Widget Function(BuildContext, String?);
 
-final List<Map<String, Object>> MAIN_PAGES = [
-  {'routerPath': '/splash', 'widget': const SplashScreen()},
-  {'routerPath': '/', 'widget': const EcommercePage()},
-  {'routerPath': '/dashboard', 'widget': const EcommercePage()},
-  {'routerPath': '/profile', 'widget': const ProfilePage()},
-  {'routerPath': '/transactions', 'widget': const TransactionsPage()},
-  {
-    'routerPath': '/transaction-details/:id',
-    'widget': const _TransactionDetailsWrapper()
-  },
-  {'routerPath': '/impact', 'widget': const CarbonImpactPage()},
-  {'routerPath': '/tips', 'widget': const GreenTipsPage()},
-  {'routerPath': '/settings', 'widget': const SettingsPage()},
-  {
-    'routerPath': '/signIn',
-    'widget': DeferredWidget(signIn.loadLibrary, () => signIn.SignInWidget())
-  },
-  {'routerPath': '/register', 'widget': const RegisterPage()},
-];
+typedef _RouteBuilder = Widget Function(BuildContext);
+
+final Map<String, _RouteBuilder> _staticRoutes = {
+  '/splash': (_) => const SplashScreen(),
+  '/': (_) => const EcommercePage(),
+  '/dashboard': (_) => const EcommercePage(),
+  '/profile': (_) => const ProfilePage(),
+  '/transactions': (_) => const TransactionsPage(),
+  '/impact': (_) => const CarbonImpactPage(),
+  '/tips': (_) => const GreenTipsPage(),
+  '/settings': (_) => const SettingsPage(),
+  '/signIn': (_) =>
+      DeferredWidget(signIn.loadLibrary, () => signIn.SignInWidget()),
+  '/register': (_) => const RegisterPage(),
+};
+
+final Set<String> _publicRoutes = {
+  '/splash',
+  '/signIn',
+  '/register',
+};
 
 // Wrapper to handle dynamic route parameters
 class _TransactionDetailsWrapper extends StatelessWidget {
@@ -56,23 +59,94 @@ class RouteConfiguration {
   static Route<dynamic>? onGenerateRoute(
     RouteSettings settings,
   ) {
-    String path = settings.name!;
+    final String rawPath = settings.name ?? '/';
+    final String path = _normalizePath(rawPath);
 
-    dynamic map =
-        MAIN_PAGES.firstWhere((element) => element['routerPath'] == path);
-
-    if (map == null) {
-      return null;
+    final _RouteMatch? match = _matchRoute(path, settings);
+    if (match == null) {
+      // Never throw from routing. Unknown routes go to sign-in.
+      return NoAnimationMaterialPageRoute<void>(
+        builder: (context) => _staticRoutes['/signIn']!(context),
+        settings: const RouteSettings(name: '/signIn'),
+      );
     }
-    Widget targetPage = map['widget'];
 
-    builder(context, match) {
-      return targetPage;
-    }
+    final bool isPublic = _publicRoutes.contains(match.routeName);
 
     return NoAnimationMaterialPageRoute<void>(
-      builder: (context) => builder(context, null),
-      settings: settings,
+      builder: (context) {
+        final Widget page = match.builder(context);
+        return isPublic ? page : ProtectedRoute(child: page);
+      },
+      settings: match.settings,
+    );
+  }
+}
+
+String _normalizePath(String path) {
+  // Backwards compatibility: old sign-up route name.
+  if (path == '/signUp') return '/register';
+  return path;
+}
+
+class _RouteMatch {
+  final String routeName;
+  final _RouteBuilder builder;
+  final RouteSettings settings;
+
+  _RouteMatch({
+    required this.routeName,
+    required this.builder,
+    required this.settings,
+  });
+}
+
+_RouteMatch? _matchRoute(String path, RouteSettings original) {
+  final _RouteBuilder? staticBuilder = _staticRoutes[path];
+  if (staticBuilder != null) {
+    return _RouteMatch(
+        routeName: path, builder: staticBuilder, settings: original);
+  }
+
+  // Support /transaction-details/<id>
+  const String prefix = '/transaction-details/';
+  if (path.startsWith(prefix)) {
+    final String id = path.substring(prefix.length);
+    return _RouteMatch(
+      routeName: '/transaction-details/:id',
+      builder: (_) =>
+          TransactionDetailsPage(transactionId: id.isEmpty ? '1' : id),
+      settings: RouteSettings(name: path, arguments: id),
+    );
+  }
+
+  return null;
+}
+
+class ProtectedRoute extends StatelessWidget {
+  const ProtectedRoute({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<bool>(
+      future: AuthService.instance.isLoggedIn(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        final bool loggedIn = snapshot.data == true;
+        if (!loggedIn) {
+          return DeferredWidget(
+              signIn.loadLibrary, () => signIn.SignInWidget());
+        }
+
+        return child;
+      },
     );
   }
 }

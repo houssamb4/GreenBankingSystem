@@ -9,6 +9,7 @@ class EcommercePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: GlobalColors.background,
       appBar: AppBar(
         title: const Text(
           'GreenPay Dashboard',
@@ -17,7 +18,7 @@ class EcommercePage extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: GlobalColors.background,
         foregroundColor: GlobalColors.text,
         elevation: 0,
         actions: [
@@ -37,7 +38,7 @@ class EcommercePage extends StatelessWidget {
                     width: 8,
                     height: 8,
                     decoration: const BoxDecoration(
-                      color: Color(0xFFEF4444),
+                      color: GlobalColors.danger,
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -142,14 +143,32 @@ class BalanceCardsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: const [
-        Expanded(child: BalanceCard()),
-        SizedBox(width: 16),
-        Expanded(child: CarbonFootprintCard()),
-        SizedBox(width: 16),
-        Expanded(child: GreenScoreCard()),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final bool narrow = constraints.maxWidth < 900;
+
+        if (narrow) {
+          return const Column(
+            children: [
+              BalanceCard(),
+              SizedBox(height: 16),
+              CarbonFootprintCard(),
+              SizedBox(height: 16),
+              GreenScoreCard(),
+            ],
+          );
+        }
+
+        return const Row(
+          children: [
+            Expanded(child: BalanceCard()),
+            SizedBox(width: 16),
+            Expanded(child: CarbonFootprintCard()),
+            SizedBox(width: 16),
+            Expanded(child: GreenScoreCard()),
+          ],
+        );
+      },
     );
   }
 }
@@ -230,7 +249,7 @@ class CarbonFootprintCard extends StatelessWidget {
               ),
               Icon(
                 Icons.eco,
-                color: Color(0xFFEF4444),
+                color: GlobalColors.danger,
                 size: 20,
               ),
             ],
@@ -250,9 +269,9 @@ class CarbonFootprintCard extends StatelessWidget {
             child: LinearProgressIndicator(
               value: 0.42,
               minHeight: 6,
-              backgroundColor: const Color(0xFFE5E7EB),
+              backgroundColor: GlobalColors.border,
               valueColor: const AlwaysStoppedAnimation<Color>(
-                Color(0xFFF59E0B),
+                GlobalColors.warn,
               ),
             ),
           ),
