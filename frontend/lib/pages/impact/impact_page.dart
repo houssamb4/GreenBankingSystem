@@ -464,7 +464,7 @@ class _ImpactPageState extends State<ImpactPage> {
           ),
           const SizedBox(height: 32),
           SizedBox(
-            height: 200,
+            height: 250,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: List.generate(12, (index) {

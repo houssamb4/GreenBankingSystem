@@ -149,6 +149,18 @@ class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
         backgroundColor: Colors.white,
         foregroundColor: GlobalColors.text,
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit_outlined),
+            onPressed: () => _showEditDialog(context),
+            tooltip: 'Edit Transaction',
+          ),
+          IconButton(
+            icon: const Icon(Icons.delete_outline, color: Colors.red),
+            onPressed: () => _showDeleteConfirmation(context),
+            tooltip: 'Delete Transaction',
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),

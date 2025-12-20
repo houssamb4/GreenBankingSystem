@@ -50,12 +50,20 @@ class ProfileProvider extends ChangeNotifier {
       }
 
       _isLoading = false;
-      notifyListeners();
+      if (!_disposed) notifyListeners();
     } catch (e) {
       _error = e.toString();
       _isLoading = false;
-      notifyListeners();
+      if (!_disposed) notifyListeners();
     }
+  }
+
+  bool _disposed = false;
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
   }
 
   Future<void> updateCarbonBudget(double budget) async {
@@ -64,7 +72,7 @@ class ProfileProvider extends ChangeNotifier {
       await loadProfile();
     } catch (e) {
       _error = e.toString();
-      notifyListeners();
+      if (!_disposed) notifyListeners();
     }
   }
 
@@ -95,8 +103,11 @@ class _ProfilePageState extends State<ProfilePage> {
     _provider.loadProfile();
   }
 
+  bool _disposed = false;
+
   @override
   void dispose() {
+    _disposed = true;
     _provider.dispose();
     super.dispose();
   }

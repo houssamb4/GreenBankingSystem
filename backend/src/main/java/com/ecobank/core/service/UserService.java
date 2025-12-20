@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -64,8 +64,8 @@ public class UserService {
         User user = getUserById(userId);
 
         // Calculate monthly carbon directly using repository
-        LocalDateTime startDate = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
-        LocalDateTime endDate = startDate.plusMonths(1);
+        OffsetDateTime startDate = OffsetDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+        OffsetDateTime endDate = startDate.plusMonths(1);
         BigDecimal monthlyCarbon = transactionRepository.getMonthlyCarbonByUserId(userId, startDate, endDate);
 
         BigDecimal budget = user.getMonthlyCarbonBudget();

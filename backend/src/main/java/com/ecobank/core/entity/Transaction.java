@@ -29,6 +29,7 @@ public class Transaction extends AuditModel {
     @Column(nullable = false)
     private BigDecimal amount;
     
+    @Builder.Default
     private String currency = "USD";
     
     @Column(nullable = false)

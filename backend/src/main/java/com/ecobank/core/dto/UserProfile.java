@@ -3,7 +3,7 @@ package com.ecobank.core.dto;
 import lombok.Builder;
 import lombok.Data;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Data
@@ -17,6 +17,6 @@ public class UserProfile {
     private Integer ecoScore;
     private BigDecimal totalCarbonSaved;
     private BigDecimal monthlyCarbonBudget;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private OffsetDateTime createdAt;
+    private OffsetDateTime updatedAt;
 }

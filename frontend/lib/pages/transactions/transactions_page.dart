@@ -755,7 +755,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
             onPressed: () async {
               final amount = double.tryParse(amountController.text);
               if (amount != null && merchantController.text.isNotEmpty) {
-                await provider.createTransaction(
+                final result = await provider.createTransaction(
                   amount: amount,
                   category: selectedCategory,
                   merchant: merchantController.text,
@@ -763,8 +763,24 @@ class _TransactionsPageState extends State<TransactionsPage> {
                       ? descriptionController.text
                       : null,
                 );
+                
                 if (context.mounted) {
                   Navigator.pop(context);
+                  if (result == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Failed to create transaction: ${provider.error ?? "Unknown error"}'),
+                        backgroundColor: AsanaColors.red,
+                      ),
+                    );
+                  } else {
+                     ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Transaction created successfully'),
+                        backgroundColor: AsanaColors.green,
+                      ),
+                    );
+                  }
                 }
               }
             },
