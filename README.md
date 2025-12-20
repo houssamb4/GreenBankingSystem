@@ -57,53 +57,7 @@ Green Banking System is a full-stack application that bridges the gap between fi
 
 The system follows a modern three-tier architecture with clear separation of concerns:
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                   CLIENT LAYER                          │
-│                                                         │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐│
-│  │   Mobile     │  │     Web      │  │   Desktop    ││
-│  │  (Flutter)   │  │  (Flutter)   │  │  (Flutter)   ││
-│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘│
-│         │                  │                  │        │
-│         └──────────────────┼──────────────────┘        │
-│                            │                           │
-└────────────────────────────┼───────────────────────────┘
-                             │
-                             │ GraphQL API
-                             │ (HTTP/HTTPS)
-                             │
-┌────────────────────────────┼───────────────────────────┐
-│                   SERVER LAYER                          │
-│                            │                           │
-│  ┌────────────────────────▼───────────────────────┐   │
-│  │         Spring Boot Application                │   │
-│  │                                                 │   │
-│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐   │   │
-│  │  │ GraphQL  │  │   JWT    │  │ Business │   │   │
-│  │  │ Resolver │→ │ Security │→ │  Logic   │   │   │
-│  │  └──────────┘  └──────────┘  └─────┬────┘   │   │
-│  │                                      │         │   │
-│  │  ┌──────────────────────────────────▼──────┐ │   │
-│  │  │      Spring Data JPA / Hibernate        │ │   │
-│  │  └─────────────────────────────────────────┘ │   │
-│  └─────────────────────────────────────────────┘   │
-└────────────────────────────┼───────────────────────────┘
-                             │
-                             │ JDBC
-                             │
-┌────────────────────────────▼───────────────────────────┐
-│                   DATABASE LAYER                        │
-│                                                         │
-│  ┌──────────────────────────────────────────────────┐ │
-│  │           PostgreSQL Database                    │ │
-│  │                                                   │ │
-│  │  • users             (authentication)            │ │
-│  │  • transactions      (financial data + carbon)   │ │
-│  │  • carbon_categories (emission factors)          │ │
-│  └──────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────┘
-```
+<img width="3346" height="5528" alt="Untitled diagram-2025-12-20-171142" src="https://github.com/user-attachments/assets/2488ad4d-c3a1-451b-b673-2be12032a6e2" />
 
 ### Component Communication
 
