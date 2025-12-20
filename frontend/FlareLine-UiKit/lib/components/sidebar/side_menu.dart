@@ -84,9 +84,12 @@ class SideMenuWidget extends StatelessWidget {
                       e['icon'],
                       width: 18,
                       height: 18,
-                      color: isSelected
-                          ? Colors.white
-                          : (isDark ? Colors.white : FlarelineColors.darkBlackText),
+                      colorFilter: ColorFilter.mode(
+                        isSelected
+                            ? Colors.white
+                            : (isDark ? Colors.white70 : FlarelineColors.darkBlackText),
+                        BlendMode.srcIn,
+                      ),
                     ),
                   ),
                 Expanded(
@@ -97,8 +100,9 @@ class SideMenuWidget extends StatelessWidget {
                           color: isSelected
                               ? Colors.white
                               : (isDark
-                              ? Colors.white
-                              : FlarelineColors.darkBlackText)),
+                              ? Colors.white70
+                              : FlarelineColors.darkBlackText),
+                          fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal),
                     )),
                 if (childList != null && childList.isNotEmpty)
                   ValueListenableBuilder(
@@ -164,7 +168,8 @@ class SideMenuWidget extends StatelessWidget {
                   style: TextStyle(
                       color: isSelected
                           ? Colors.white
-                          : (isDark ? Colors.white : FlarelineColors.darkBlackText)),
+                          : (isDark ? Colors.white70 : FlarelineColors.darkBlackText),
+                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal),
                 )),
           ],
         ),

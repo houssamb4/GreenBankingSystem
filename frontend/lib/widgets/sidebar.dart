@@ -320,10 +320,9 @@ class _SidebarState extends State<Sidebar> {
               children: [
                 Icon(
                   item.icon,
-                  color: item.iconColor ??
-                      (isSelected
-                          ? AsanaColors.textPrimary
-                          : AsanaColors.textSecondary),
+                  color: isSelected
+                      ? Colors.white
+                      : (item.iconColor ?? AsanaColors.textSecondary),
                   size: 20,
                 ),
                 if (_isExpanded) ...[
@@ -333,7 +332,7 @@ class _SidebarState extends State<Sidebar> {
                       item.label,
                       style: TextStyle(
                         color: isSelected
-                            ? AsanaColors.textPrimary
+                            ? Colors.white
                             : AsanaColors.textSecondary,
                         fontSize: 14,
                         fontWeight:
@@ -520,7 +519,7 @@ class _SidebarState extends State<Sidebar> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         border: Border(
-          top: BorderSide(color: AsanaColors.border),
+          top: BorderSide(color: const Color.fromARGB(255, 0, 0, 0)),
         ),
       ),
       child: Row(

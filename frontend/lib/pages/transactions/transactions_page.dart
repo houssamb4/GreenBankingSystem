@@ -4,12 +4,14 @@ import 'package:intl/intl.dart';
 import 'package:greenpay/core/models/transaction.dart';
 import 'package:greenpay/core/services/token_storage_service.dart';
 import 'package:greenpay/core/services/transaction_service.dart';
+import 'package:greenpay/core/services/auth_service.dart';
 import 'package:greenpay/core/theme/asana_colors.dart';
 import 'package:greenpay/widgets/sidebar.dart';
 
 class TransactionsProvider extends ChangeNotifier {
   final TransactionService _transactionService = TransactionService.instance;
   final TokenStorageService _tokenStorage = TokenStorageService.instance;
+  final AuthService _authService = AuthService.instance;
 
   List<Transaction> _transactions = [];
   bool _isLoading = false;
@@ -76,6 +78,17 @@ class TransactionsProvider extends ChangeNotifier {
       return null;
     }
   }
+
+  Future<void> logout(BuildContext context) async {
+    await _authService.logout();
+    _transactions = [];
+    notifyListeners();
+
+    if (context.mounted) {
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil('/signIn', (route) => false);
+    }
+  }
 }
 
 class TransactionsPage extends StatefulWidget {
@@ -119,6 +132,9 @@ class _TransactionsPageState extends State<TransactionsPage> {
                     setState(() {
                       _sidebarExpanded = expanded;
                     });
+                  },
+                  onLogout: () async {
+                    await _provider.logout(context);
                   },
                 ),
                 Expanded(

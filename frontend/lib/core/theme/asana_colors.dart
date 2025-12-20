@@ -8,7 +8,7 @@ class AsanaColors {
   static const Color sidebarBg = Color(0xFF1E1F21);
   static const Color inputBg = Color(0xFFF1F2F4);
   static const Color hoverBg = Color(0xFF2E2F31);
-  static const Color selectedBg = Color(0xFF2E2F31);
+  static const Color selectedBg = Color(0xFF22C55E); // Green for active state
   static const Color badgeBg = Color(0xFF3D3E40);
 
   // Border colors

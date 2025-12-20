@@ -61,7 +61,13 @@ class RouteConfiguration {
     return NoAnimationMaterialPageRoute<void>(
       builder: (context) {
         final Widget page = match.builder(context);
-        return isPublic ? page : ProtectedRoute(child: page);
+        if (isPublic) {
+          // For public routes (signIn/register), wrap in AuthenticatedRoute
+          // to redirect if already logged in
+          return path == '/splash' ? page : AuthenticatedRoute(child: page);
+        }
+        // For protected routes, wrap in ProtectedRoute
+        return ProtectedRoute(child: page);
       },
       settings: match.settings,
     );
@@ -127,6 +133,40 @@ class ProtectedRoute extends StatelessWidget {
         final bool loggedIn = snapshot.data == true;
         if (!loggedIn) {
           return const SignInPage();
+        }
+
+        return child;
+      },
+    );
+  }
+}
+
+/// Prevents authenticated users from accessing auth pages (signIn/register)
+class AuthenticatedRoute extends StatelessWidget {
+  const AuthenticatedRoute({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<bool>(
+      future: AuthService.instance.isLoggedIn(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        final bool loggedIn = snapshot.data == true;
+        if (loggedIn) {
+          // Redirect to dashboard if already logged in
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).pushReplacementNamed('/dashboard');
+          });
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
         }
 
         return child;
