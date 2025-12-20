@@ -648,127 +648,6 @@ docker-compose down
 # Password: admin
 ```
 
-## 🔧 Troubleshooting
-
-### Backend won't compile
-
-**Error**: `java.lang.ExceptionInInitializerError: com.sun.tools.javac.code.TypeTag`
-
-**Solution**: You're using Java 25. Install Java 21:
-
-**Linux:**
-```bash
-sudo dnf install java-21-openjdk-devel
-sudo alternatives --config java  # Select Java 21
-```
-
-**Windows:**
-```powershell
-# Check current version
-java -version
-
-# Uninstall Java 25 and install Java 21
-choco install openjdk21 --force
-```
-
-**macOS:**
-```bash
-brew install openjdk@21
-```
-
-### Maven not found
-
-**Windows:**
-```powershell
-# Install via Chocolatey
-choco install maven
-
-# Or add to PATH manually
-# Add: C:\Program Files\apache-maven-3.x.x\bin
-```
-
-**Linux/macOS:**
-```bash
-# Linux
-sudo apt install maven  # Ubuntu
-sudo dnf install maven  # Fedora
-
-# macOS
-brew install maven
-```
-
-### Database connection failed
-
-**Check if PostgreSQL is running:**
-```bash
-docker ps  # Should show greenbank_postgres
-# OR
-sudo systemctl status postgresql
-```
-
-**Test connection:**
-```bash
-psql -h localhost -U postgres -d greenbankdb
-```
-
-### Flutter app can't connect
-
-**For Android emulator:**
-```dart
-// Edit: frontend/lib/config/graphql_config.dart
-// Use 10.0.2.2 instead of localhost
-static const String _baseUrl = 'http://10.0.2.2:8080/graphql';
-```
-
-**For physical device or Windows desktop:**
-```dart
-// Use your computer's IP
-static const String _baseUrl = 'http://192.168.1.XXX:8080/graphql';
-
-// On Windows, find your IP with:
-// ipconfig
-// Look for "IPv4 Address"
-```
-
-### Flutter command not found (Windows)
-
-**Error**: `'flutter' is not recognized`
-
-**Solution**:
-```powershell
-# Add Flutter to PATH
-# 1. Open System Properties → Environment Variables
-# 2. Edit "Path" variable
-# 3. Add: C:\src\flutter\bin
-# 4. Restart terminal
-
-# Verify
-flutter --version
-```
-
-### Port already in use
-
-**Error**: `Port 8080 is already in use`
-
-**Solution**:
-
-**Windows:**
-```powershell
-# Find process using port 8080
-netstat -ano | findstr :8080
-
-# Kill the process (replace PID)
-taskkill /PID <PID> /F
-```
-
-**Linux/macOS:**
-```bash
-# Find process
-lsof -i :8080
-
-# Kill the process
-kill -9 <PID>
-```
 ## 🚀 Development
 
 ### Backend Development
@@ -819,47 +698,6 @@ docker exec -i greenbank_postgres psql -U postgres -d greenbankdb < database/ini
 # Open: http://localhost:5050
 # Connect to: postgres container (host: postgres, port: 5432)
 ```
-
-### Adding New Features
-
-#### Backend: Add New GraphQL Mutation
-
-1. **Create DTO** in `dto/`
-```java
-public record NewFeatureInput(String field1, String field2) {}
-```
-
-2. **Add service method** in `service/`
-```java
-public NewFeature createFeature(NewFeatureInput input) { ... }
-```
-
-3. **Create resolver** in `resolver/`
-```java
-@MutationMapping
-public NewFeature newFeature(@Argument NewFeatureInput input) { ... }
-```
-
-4. **Update GraphQL schema** in `resources/graphql/schema.graphqls`
-```graphql
-type Mutation {
-  newFeature(input: NewFeatureInput!): NewFeature
-}
-```
-
-#### Frontend: Add New Screen
-
-1. **Create screen** in `lib/pages/new_feature/`
-```dart
-class NewFeatureScreen extends StatelessWidget { ... }
-```
-
-2. **Add route** in `lib/routes.dart`
-```dart
-GoRoute(path: '/new-feature', builder: (context, state) => NewFeatureScreen())
-```
-
-3. **Add navigation** in sidebar/menu
 
 ## 📦 Deployment
 
@@ -1101,23 +939,6 @@ refactor: Simplify carbon calculator
 - 🔄 Social sharing of achievements
 - 🔄 AI-powered spending insights
 - 🔄 Recurring transaction tracking
-- 🔄 Export reports (PDF/CSV)
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-```
-MIT License
-
-Copyright (c) 2025 Green Banking System
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software...
-```
 
 ## 🙏 Acknowledgments
 
@@ -1133,45 +954,14 @@ copies of the Software...
 
 ### Documentation
 - [Backend README](backend/README.md) - Complete backend guide
-- [Frontend README](frontend/README_GREENBANKING.md) - Complete frontend guide
-- [GraphQL API](backend/GRAPHQL_API.md) - API reference
-- [Database Setup](database/EXISTING_DB_SETUP.md) - Database guide
+- [Frontend README](frontend/README.md) - Complete frontend guide
+- [Database Setup](database/README.md) - Database guide
 
 ### Community
 - ⭐ Star this repository if you find it helpful
 - 🔔 Watch for updates and new features
 - 🍴 Fork to create your own version
 - 🤝 Contribute to make it better
-
-## 🎯 Project Roadmap
-
-### Phase 1: Core Features (✅ Complete)
-- [x] Backend API with GraphQL
-- [x] Carbon calculation engine
-- [x] User authentication
-- [x] Flutter mobile app
-- [x] Basic dashboard
-
-### Phase 2: Enhanced Features (🚧 In Progress)
-- [ ] Real-time notifications
-- [ ] Advanced analytics
-- [ ] Social features
-- [ ] Mobile app optimization
-- [ ] Web app deployment
-
-### Phase 3: Advanced Features (📋 Planned)
-- [ ] AI-powered insights
-- [ ] Carbon offset marketplace
-- [ ] Multi-currency support
-- [ ] Third-party integrations
-- [ ] Gamification system
-
-### Phase 4: Enterprise Features (🔮 Future)
-- [ ] Multi-tenant architecture
-- [ ] White-label solution
-- [ ] API marketplace
-- [ ] Advanced reporting
-- [ ] Enterprise security
 
 ## 📚 Additional Resources
 
