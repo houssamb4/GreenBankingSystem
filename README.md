@@ -76,8 +76,8 @@ cd backend
 mvn clean install -DskipTests
 mvn spring-boot:run
 
-# Backend runs on: http://localhost:8080
-# GraphiQL: http://localhost:8080/graphiql
+# Backend runs on: http://localhost:8081
+# GraphiQL: http://localhost:8081/graphiql
 ```
 
 **Note:** The backend is configured to use your existing database schema. See [database/EXISTING_DB_SETUP.md](database/EXISTING_DB_SETUP.md) for details.
@@ -246,7 +246,7 @@ mvn clean install -DskipTests
 mvn spring-boot:run
 ```
 
-Backend will start on **http://localhost:8080**
+Backend will start on **http://localhost:8081**
 
 #### 5. Install Flutter
 
@@ -362,8 +362,8 @@ Your eco score is based on budget usage:
 
 ### GraphQL Endpoint
 
-- **API**: `http://localhost:8080/graphql`
-- **Playground**: `http://localhost:8080/graphiql`
+- **API**: `http://localhost:8081/graphql`
+- **Playground**: `http://localhost:8081/graphiql`
 
 ### Example Queries
 
@@ -427,7 +427,7 @@ You can test everything using GraphiQL before setting up the mobile app:
    mvn spring-boot:run
    ```
 
-2. **Open GraphiQL:** http://localhost:8080/graphiql
+2. **Open GraphiQL:** http://localhost:8081/graphiql
 
 3. **Register a user:**
    ```graphql

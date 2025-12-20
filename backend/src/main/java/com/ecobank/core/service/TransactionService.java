@@ -1,5 +1,7 @@
 package com.ecobank.core.service;
 
+import com.ecobank.core.dto.CarbonStats;
+import com.ecobank.core.dto.CategoryBreakdown;
 import com.ecobank.core.dto.TransactionInput;
 import com.ecobank.core.entity.Transaction;
 import com.ecobank.core.entity.User;
@@ -9,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -87,6 +91,76 @@ public class TransactionService {
         return transactionRepository.getCategoryBreakdown(userId);
     }
     
+    public CarbonStats getCarbonStats(UUID userId) {
+        User user = userService.getUserById(userId);
+        
+        // Get monthly carbon
+        BigDecimal monthlyCarbon = getMonthlyCarbon(userId);
+        if (monthlyCarbon == null) {
+            monthlyCarbon = BigDecimal.ZERO;
+        }
+        
+        // Get total carbon
+        BigDecimal totalCarbon = transactionRepository.getTotalCarbonByUserId(userId);
+        if (totalCarbon == null) {
+            totalCarbon = BigDecimal.ZERO;
+        }
+        
+        // Calculate percentage
+        BigDecimal carbonBudget = user.getMonthlyCarbonBudget();
+        Float carbonPercentage = 0f;
+        if (carbonBudget.compareTo(BigDecimal.ZERO) > 0) {
+            carbonPercentage = monthlyCarbon.divide(carbonBudget, 4, RoundingMode.HALF_UP)
+                    .floatValue();
+        }
+        
+        return CarbonStats.builder()
+                .userId(userId)
+                .totalCarbon(totalCarbon)
+                .monthlyCarbon(monthlyCarbon)
+                .carbonBudget(carbonBudget)
+                .carbonPercentage(carbonPercentage)
+                .ecoScore(user.getEcoScore())
+                .build();
+    }
+    
+    public List<CategoryBreakdown> getCategoryBreakdownList(UUID userId) {
+        List<Object[]> rawData = transactionRepository.getCategoryBreakdown(userId);
+        List<CategoryBreakdown> result = new ArrayList<>();
+        
+        BigDecimal totalCarbon = BigDecimal.ZERO;
+        for (Object[] row : rawData) {
+            BigDecimal carbon = (BigDecimal) row[1];
+            if (carbon != null) {
+                totalCarbon = totalCarbon.add(carbon);
+            }
+        }
+        
+        for (Object[] row : rawData) {
+            String category = (String) row[0];
+            BigDecimal carbon = (BigDecimal) row[1];
+            BigDecimal amount = (BigDecimal) row[2];
+            Long count = (Long) row[3];
+            
+            Float percentage = 0f;
+            if (totalCarbon.compareTo(BigDecimal.ZERO) > 0 && carbon != null) {
+                percentage = carbon.divide(totalCarbon, 4, RoundingMode.HALF_UP)
+                        .multiply(new BigDecimal("100"))
+                        .floatValue();
+            }
+            
+            result.add(CategoryBreakdown.builder()
+                    .category(category)
+                    .totalCarbon(carbon != null ? carbon : BigDecimal.ZERO)
+                    .totalAmount(amount != null ? amount : BigDecimal.ZERO)
+                    .transactionCount(count != null ? count.intValue() : 0)
+                    .percentage(percentage)
+                    .build());
+        }
+        
+        return result;
+    }
+    
     public Transaction updateTransaction(UUID id, TransactionInput input) {
         Transaction transaction = getTransactionById(id);
         
@@ -138,5 +212,23 @@ public class TransactionService {
         userService.updateUserEcoScore(currentUser.getId());
         
         return true;
+    }
+    
+    public List<BigDecimal> getMonthlyHistoricalCarbon(UUID userId) {
+        List<BigDecimal> monthlyData = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+        
+        // Get last 12 months of data
+        for (int i = 11; i >= 0; i--) {
+            LocalDateTime monthStart = now.minusMonths(i).withDayOfMonth(1)
+                    .withHour(0).withMinute(0).withSecond(0).withNano(0);
+            LocalDateTime monthEnd = monthStart.plusMonths(1);
+            
+            BigDecimal monthlyCarbon = transactionRepository.getMonthlyCarbonByUserId(
+                    userId, monthStart, monthEnd);
+            monthlyData.add(monthlyCarbon);
+        }
+        
+        return monthlyData;
     }
 }

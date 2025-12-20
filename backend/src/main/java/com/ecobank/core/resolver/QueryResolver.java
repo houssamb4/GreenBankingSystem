@@ -1,5 +1,7 @@
 package com.ecobank.core.resolver;
 
+import com.ecobank.core.dto.CarbonStats;
+import com.ecobank.core.dto.CategoryBreakdown;
 import com.ecobank.core.entity.Transaction;
 import com.ecobank.core.entity.User;
 import com.ecobank.core.service.TransactionService;
@@ -10,6 +12,7 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,5 +52,22 @@ public class QueryResolver {
     @QueryMapping
     public List<Transaction> getCurrentUserTransactions() {
         return transactionService.getCurrentUserTransactions();
+    }
+    
+    @QueryMapping
+    public CarbonStats getCarbonStats(@Argument("userId") UUID userId) {
+        return transactionService.getCarbonStats(userId);
+    }
+    
+    @QueryMapping
+    public List<CategoryBreakdown> getCategoryBreakdown(@Argument("userId") UUID userId) {
+        return transactionService.getCategoryBreakdownList(userId);
+    }
+    
+    @QueryMapping
+    public List<Double> getMonthlyHistoricalCarbon(@Argument("userId") UUID userId) {
+        return transactionService.getMonthlyHistoricalCarbon(userId).stream()
+                .map(BigDecimal::doubleValue)
+                .toList();
     }
 }

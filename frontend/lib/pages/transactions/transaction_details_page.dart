@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:greenpay/core/theme/global_colors.dart';
+import 'package:greenpay/core/services/transaction_service.dart';
+import 'package:greenpay/core/models/transaction.dart' as models;
+import 'package:intl/intl.dart';
 
-class TransactionDetailsPage extends StatelessWidget {
+class TransactionDetailsPage extends StatefulWidget {
   final String transactionId;
 
   const TransactionDetailsPage({
@@ -10,15 +13,134 @@ class TransactionDetailsPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<TransactionDetailsPage> createState() => _TransactionDetailsPageState();
+}
+
+class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
+  final TransactionService _transactionService = TransactionService.instance;
+  models.Transaction? _transaction;
+  bool _isLoading = true;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTransaction();
+  }
+
+  Future<void> _loadTransaction() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    try {
+      final transaction =
+          await _transactionService.getTransaction(widget.transactionId);
+      setState(() {
+        _transaction = transaction;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+        _isLoading = false;
+      });
+    }
+  }
+
+  IconData _getCategoryIcon(String category) {
+    switch (category.toLowerCase()) {
+      case 'shopping':
+      case 'retail':
+        return Icons.shopping_bag;
+      case 'food':
+      case 'dining':
+      case 'groceries':
+        return Icons.restaurant;
+      case 'transport':
+      case 'transportation':
+        return Icons.directions_car;
+      case 'entertainment':
+        return Icons.movie;
+      case 'utilities':
+        return Icons.water_drop;
+      default:
+        return Icons.shopping_bag;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Mock data - in real app, fetch based on transactionId
-    final transaction = {
-      'merchant': 'Amazon Shopping',
-      'amount': '\$47.99',
-      'date': 'Yesterday, 3:45 PM',
-      'totalCarbon': '+3.5 kg CO₂',
-      'icon': Icons.shopping_bag,
-    };
+    if (_isLoading) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Transaction Details'),
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          foregroundColor: GlobalColors.text,
+          elevation: 0,
+        ),
+        body: Center(
+          child: CircularProgressIndicator(
+            color: const Color(0xFF10B981),
+          ),
+        ),
+      );
+    }
+
+    if (_error != null || _transaction == null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Transaction Details'),
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          foregroundColor: GlobalColors.text,
+          elevation: 0,
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.error_outline, size: 64, color: Colors.red),
+              const SizedBox(height: 16),
+              Text(
+                'Failed to load transaction',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: GlobalColors.text,
+                ),
+              ),
+              if (_error != null) ...[
+                const SizedBox(height: 8),
+                Text(
+                  _error!,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: GlobalColors.textSecondary,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: _loadTransaction,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF10B981),
+                ),
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    final dateFormat = DateFormat('MMM dd, yyyy \' at\' h:mm a');
+    final amountFormat = NumberFormat.currency(
+        symbol:
+            _transaction!.currency == 'USD' ? '\$' : _transaction!.currency);
 
     return Scaffold(
       appBar: AppBar(
@@ -57,28 +179,49 @@ class TransactionDetailsPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(
-                      transaction['icon'] as IconData,
+                      _getCategoryIcon(_transaction!.category),
                       color: const Color(0xFF10B981),
                       size: 40,
                     ),
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    transaction['merchant'] as String,
+                    _transaction!.merchant,
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: GlobalColors.text,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                   Text(
-                    transaction['date'] as String,
+                    _transaction!.category,
                     style: const TextStyle(
                       fontSize: 13,
                       color: GlobalColors.textSecondary,
                     ),
                   ),
+                  const SizedBox(height: 8),
+                  Text(
+                    dateFormat.format(_transaction!.transactionDate),
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: GlobalColors.textSecondary,
+                    ),
+                  ),
+                  if (_transaction!.description != null &&
+                      _transaction!.description!.isNotEmpty) ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      _transaction!.description!,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: GlobalColors.textSecondary,
+                        fontStyle: FontStyle.italic,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                   const SizedBox(height: 16),
                   const Divider(height: 1),
                   const SizedBox(height: 16),
@@ -96,7 +239,7 @@ class TransactionDetailsPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            transaction['amount'] as String,
+                            amountFormat.format(_transaction!.amount),
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -116,7 +259,7 @@ class TransactionDetailsPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            transaction['totalCarbon'] as String,
+                            '+${_transaction!.carbonFootprint.toStringAsFixed(2)} kg CO₂',
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -131,7 +274,7 @@ class TransactionDetailsPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-            // Carbon Breakdown Card
+            // Carbon Info Card
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -150,7 +293,7 @@ class TransactionDetailsPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Carbon Emission Breakdown',
+                    'Carbon Emission Info',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -158,11 +301,12 @@ class TransactionDetailsPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  _buildBreakdownItem('Transport', '+1.2 kg CO₂', 0.35),
+                  _buildInfoRow('Category', _transaction!.category),
                   const SizedBox(height: 12),
-                  _buildBreakdownItem('Energy', '+0.8 kg CO₂', 0.23),
+                  _buildInfoRow('Total Carbon',
+                      '${_transaction!.carbonFootprint.toStringAsFixed(2)} kg CO₂'),
                   const SizedBox(height: 12),
-                  _buildBreakdownItem('Packaging', '+1.5 kg CO₂', 0.42),
+                  _buildInfoRow('Transaction ID', _transaction!.id),
                 ],
               ),
             ),
@@ -214,41 +358,28 @@ class TransactionDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildBreakdownItem(String label, String carbon, double percentage) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _buildInfoRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              label,
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-                color: GlobalColors.text,
-              ),
-            ),
-            Text(
-              carbon,
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFFEF4444),
-              ),
-            ),
-          ],
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w500,
+            color: GlobalColors.textSecondary,
+          ),
         ),
-        const SizedBox(height: 6),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(4),
-          child: LinearProgressIndicator(
-            value: percentage,
-            minHeight: 6,
-            backgroundColor: const Color(0xFFE5E7EB),
-            valueColor: const AlwaysStoppedAnimation<Color>(
-              Color(0xFFEF4444),
+        Flexible(
+          child: Text(
+            value,
+            style: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: GlobalColors.text,
             ),
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.right,
           ),
         ),
       ],

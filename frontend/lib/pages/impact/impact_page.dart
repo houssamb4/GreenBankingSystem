@@ -38,21 +38,8 @@ class ImpactProvider extends ChangeNotifier {
   double get budgetUsedPercent =>
       (_monthlyCarbon / _carbonBudget * 100).clamp(0, 100);
 
-  // Mock monthly data - in real app, fetch from backend
-  final List<double> monthlyData = [
-    45.2,
-    38.5,
-    52.3,
-    41.8,
-    55.6,
-    48.2,
-    62.1,
-    58.5,
-    51.2,
-    45.8,
-    48.3,
-    42.5
-  ];
+  List<double> _monthlyData = List.filled(12, 0.0);
+  List<double> get monthlyData => _monthlyData;
 
   Future<void> loadData() async {
     _isLoading = true;
@@ -69,7 +56,7 @@ class ImpactProvider extends ChangeNotifier {
         _userInitials =
             '${firstName.isNotEmpty ? firstName[0] : ''}${lastName.isNotEmpty ? lastName[0] : ''}'
                 .toUpperCase();
-        _carbonBudget = (userData['carbonBudget'] ?? 100).toDouble();
+        _carbonBudget = (userData['monthlyCarbonBudget'] ?? 100).toDouble();
       }
 
       // Load carbon stats - need userId from token storage
@@ -84,6 +71,10 @@ class ImpactProvider extends ChangeNotifier {
         // Load category breakdown
         _categoryBreakdown =
             await _transactionService.getCategoryBreakdown(userId);
+
+        // Load monthly historical data
+        _monthlyData =
+            await _transactionService.getMonthlyHistoricalCarbon(userId);
       }
     } catch (e) {
       // Ignore errors

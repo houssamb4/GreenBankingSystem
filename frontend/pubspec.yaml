@@ -109,6 +109,12 @@ dependencies:
   
   # Secure storage for tokens
   flutter_secure_storage: ^9.0.0
+  
+  # Get state management and utilities
+  get: ^4.6.6
+  
+  # Local storage
+  get_storage: ^2.1.1
 
   flareline_uikit:
    path: FlareLine-UiKit

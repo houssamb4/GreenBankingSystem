@@ -23,3 +23,7 @@ ON CONFLICT (category) DO UPDATE SET
     emission_factor = EXCLUDED.emission_factor,
     description = EXCLUDED.description,
     updated_at = CURRENT_TIMESTAMP;
+
+-- Note: Sample transactions are created through the application UI
+-- Users need to sign up and create transactions manually
+-- This ensures proper authentication and data ownership

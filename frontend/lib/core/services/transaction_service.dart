@@ -12,7 +12,7 @@ class TransactionService {
 
   // Create transaction mutation
   static const String createTransactionMutation = r'''
-    mutation CreateTransaction($amount: Float!, $category: String!, $merchant: String!, $description: String) {
+    mutation CreateTransaction($amount: BigDecimal!, $category: String!, $merchant: String!, $description: String) {
       createTransaction(input: { 
         amount: $amount, 
         category: $category, 
@@ -34,7 +34,7 @@ class TransactionService {
 
   // Get user transactions query
   static const String getUserTransactionsQuery = r'''
-    query GetTransactions($userId: ID!) {
+    query GetTransactions($userId: UUID!) {
       getUserTransactions(userId: $userId) {
         id
         amount
@@ -51,7 +51,7 @@ class TransactionService {
 
   // Get carbon stats query
   static const String getCarbonStatsQuery = r'''
-    query GetCarbonStats($userId: ID!) {
+    query GetCarbonStats($userId: UUID!) {
       getCarbonStats(userId: $userId) {
         userId
         totalCarbon
@@ -65,7 +65,7 @@ class TransactionService {
 
   // Get category breakdown query
   static const String getCategoryBreakdownQuery = r'''
-    query GetCategoryBreakdown($userId: ID!) {
+    query GetCategoryBreakdown($userId: UUID!) {
       getCategoryBreakdown(userId: $userId) {
         category
         totalCarbon
@@ -76,9 +76,16 @@ class TransactionService {
     }
   ''';
 
+  // Get monthly historical carbon query
+  static const String getMonthlyHistoricalCarbonQuery = r'''
+    query GetMonthlyHistoricalCarbon($userId: UUID!) {
+      getMonthlyHistoricalCarbon(userId: $userId)
+    }
+  ''';
+
   // Update carbon budget mutation
   static const String updateCarbonBudgetMutation = r'''
-    mutation UpdateBudget($budget: Float!) {
+    mutation UpdateBudget($budget: BigDecimal!) {
       updateCarbonBudget(budget: $budget) {
         id
         monthlyCarbonBudget
@@ -88,7 +95,7 @@ class TransactionService {
 
   // Update transaction mutation
   static const String updateTransactionMutation = r'''
-    mutation UpdateTransaction($id: ID!, $amount: Float, $category: String, $merchant: String, $description: String) {
+    mutation UpdateTransaction($id: UUID!, $amount: BigDecimal, $category: String, $merchant: String, $description: String) {
       updateTransaction(
         id: $id
         input: {
@@ -113,14 +120,14 @@ class TransactionService {
 
   // Delete transaction mutation
   static const String deleteTransactionMutation = r'''
-    mutation DeleteTransaction($id: ID!) {
+    mutation DeleteTransaction($id: UUID!) {
       deleteTransaction(id: $id)
     }
   ''';
 
   // Get single transaction query
   static const String getTransactionQuery = r'''
-    query GetTransaction($id: ID!) {
+    query GetTransaction($id: UUID!) {
       getTransaction(id: $id) {
         id
         amount
@@ -290,6 +297,25 @@ class TransactionService {
       );
 
       return result['data']?['deleteTransaction'] == true;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<double>> getMonthlyHistoricalCarbon(String userId) async {
+    try {
+      final result = await _graphQLService.query(
+        getMonthlyHistoricalCarbonQuery,
+        variables: {'userId': userId},
+      );
+
+      final monthlyData =
+          result['data']?['getMonthlyHistoricalCarbon'] as List?;
+      if (monthlyData != null) {
+        return monthlyData.map((value) => (value as num).toDouble()).toList();
+      }
+
+      return List.filled(12, 0.0);
     } catch (e) {
       rethrow;
     }

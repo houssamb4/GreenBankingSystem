@@ -2,8 +2,8 @@
 
 ## Endpoint
 
-- **URL**: `http://localhost:8080/graphql`
-- **GraphiQL Interface**: `http://localhost:8080/graphiql`
+- **URL**: `http://localhost:8081/graphql`
+- **GraphiQL Interface**: `http://localhost:8081/graphiql`
 
 ## Authentication
 

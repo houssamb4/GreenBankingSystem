@@ -226,6 +226,15 @@ class _DashboardPageState extends State<DashboardPage> {
       builder: (context, constraints) {
         final isWide = constraints.maxWidth > 900;
 
+        // Use mock data for demo when real data is unavailable
+        final monthlyCarbon =
+            provider.monthlyCarbon > 0 ? provider.monthlyCarbon : 48.5;
+        final carbonPercentage =
+            provider.carbonPercentage > 0 ? provider.carbonPercentage : 0.485;
+        final totalCarbonSaved =
+            provider.totalCarbonSaved > 0 ? provider.totalCarbonSaved : 125.5;
+        final ecoScore = provider.ecoScore > 0 ? provider.ecoScore : 85.0;
+
         final cards = [
           _StatCard(
             icon: Icons.account_balance_wallet_rounded,
@@ -240,17 +249,17 @@ class _DashboardPageState extends State<DashboardPage> {
             icon: Icons.eco_rounded,
             iconColor: AsanaColors.teal,
             title: 'Monthly Carbon',
-            value: '${provider.monthlyCarbon.toStringAsFixed(1)} kg',
+            value: '${monthlyCarbon.toStringAsFixed(1)} kg',
             subtitle:
-                '${(provider.carbonPercentage * 100).toStringAsFixed(0)}% of budget',
-            progress: provider.carbonPercentage.clamp(0.0, 1.0),
-            progressColor: _getCarbonColor(provider.carbonPercentage),
+                '${(carbonPercentage * 100).toStringAsFixed(0)}% of budget',
+            progress: carbonPercentage.clamp(0.0, 1.0),
+            progressColor: _getCarbonColor(carbonPercentage),
           ),
           _StatCard(
             icon: Icons.savings_rounded,
             iconColor: AsanaColors.purple,
             title: 'Carbon Saved',
-            value: '${provider.totalCarbonSaved.toStringAsFixed(1)} kg',
+            value: '${totalCarbonSaved.toStringAsFixed(1)} kg',
             subtitle: 'This month',
             trend: '+8.2%',
             trendUp: true,
@@ -259,9 +268,9 @@ class _DashboardPageState extends State<DashboardPage> {
             icon: Icons.star_rounded,
             iconColor: AsanaColors.yellow,
             title: 'Green Score',
-            value: '${provider.ecoScore.toStringAsFixed(0)}/100',
-            subtitle: _getScoreLabel(provider.ecoScore),
-            progress: provider.ecoScore / 100,
+            value: '${ecoScore.toStringAsFixed(0)}/100',
+            subtitle: _getScoreLabel(ecoScore),
+            progress: ecoScore / 100,
             progressColor: AsanaColors.yellow,
           ),
         ];
@@ -465,6 +474,59 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget _buildRecentTransactions(DashboardProvider provider) {
+    // Mock transactions for demo
+    final mockTransactions = [
+      Transaction(
+        id: 'mock-1',
+        amount: 45.99,
+        currency: 'USD',
+        category: 'FOOD',
+        merchant: 'Whole Foods Market',
+        carbonFootprint: 22.995,
+        transactionDate: DateTime.now().subtract(const Duration(days: 2)),
+      ),
+      Transaction(
+        id: 'mock-2',
+        amount: 15.50,
+        currency: 'USD',
+        category: 'TRANSPORT',
+        merchant: 'Uber',
+        carbonFootprint: 32.55,
+        transactionDate: DateTime.now().subtract(const Duration(days: 3)),
+      ),
+      Transaction(
+        id: 'mock-3',
+        amount: 89.99,
+        currency: 'USD',
+        category: 'SHOPPING',
+        merchant: 'Amazon',
+        carbonFootprint: 71.992,
+        transactionDate: DateTime.now().subtract(const Duration(days: 5)),
+      ),
+      Transaction(
+        id: 'mock-4',
+        amount: 125.00,
+        currency: 'USD',
+        category: 'ENERGY',
+        merchant: 'Electric Company',
+        carbonFootprint: 212.50,
+        transactionDate: DateTime.now().subtract(const Duration(days: 7)),
+      ),
+      Transaction(
+        id: 'mock-5',
+        amount: 32.00,
+        currency: 'USD',
+        category: 'ENTERTAINMENT',
+        merchant: 'Netflix',
+        carbonFootprint: 19.20,
+        transactionDate: DateTime.now().subtract(const Duration(days: 10)),
+      ),
+    ];
+
+    final displayTransactions = provider.transactions.isEmpty
+        ? mockTransactions
+        : provider.recentTransactions;
+
     return _buildCard(
       title: 'Recent Transactions',
       action: TextButton.icon(
@@ -475,17 +537,11 @@ class _DashboardPageState extends State<DashboardPage> {
           foregroundColor: AsanaColors.blue,
         ),
       ),
-      child: provider.transactions.isEmpty
-          ? _buildEmptyState(
-              icon: Icons.receipt_long_outlined,
-              title: 'No transactions yet',
-              subtitle: 'Your transactions will appear here',
-            )
-          : Column(
-              children: provider.recentTransactions.map((transaction) {
-                return _buildTransactionTile(transaction);
-              }).toList(),
-            ),
+      child: Column(
+        children: displayTransactions.map((transaction) {
+          return _buildTransactionTile(transaction);
+        }).toList(),
+      ),
     );
   }
 
@@ -590,19 +646,56 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget _buildCarbonBreakdown(DashboardProvider provider) {
+    // Mock category breakdown for demo
+    final mockBreakdown = [
+      CategoryBreakdown(
+        category: 'TRANSPORT',
+        totalCarbon: 124.93,
+        totalAmount: 59.50,
+        transactionCount: 3,
+        percentage: 32.5,
+      ),
+      CategoryBreakdown(
+        category: 'ENERGY',
+        totalCarbon: 212.50,
+        totalAmount: 125.00,
+        transactionCount: 1,
+        percentage: 28.3,
+      ),
+      CategoryBreakdown(
+        category: 'SHOPPING',
+        totalCarbon: 113.60,
+        totalAmount: 142.00,
+        transactionCount: 2,
+        percentage: 18.7,
+      ),
+      CategoryBreakdown(
+        category: 'FOOD',
+        totalCarbon: 83.25,
+        totalAmount: 166.50,
+        transactionCount: 4,
+        percentage: 12.8,
+      ),
+      CategoryBreakdown(
+        category: 'ENTERTAINMENT',
+        totalCarbon: 19.20,
+        totalAmount: 32.00,
+        transactionCount: 1,
+        percentage: 7.7,
+      ),
+    ];
+
+    final displayBreakdown = provider.categoryBreakdown.isEmpty
+        ? mockBreakdown
+        : provider.categoryBreakdown.take(5).toList();
+
     return _buildCard(
       title: 'Carbon by Category',
-      child: provider.categoryBreakdown.isEmpty
-          ? _buildEmptyState(
-              icon: Icons.pie_chart_outline,
-              title: 'No data yet',
-              subtitle: 'Make transactions to see your carbon breakdown',
-            )
-          : Column(
-              children: provider.categoryBreakdown.take(5).map((category) {
-                return _buildCategoryRow(category);
-              }).toList(),
-            ),
+      child: Column(
+        children: displayBreakdown.map((category) {
+          return _buildCategoryRow(category);
+        }).toList(),
+      ),
     );
   }
 
