@@ -108,14 +108,14 @@ class SideBarWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (groupName != null && groupName.isNotEmpty)
+        if (groupName.isNotEmpty)
           Text(
             groupElement['groupName'],
             style: TextStyle(
                 fontSize: 20,
                 color: isDark ? Colors.white60 : FlarelineColors.darkBlackText),
           ),
-        if (groupName != null && groupName.isNotEmpty)
+        if (groupName.isNotEmpty)
           const SizedBox(
             height: 10,
           ),

@@ -83,7 +83,7 @@ class LineChartWidget extends BaseWidget<LineChartProvider> {
         child: SizedBox(
           width: 140,
           child: SelectWidget(
-            selectionList: dropdownItems!,
+            selectionList: dropdownItems,
             onDropdownChanged: (item) {
               if (onDropdownChanged != null) {
                 onDropdownChanged!(item);
@@ -108,7 +108,7 @@ class LineChartWidget extends BaseWidget<LineChartProvider> {
                   : FlarelineColors.gray,
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: dropdownItems!.map((item) {
+                  children: dropdownItems.map((item) {
                     return ValueListenableBuilder(
                         valueListenable: valueNotifier,
                         builder: (c, selectedValue, child) {

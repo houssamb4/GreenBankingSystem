@@ -636,7 +636,6 @@ class _NavItem {
     required this.icon,
     required this.label,
     required this.route,
-    this.badge,
     this.iconColor,
   });
 }

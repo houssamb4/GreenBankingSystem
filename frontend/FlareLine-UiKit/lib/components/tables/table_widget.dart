@@ -264,7 +264,7 @@ class BaseDataGridSource<F extends BaseTableProvider> extends DataGridSource {
     if (endIndex >= list.length) {
       endIndex = list.length;
     }
-    if (list != null && list.isNotEmpty) {
+    if (list.isNotEmpty) {
       _data = list
           .getRange(startIndex, endIndex)
           .toList(growable: false)
@@ -323,10 +323,8 @@ class BaseDataGridSource<F extends BaseTableProvider> extends DataGridSource {
       return SwitchWidget(
           checked: '1' == columnData.text,
           onChanged: (checked) async {
-            if (onToggleChanged != null) {
-              onToggleChanged(context, checked, columnData);
-            }
-          });
+            onToggleChanged(context, checked, columnData);
+                    });
     }
 
     if (CellDataType.TAG.type == columnData.dataType) {
@@ -336,18 +334,15 @@ class BaseDataGridSource<F extends BaseTableProvider> extends DataGridSource {
       );
     }
 
-    if (CellDataType.ACTION.type == columnData.dataType &&
-        actionWidgetsBuilder != null) {
+    if (CellDataType.ACTION.type == columnData.dataType) {
       return actionWidgetsBuilder(context, columnData)!;
     }
 
-    if (CellDataType.IMAGE.type == columnData.dataType &&
-        _imageCellWidget != null) {
+    if (CellDataType.IMAGE.type == columnData.dataType) {
       return _imageCellWidget(columnData);
     }
 
-    if (CellDataType.CUSTOM.type == columnData.dataType &&
-        customWidgetsBuilder != null) {
+    if (CellDataType.CUSTOM.type == columnData.dataType) {
       return customWidgetsBuilder(context, columnData)!;
     }
 
