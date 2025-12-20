@@ -1,4 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'dart:convert';
 
 class TokenStorageService {
   static TokenStorageService? _instance;
@@ -13,13 +14,41 @@ class TokenStorageService {
   static const String _refreshTokenKey = 'refresh_token';
   static const String _userIdKey = 'user_id';
   static const String _userEmailKey = 'user_email';
+  static const String _userJsonKey = 'user_json';
+
+  Future<void> saveUserJson(Map<String, dynamic> userJson) async {
+    try {
+      final jsonString = jsonEncode(userJson);
+      await _storage.write(key: _userJsonKey, value: jsonString);
+      print('DEBUG STORAGE: User JSON saved.');
+    } catch (e) {
+      print('DEBUG STORAGE ERROR saving user JSON: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>?> getUserJson() async {
+    try {
+      final jsonString = await _storage.read(key: _userJsonKey);
+      if (jsonString != null) {
+        print('DEBUG STORAGE: User JSON retrieved.');
+        return jsonDecode(jsonString) as Map<String, dynamic>;
+      }
+      return null;
+    } catch (e) {
+      print('DEBUG STORAGE ERROR getting user JSON: $e');
+      return null;
+    }
+  }
 
   Future<void> saveToken(String token) async {
+    print('DEBUG STORAGE: Saving token: ${token.substring(0, 10)}...');
     await _storage.write(key: _tokenKey, value: token);
   }
 
   Future<String?> getToken() async {
-    return await _storage.read(key: _tokenKey);
+    final token = await _storage.read(key: _tokenKey);
+    print('DEBUG STORAGE: Retrieved token: ${token != null ? "${token.substring(0, 10)}..." : "null"}');
+    return token;
   }
 
   Future<void> saveRefreshToken(String refreshToken) async {

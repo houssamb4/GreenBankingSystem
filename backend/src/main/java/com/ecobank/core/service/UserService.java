@@ -106,6 +106,8 @@ public class UserService {
     
     private String getCurrentUserEmail() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println("DEBUG AUTH: Principal class: " + principal.getClass().getName());
+        System.out.println("DEBUG AUTH: Principal value: " + principal);
         
         if (principal instanceof UserDetails) {
             return ((UserDetails) principal).getUsername();

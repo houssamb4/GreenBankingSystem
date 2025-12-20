@@ -52,24 +52,37 @@ class DashboardProvider extends ChangeNotifier {
     try {
       // Get user ID from storage
       final userId = await _tokenStorage.getUserId();
+      print('DEBUG: User ID from storage: $userId');
 
       // Load user data
       final userData = await _authService.getCurrentUser();
+      print('DEBUG: User data loaded: $userData');
       if (userData != null) {
         _currentUser = User.fromJson(userData);
+        print('DEBUG: Current user: ${_currentUser?.fullName}');
       }
 
       // Load carbon stats
       if (userId != null) {
+        print('DEBUG: Loading carbon stats for user: $userId');
         _carbonStats = await _transactionService.getCarbonStats(userId);
+        print('DEBUG: Carbon stats: ${_carbonStats?.monthlyCarbon}');
+        
+        print('DEBUG: Loading transactions for user: $userId');
         _transactions = await _transactionService.getUserTransactions(userId);
+        print('DEBUG: Loaded ${_transactions.length} transactions');
+        
+        print('DEBUG: Loading category breakdown for user: $userId');
         _categoryBreakdown =
             await _transactionService.getCategoryBreakdown(userId);
+        print('DEBUG: Loaded ${_categoryBreakdown.length} categories');
       }
 
       _isLoading = false;
       notifyListeners();
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print('DEBUG ERROR: $e');
+      print('DEBUG STACK: $stackTrace');
       _error = e.toString();
       _isLoading = false;
       notifyListeners();
@@ -87,6 +100,7 @@ class DashboardProvider extends ChangeNotifier {
     String? description,
   }) async {
     try {
+      print('DEBUG: Creating transaction: amount=$amount, category=$category, merchant=$merchant');
       final transaction = await _transactionService.createTransaction(
         amount: amount,
         category: category,
@@ -95,13 +109,18 @@ class DashboardProvider extends ChangeNotifier {
       );
 
       if (transaction != null) {
+        print('DEBUG: Transaction created successfully: ${transaction.id}');
         _transactions.insert(0, transaction);
         await refreshData(); // Refresh stats after new transaction
         notifyListeners();
+      } else {
+        print('DEBUG: Transaction creation returned null');
       }
 
       return transaction;
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print('DEBUG ERROR creating transaction: $e');
+      print('DEBUG STACK: $stackTrace');
       _error = e.toString();
       notifyListeners();
       return null;

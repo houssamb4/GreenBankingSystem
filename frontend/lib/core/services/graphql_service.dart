@@ -30,11 +30,15 @@ class GraphQLService {
       String query, Map<String, dynamic>? variables) async {
     try {
       final token = await _tokenStorage.getToken();
+      print('DEBUG GRAPHQL: Token for request: ${token != null ? "PRESENT" : "MISSING"}');
 
       final headers = {
         'Content-Type': 'application/json',
         if (token != null) 'Authorization': 'Bearer $token',
       };
+      if (token != null) {
+         print('DEBUG GRAPHQL: Authorization header set.');
+      }
 
       final body = json.encode({
         'query': query,

@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,8 +30,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
     @Query("SELECT COALESCE(SUM(t.carbonFootprint), 0) FROM Transaction t WHERE t.user.id = :userId " +
            "AND t.transactionDate >= :startDate AND t.transactionDate < :endDate")
     BigDecimal getMonthlyCarbonByUserId(@Param("userId") UUID userId, 
-                                       @Param("startDate") LocalDateTime startDate,
-                                       @Param("endDate") LocalDateTime endDate);
+                                       @Param("startDate") OffsetDateTime startDate,
+                                       @Param("endDate") OffsetDateTime endDate);
     
     @Query("SELECT t.category, SUM(t.carbonFootprint) as totalCarbon, " +
            "SUM(t.amount) as totalAmount, COUNT(t) as transactionCount " +

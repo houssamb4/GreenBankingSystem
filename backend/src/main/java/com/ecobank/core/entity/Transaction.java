@@ -6,7 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Data
@@ -45,5 +45,5 @@ public class Transaction extends AuditModel {
     private String blockchainHash;
     
     @Column(name = "transaction_date")
-    private LocalDateTime transactionDate;
+    private OffsetDateTime transactionDate;
 }

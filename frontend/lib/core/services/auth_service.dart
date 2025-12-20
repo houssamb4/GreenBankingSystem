@@ -81,12 +81,19 @@ class AuthService {
       );
 
       final loginData = result['data']?['login'];
+      print('DEBUG AUTH: Login response data: $loginData'); // Log the raw response
+
       if (loginData != null) {
         // Save tokens
+        print('DEBUG AUTH: Saving tokens...');
         await _tokenStorage.saveToken(loginData['token']);
         await _tokenStorage.saveRefreshToken(loginData['refreshToken']);
         await _tokenStorage.saveUserId(loginData['user']['id']);
         await _tokenStorage.saveUserEmail(loginData['user']['email']);
+        await _tokenStorage.saveUserJson(loginData['user']);
+        print('DEBUG AUTH: Tokens saved successfully.');
+      } else {
+        print('DEBUG AUTH: Login data is null!');
       }
 
       return loginData;
@@ -119,6 +126,7 @@ class AuthService {
         await _tokenStorage.saveRefreshToken(registerData['refreshToken']);
         await _tokenStorage.saveUserId(registerData['user']['id']);
         await _tokenStorage.saveUserEmail(registerData['user']['email']);
+        await _tokenStorage.saveUserJson(registerData['user']);
       }
 
       return registerData;
@@ -129,9 +137,25 @@ class AuthService {
 
   Future<Map<String, dynamic>?> getCurrentUser() async {
     try {
+      print('DEBUG AUTH: Fetching current user...');
+      final token = await _tokenStorage.getToken();
+      print('DEBUG AUTH: Token exists: ${token != null}');
+      
       final result = await _graphQLService.query(getCurrentUserQuery);
+      print('DEBUG AUTH: Query result: $result');
       return result['data']?['getCurrentUser'];
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print('DEBUG AUTH ERROR: $e');
+      print('DEBUG AUTH STACK: $stackTrace');
+      
+      // Fallback to cached user data if available
+      print('DEBUG AUTH: Attempting to retrieve cached user data...');
+      final cachedUser = await _tokenStorage.getUserJson();
+      if (cachedUser != null) {
+        print('DEBUG AUTH: Returning cached user data.');
+        return cachedUser;
+      }
+      
       rethrow;
     }
   }

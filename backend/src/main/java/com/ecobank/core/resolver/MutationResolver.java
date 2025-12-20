@@ -9,6 +9,7 @@ import com.ecobank.core.entity.User;
 import com.ecobank.core.service.AuthService;
 import com.ecobank.core.service.TransactionService;
 import com.ecobank.core.service.UserService;
+import com.ecobank.core.service.CarbonFactorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -24,6 +25,7 @@ public class MutationResolver {
     private final AuthService authService;
     private final UserService userService;
     private final TransactionService transactionService;
+    private final CarbonFactorService carbonFactorService;
     
     @MutationMapping
     public AuthResponse register(@Argument("input") RegisterRequest input) {
@@ -60,5 +62,12 @@ public class MutationResolver {
     @MutationMapping
     public User updateCarbonBudget(@Argument("budget") BigDecimal budget) {
         return userService.updateCarbonBudget(budget);
+    }
+    
+    @MutationMapping
+    public com.ecobank.core.entity.CarbonFactor updateCarbonFactor(
+            @Argument("category") String category,
+            @Argument("factor") BigDecimal factor) {
+        return carbonFactorService.updateCarbonFactor(category, factor);
     }
 }

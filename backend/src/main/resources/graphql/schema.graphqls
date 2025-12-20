@@ -1,6 +1,6 @@
 scalar UUID
 scalar BigDecimal
-scalar LocalDateTime
+scalar DateTime
 
 type Query {
     getUser(id: UUID!): User
@@ -13,6 +13,7 @@ type Query {
     getMonthlySummary(userId: UUID!, year: Int!, month: Int!): MonthlySummary!
     getCarbonStats(userId: UUID!): CarbonStats!
     getCategoryBreakdown(userId: UUID!): [CategoryBreakdown!]!
+    getMonthlyHistoricalCarbon(userId: UUID!): [Float!]!
 }
 
 type Mutation {
@@ -86,8 +87,8 @@ type User {
     totalCarbonSaved: BigDecimal!
     monthlyCarbonBudget: BigDecimal!
     transactions: [Transaction!]
-    createdAt: LocalDateTime!
-    updatedAt: LocalDateTime!
+    createdAt: DateTime!
+    updatedAt: DateTime!
 }
 
 type Transaction {
@@ -101,9 +102,9 @@ type Transaction {
     location: String
     carbonFootprint: BigDecimal!
     blockchainHash: String
-    transactionDate: LocalDateTime!
-    createdAt: LocalDateTime!
-    updatedAt: LocalDateTime!
+    transactionDate: DateTime!
+    createdAt: DateTime!
+    updatedAt: DateTime!
 }
 
 type CarbonFactor {
@@ -111,7 +112,7 @@ type CarbonFactor {
     category: String!
     emissionFactor: BigDecimal!
     description: String
-    lastUpdated: LocalDateTime!
+    lastUpdated: DateTime!
 }
 
 type MonthlySummary {
@@ -146,5 +147,5 @@ type CarbonUpdate {
     totalCarbon: BigDecimal!
     monthlyCarbon: BigDecimal!
     ecoScore: Int!
-    timestamp: LocalDateTime!
+    timestamp: DateTime!
 }

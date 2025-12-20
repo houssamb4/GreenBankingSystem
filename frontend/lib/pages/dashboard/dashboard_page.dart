@@ -68,6 +68,32 @@ class _DashboardPageState extends State<DashboardPage> {
     return Column(
       children: [
         _buildTopBar(provider),
+        if (provider.error != null)
+          Container(
+            margin: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AsanaColors.red.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: AsanaColors.red.withOpacity(0.3)),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.error_outline, color: AsanaColors.red),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'Error: ${provider.error}',
+                    style: TextStyle(color: AsanaColors.red, fontSize: 14),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.close, color: AsanaColors.red, size: 20),
+                  onPressed: () => provider.clearError(),
+                ),
+              ],
+            ),
+          ),
         Expanded(
           child: provider.isLoading
               ? Center(
@@ -225,26 +251,14 @@ class _DashboardPageState extends State<DashboardPage> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final isWide = constraints.maxWidth > 900;
-
-        // Use mock data for demo when real data is unavailable
-        final monthlyCarbon =
-            provider.monthlyCarbon > 0 ? provider.monthlyCarbon : 48.5;
-        final carbonPercentage =
-            provider.carbonPercentage > 0 ? provider.carbonPercentage : 0.485;
-        final totalCarbonSaved =
-            provider.totalCarbonSaved > 0 ? provider.totalCarbonSaved : 125.5;
-        final ecoScore = provider.ecoScore > 0 ? provider.ecoScore : 85.0;
+        // Use live backend data from provider
+        final monthlyCarbon = provider.monthlyCarbon;
+        final carbonPercentage = provider.carbonPercentage;
+        final totalCarbonSaved = provider.totalCarbonSaved;
+        final ecoScore = provider.ecoScore;
+        final carbonBudget = provider.carbonBudget;
 
         final cards = [
-          _StatCard(
-            icon: Icons.account_balance_wallet_rounded,
-            iconColor: AsanaColors.green,
-            title: 'Available Balance',
-            value: '\$4,250.50',
-            subtitle: 'Ready to spend',
-            trend: '+12.5%',
-            trendUp: true,
-          ),
           _StatCard(
             icon: Icons.eco_rounded,
             iconColor: AsanaColors.teal,
@@ -256,13 +270,18 @@ class _DashboardPageState extends State<DashboardPage> {
             progressColor: _getCarbonColor(carbonPercentage),
           ),
           _StatCard(
+            icon: Icons.speed_rounded,
+            iconColor: AsanaColors.blue,
+            title: 'Carbon Budget',
+            value: '${carbonBudget.toStringAsFixed(1)} kg',
+            subtitle: 'Monthly limit',
+          ),
+          _StatCard(
             icon: Icons.savings_rounded,
             iconColor: AsanaColors.purple,
             title: 'Carbon Saved',
             value: '${totalCarbonSaved.toStringAsFixed(1)} kg',
             subtitle: 'This month',
-            trend: '+8.2%',
-            trendUp: true,
           ),
           _StatCard(
             icon: Icons.star_rounded,
@@ -270,7 +289,7 @@ class _DashboardPageState extends State<DashboardPage> {
             title: 'Green Score',
             value: '${ecoScore.toStringAsFixed(0)}/100',
             subtitle: _getScoreLabel(ecoScore),
-            progress: ecoScore / 100,
+            progress: (ecoScore / 100).clamp(0.0, 1.0),
             progressColor: AsanaColors.yellow,
           ),
         ];
@@ -474,58 +493,7 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget _buildRecentTransactions(DashboardProvider provider) {
-    // Mock transactions for demo
-    final mockTransactions = [
-      Transaction(
-        id: 'mock-1',
-        amount: 45.99,
-        currency: 'USD',
-        category: 'FOOD',
-        merchant: 'Whole Foods Market',
-        carbonFootprint: 22.995,
-        transactionDate: DateTime.now().subtract(const Duration(days: 2)),
-      ),
-      Transaction(
-        id: 'mock-2',
-        amount: 15.50,
-        currency: 'USD',
-        category: 'TRANSPORT',
-        merchant: 'Uber',
-        carbonFootprint: 32.55,
-        transactionDate: DateTime.now().subtract(const Duration(days: 3)),
-      ),
-      Transaction(
-        id: 'mock-3',
-        amount: 89.99,
-        currency: 'USD',
-        category: 'SHOPPING',
-        merchant: 'Amazon',
-        carbonFootprint: 71.992,
-        transactionDate: DateTime.now().subtract(const Duration(days: 5)),
-      ),
-      Transaction(
-        id: 'mock-4',
-        amount: 125.00,
-        currency: 'USD',
-        category: 'ENERGY',
-        merchant: 'Electric Company',
-        carbonFootprint: 212.50,
-        transactionDate: DateTime.now().subtract(const Duration(days: 7)),
-      ),
-      Transaction(
-        id: 'mock-5',
-        amount: 32.00,
-        currency: 'USD',
-        category: 'ENTERTAINMENT',
-        merchant: 'Netflix',
-        carbonFootprint: 19.20,
-        transactionDate: DateTime.now().subtract(const Duration(days: 10)),
-      ),
-    ];
-
-    final displayTransactions = provider.transactions.isEmpty
-        ? mockTransactions
-        : provider.recentTransactions;
+    final displayTransactions = provider.recentTransactions;
 
     return _buildCard(
       title: 'Recent Transactions',
@@ -537,11 +505,17 @@ class _DashboardPageState extends State<DashboardPage> {
           foregroundColor: AsanaColors.blue,
         ),
       ),
-      child: Column(
-        children: displayTransactions.map((transaction) {
-          return _buildTransactionTile(transaction);
-        }).toList(),
-      ),
+      child: displayTransactions.isEmpty
+          ? _buildEmptyState(
+              icon: Icons.receipt_long,
+              title: 'No transactions yet',
+              subtitle: 'Create one to see it here',
+            )
+          : Column(
+              children: displayTransactions.map((transaction) {
+                return _buildTransactionTile(transaction);
+              }).toList(),
+            ),
     );
   }
 
@@ -646,56 +620,21 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget _buildCarbonBreakdown(DashboardProvider provider) {
-    // Mock category breakdown for demo
-    final mockBreakdown = [
-      CategoryBreakdown(
-        category: 'TRANSPORT',
-        totalCarbon: 124.93,
-        totalAmount: 59.50,
-        transactionCount: 3,
-        percentage: 32.5,
-      ),
-      CategoryBreakdown(
-        category: 'ENERGY',
-        totalCarbon: 212.50,
-        totalAmount: 125.00,
-        transactionCount: 1,
-        percentage: 28.3,
-      ),
-      CategoryBreakdown(
-        category: 'SHOPPING',
-        totalCarbon: 113.60,
-        totalAmount: 142.00,
-        transactionCount: 2,
-        percentage: 18.7,
-      ),
-      CategoryBreakdown(
-        category: 'FOOD',
-        totalCarbon: 83.25,
-        totalAmount: 166.50,
-        transactionCount: 4,
-        percentage: 12.8,
-      ),
-      CategoryBreakdown(
-        category: 'ENTERTAINMENT',
-        totalCarbon: 19.20,
-        totalAmount: 32.00,
-        transactionCount: 1,
-        percentage: 7.7,
-      ),
-    ];
-
-    final displayBreakdown = provider.categoryBreakdown.isEmpty
-        ? mockBreakdown
-        : provider.categoryBreakdown.take(5).toList();
+    final displayBreakdown = provider.categoryBreakdown.take(5).toList();
 
     return _buildCard(
       title: 'Carbon by Category',
-      child: Column(
-        children: displayBreakdown.map((category) {
-          return _buildCategoryRow(category);
-        }).toList(),
-      ),
+      child: displayBreakdown.isEmpty
+          ? _buildEmptyState(
+              icon: Icons.pie_chart_outline,
+              title: 'No category data',
+              subtitle: 'Make transactions to see breakdown',
+            )
+          : Column(
+              children: displayBreakdown.map((category) {
+                return _buildCategoryRow(category);
+              }).toList(),
+            ),
     );
   }
 

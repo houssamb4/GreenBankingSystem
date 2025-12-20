@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -46,7 +46,7 @@ public class TransactionService {
             .description(input.getDescription())
             .location(input.getLocation())
             .carbonFootprint(carbonFootprint)
-            .transactionDate(LocalDateTime.now())
+            .transactionDate(OffsetDateTime.now())
             .build();
         
         // Save to database
@@ -81,8 +81,8 @@ public class TransactionService {
     }
     
     public BigDecimal getMonthlyCarbon(UUID userId) {
-        LocalDateTime startDate = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
-        LocalDateTime endDate = startDate.plusMonths(1);
+        OffsetDateTime startDate = OffsetDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+        OffsetDateTime endDate = startDate.plusMonths(1);
         
         return transactionRepository.getMonthlyCarbonByUserId(userId, startDate, endDate);
     }
@@ -216,13 +216,13 @@ public class TransactionService {
     
     public List<BigDecimal> getMonthlyHistoricalCarbon(UUID userId) {
         List<BigDecimal> monthlyData = new ArrayList<>();
-        LocalDateTime now = LocalDateTime.now();
+        OffsetDateTime now = OffsetDateTime.now();
         
         // Get last 12 months of data
         for (int i = 11; i >= 0; i--) {
-            LocalDateTime monthStart = now.minusMonths(i).withDayOfMonth(1)
+            OffsetDateTime monthStart = now.minusMonths(i).withDayOfMonth(1)
                     .withHour(0).withMinute(0).withSecond(0).withNano(0);
-            LocalDateTime monthEnd = monthStart.plusMonths(1);
+            OffsetDateTime monthEnd = monthStart.plusMonths(1);
             
             BigDecimal monthlyCarbon = transactionRepository.getMonthlyCarbonByUserId(
                     userId, monthStart, monthEnd);
