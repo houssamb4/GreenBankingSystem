@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:greenpay/widgets/sidebar.dart';
 import 'package:greenpay/core/services/auth_service.dart';
 import 'package:greenpay/core/theme/asana_colors.dart';
@@ -409,8 +411,8 @@ class _SignInPageState extends State<SignInPage> {
             Row(
               children: [
                 Expanded(
-                  child: _buildSocialButton(
-                    icon: 'G',
+                  child: _buildSocialButtonWithImage(
+                    imagePath: 'assets/logo/google_logo.svg',
                     label: 'Google',
                     onPressed: () {
                       // TODO: Implement Google sign in
@@ -420,10 +422,10 @@ class _SignInPageState extends State<SignInPage> {
                 const SizedBox(width: 16),
                 Expanded(
                   child: _buildSocialButton(
-                    icon: 'GH',
-                    label: 'GitHub',
+                    icon: FontAwesomeIcons.apple,
+                    label: 'Apple',
                     onPressed: () {
-                      // TODO: Implement GitHub sign in
+                      // TODO: Implement Apple sign in
                     },
                   ),
                 ),
@@ -506,7 +508,7 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Widget _buildSocialButton({
-    required String icon,
+    required IconData icon,
     required String label,
     required VoidCallback onPressed,
   }) {
@@ -522,13 +524,45 @@ class _SignInPageState extends State<SignInPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
+          FaIcon(
             icon,
+            color: AsanaColors.textPrimary,
+            size: 18,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            label,
             style: TextStyle(
               color: AsanaColors.textPrimary,
-              fontWeight: FontWeight.w700,
-              fontSize: 16,
+              fontWeight: FontWeight.w500,
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSocialButtonWithImage({
+    required String imagePath,
+    required String label,
+    required VoidCallback onPressed,
+  }) {
+    return OutlinedButton(
+      onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(vertical: 14),
+        side: BorderSide(color: AsanaColors.border),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            imagePath,
+            width: 18,
+            height: 18,
           ),
           const SizedBox(width: 8),
           Text(

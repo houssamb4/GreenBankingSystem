@@ -48,6 +48,8 @@ dependencies:
 
   syncfusion_flutter_datagrid: ^32.1.19
 
+  font_awesome_flutter: ^10.7.0
+
   syncfusion_flutter_maps: ^32.1.19
 
   syncfusion_flutter_calendar: ^32.1.19
