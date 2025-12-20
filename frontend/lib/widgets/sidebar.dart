@@ -162,7 +162,7 @@ class _SidebarState extends State<Sidebar> {
                   Text(
                     'GreenPay',
                     style: TextStyle(
-                      color: AsanaColors.textPrimary,
+                      color: const Color.fromARGB(255, 255, 255, 255),
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
@@ -561,7 +561,7 @@ class _SidebarState extends State<Sidebar> {
                     Text(
                       widget.userName,
                       style: TextStyle(
-                        color: AsanaColors.textPrimary,
+                        color: const Color.fromARGB(255, 255, 255, 255),
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),

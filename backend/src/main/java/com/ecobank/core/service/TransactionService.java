@@ -44,7 +44,6 @@ public class TransactionService {
             .category(input.getCategory())
             .merchant(input.getMerchant())
             .description(input.getDescription())
-            .location(input.getLocation())
             .carbonFootprint(carbonFootprint)
             .transactionDate(OffsetDateTime.now())
             .build();
@@ -182,9 +181,6 @@ public class TransactionService {
         }
         if (input.getDescription() != null) {
             transaction.setDescription(input.getDescription());
-        }
-        if (input.getLocation() != null) {
-            transaction.setLocation(input.getLocation());
         }
         
         // Recalculate carbon footprint if amount or category changed

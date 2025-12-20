@@ -507,8 +507,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
     return InkWell(
       onTap: () {
         Navigator.of(context).pushNamed(
-          '/transaction-details',
-          arguments: transaction.id,
+          '/transaction-details/${transaction.id}',
         );
       },
       child: Container(

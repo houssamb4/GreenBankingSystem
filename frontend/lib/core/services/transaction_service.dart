@@ -95,7 +95,7 @@ class TransactionService {
 
   // Update transaction mutation
   static const String updateTransactionMutation = r'''
-    mutation UpdateTransaction($id: UUID!, $amount: BigDecimal, $category: String, $merchant: String, $description: String) {
+    mutation UpdateTransaction($id: UUID!, $amount: BigDecimal!, $category: String!, $merchant: String!, $description: String) {
       updateTransaction(
         id: $id
         input: {
@@ -114,6 +114,7 @@ class TransactionService {
         carbonFootprint
         transactionDate
         createdAt
+        updatedAt
       }
     }
   ''';
@@ -261,21 +262,21 @@ class TransactionService {
 
   Future<Transaction?> updateTransaction({
     required String id,
-    double? amount,
-    String? category,
-    String? merchant,
+    required double amount,
+    required String category,
+    required String merchant,
     String? description,
   }) async {
     try {
-      final variables = <String, dynamic>{'id': id};
-      if (amount != null) variables['amount'] = amount;
-      if (category != null) variables['category'] = category;
-      if (merchant != null) variables['merchant'] = merchant;
-      if (description != null) variables['description'] = description;
-
       final result = await _graphQLService.mutate(
         updateTransactionMutation,
-        variables: variables,
+        variables: {
+          'id': id,
+          'amount': amount,
+          'category': category,
+          'merchant': merchant,
+          if (description != null && description.isNotEmpty) 'description': description,
+        },
       );
 
       final transactionData = result['data']?['updateTransaction'];
@@ -285,6 +286,7 @@ class TransactionService {
 
       return null;
     } catch (e) {
+      print('DEBUG: Update transaction error: $e');
       rethrow;
     }
   }

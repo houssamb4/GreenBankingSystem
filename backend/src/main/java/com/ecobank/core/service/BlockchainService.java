@@ -10,8 +10,7 @@ public class BlockchainService {
     
     public void recordTransactionAsync(Transaction transaction) {
         // TODO: Implement blockchain integration
-        // For now, just log and simulate
+        // For now, just log
         log.info("Transaction would be recorded on blockchain: {}", transaction.getId());
-        transaction.setBlockchainHash("0x" + java.util.UUID.randomUUID().toString().replace("-", "").substring(0, 64));
     }
 }

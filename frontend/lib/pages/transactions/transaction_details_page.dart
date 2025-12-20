@@ -152,12 +152,12 @@ class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.edit_outlined),
-            onPressed: () => _showEditDialog(context),
+            onPressed: () => _onEditPressed(context),
             tooltip: 'Edit Transaction',
           ),
           IconButton(
             icon: const Icon(Icons.delete_outline, color: Colors.red),
-            onPressed: () => _showDeleteConfirmation(context),
+            onPressed: () => _onDeletePressed(context),
             tooltip: 'Delete Transaction',
           ),
         ],
@@ -419,5 +419,196 @@ class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
         ),
       ],
     );
+  }
+
+  Future<void> _onDeletePressed(BuildContext context) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Transaction'),
+        content: const Text('Are you sure you want to delete this transaction? This action cannot be undone.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && mounted) {
+      try {
+        setState(() => _isLoading = true);
+        final success = await _transactionService.deleteTransaction(widget.transactionId);
+        if (success && mounted) {
+          Navigator.pop(context, true); // Return true to indicate deletion
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Transaction deleted successfully'),
+              backgroundColor: Color(0xFF10B981),
+            ),
+          );
+        } else {
+          throw Exception('Failed to delete transaction');
+        }
+      } catch (e) {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+            _error = e.toString();
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error deleting transaction: $e'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    }
+  }
+
+  void _onEditPressed(BuildContext context) {
+    if (_transaction == null) return;
+
+    final amountController = TextEditingController(text: _transaction!.amount.toString());
+    final merchantController = TextEditingController(text: _transaction!.merchant);
+    final descriptionController = TextEditingController(text: _transaction!.description ?? '');
+    String selectedCategory = _transaction!.category;
+
+    final categories = [
+      'FOOD', 'TRANSPORT', 'SHOPPING', 'ENERGY', 'SERVICES', 
+      'ENTERTAINMENT', 'TRAVEL', 'HEALTHCARE', 'EDUCATION', 
+      'TECHNOLOGY', 'FASHION', 'HOME', 'GREEN', 'OTHER'
+    ];
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text('Edit Transaction'),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: amountController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Amount',
+                  prefixText: '\$ ',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: merchantController,
+                decoration: InputDecoration(
+                  labelText: 'Merchant',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+              ),
+              const SizedBox(height: 16),
+              DropdownButtonFormField<String>(
+                value: categories.contains(selectedCategory) ? selectedCategory : 'OTHER',
+                decoration: InputDecoration(
+                  labelText: 'Category',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+                items: categories.map((cat) {
+                  return DropdownMenuItem(value: cat, child: Text(cat));
+                }).toList(),
+                onChanged: (value) {
+                  if (value != null) selectedCategory = value;
+                },
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: descriptionController,
+                maxLines: 2,
+                decoration: InputDecoration(
+                  labelText: 'Description (optional)',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final amount = double.tryParse(amountController.text);
+              if (amount != null && merchantController.text.isNotEmpty) {
+                Navigator.pop(context); // Close dialog
+                _updateTransaction(
+                  amount: amount,
+                  merchant: merchantController.text,
+                  category: selectedCategory,
+                  description: descriptionController.text,
+                );
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF10B981),
+            ),
+            child: const Text('Save Changes'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _updateTransaction({
+    required double amount,
+    required String merchant,
+    required String category,
+    String? description,
+  }) async {
+    setState(() => _isLoading = true);
+    try {
+      final updatedTransaction = await _transactionService.updateTransaction(
+        id: widget.transactionId,
+        amount: amount,
+        merchant: merchant,
+        category: category,
+        description: description,
+      );
+
+      if (updatedTransaction != null && mounted) {
+        setState(() {
+          _transaction = updatedTransaction;
+          _isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Transaction updated successfully'),
+            backgroundColor: Color(0xFF10B981),
+          ),
+        );
+      } else {
+        throw Exception('Failed to update transaction');
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _error = e.toString();
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error updating transaction: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 }

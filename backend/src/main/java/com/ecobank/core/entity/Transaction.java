@@ -37,13 +37,9 @@ public class Transaction extends AuditModel {
     
     private String merchant;
     private String description;
-    private String location;
     
     @Column(name = "carbon_footprint", nullable = false)
     private BigDecimal carbonFootprint;
-    
-    @Column(name = "blockchain_hash")
-    private String blockchainHash;
     
     @Column(name = "transaction_date")
     private OffsetDateTime transactionDate;

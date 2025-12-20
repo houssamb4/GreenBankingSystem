@@ -63,9 +63,11 @@ abstract class FlarelineLayoutWidget extends StatelessWidget {
         height: 32,
       );
     }
-    return SvgPicture.asset(
-      'assets/logo/logo_${isDark ? 'white' : 'dark'}.svg',
-      height: 32,
+    return Image.asset(
+      'assets/logo.png',
+      width: 40,
+      height: 40,
+      fit: BoxFit.contain,
     );
   }
 

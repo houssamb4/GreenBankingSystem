@@ -67,7 +67,6 @@ input TransactionInput {
     category: String!
     merchant: String
     description: String
-    location: String
 }
 
 # Response Types
@@ -99,9 +98,7 @@ type Transaction {
     category: String!
     merchant: String
     description: String
-    location: String
     carbonFootprint: BigDecimal!
-    blockchainHash: String
     transactionDate: DateTime!
     createdAt: DateTime!
     updatedAt: DateTime!

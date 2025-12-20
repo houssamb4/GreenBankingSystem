@@ -540,74 +540,80 @@ class _DashboardPageState extends State<DashboardPage> {
       'GREEN': AsanaColors.green,
     };
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        children: [
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: (categoryColors[transaction.category] ??
-                      AsanaColors.textSecondary)
-                  .withOpacity(0.1),
-              borderRadius: BorderRadius.circular(10),
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).pushNamed('/transaction-details/${transaction.id}');
+      },
+      borderRadius: BorderRadius.circular(10),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Row(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: (categoryColors[transaction.category] ??
+                        AsanaColors.textSecondary)
+                    .withOpacity(0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(
+                categoryIcons[transaction.category] ?? Icons.payment_rounded,
+                color: categoryColors[transaction.category] ??
+                    AsanaColors.textSecondary,
+                size: 22,
+              ),
             ),
-            child: Icon(
-              categoryIcons[transaction.category] ?? Icons.payment_rounded,
-              color: categoryColors[transaction.category] ??
-                  AsanaColors.textSecondary,
-              size: 22,
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    transaction.merchant,
+                    style: TextStyle(
+                      color: AsanaColors.textPrimary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    DateFormat('MMM d, yyyy').format(transaction.transactionDate),
+                    style: TextStyle(
+                      color: AsanaColors.textMuted,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  transaction.merchant,
+                  '-\$${transaction.amount.toStringAsFixed(2)}',
                   style: TextStyle(
                     color: AsanaColors.textPrimary,
                     fontSize: 14,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  DateFormat('MMM d, yyyy').format(transaction.transactionDate),
+                  '+${transaction.carbonFootprint.toStringAsFixed(1)} kg CO₂',
                   style: TextStyle(
-                    color: AsanaColors.textMuted,
+                    color:
+                        _getTransactionCarbonColor(transaction.carbonFootprint),
                     fontSize: 12,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ],
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                '-\$${transaction.amount.toStringAsFixed(2)}',
-                style: TextStyle(
-                  color: AsanaColors.textPrimary,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                '+${transaction.carbonFootprint.toStringAsFixed(1)} kg CO₂',
-                style: TextStyle(
-                  color:
-                      _getTransactionCarbonColor(transaction.carbonFootprint),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

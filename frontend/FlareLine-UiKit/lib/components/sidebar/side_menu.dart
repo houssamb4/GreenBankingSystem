@@ -63,14 +63,14 @@ class SideMenuWidget extends StatelessWidget {
                   ? const LinearGradient(
                 begin: Alignment(1.00, -0.03),
                 end: Alignment(-1, 0.03),
-                colors: [Color(0x0C316AFF), Color(0x38306AFF)],
+                colors: [Color(0xFF316AFF), Color(0xFF306AFF)],
               )
                   : const LinearGradient(
                 begin: Alignment(1.00, -0.03),
                 end: Alignment(-1, 0.03),
                 colors: [
-                  FlarelineColors.background,
-                  FlarelineColors.gray
+                  Color(0xFF22C55E),
+                  Color(0xFF16A34A)
                 ],
               ))
                   : null,
@@ -84,8 +84,9 @@ class SideMenuWidget extends StatelessWidget {
                       e['icon'],
                       width: 18,
                       height: 18,
-                      color:
-                      isDark ? Colors.white : FlarelineColors.darkBlackText,
+                      color: isSelected
+                          ? Colors.white
+                          : (isDark ? Colors.white : FlarelineColors.darkBlackText),
                     ),
                   ),
                 Expanded(
@@ -93,9 +94,11 @@ class SideMenuWidget extends StatelessWidget {
                       itemMenuName,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                          color: isDark
+                          color: isSelected
                               ? Colors.white
-                              : FlarelineColors.darkBlackText),
+                              : (isDark
+                              ? Colors.white
+                              : FlarelineColors.darkBlackText)),
                     )),
                 if (childList != null && childList.isNotEmpty)
                   ValueListenableBuilder(
@@ -106,9 +109,11 @@ class SideMenuWidget extends StatelessWidget {
                           expanded
                               ? Icons.keyboard_arrow_up
                               : Icons.keyboard_arrow_down,
-                          color: isDark
+                          color: isSelected
                               ? Colors.white
-                              : FlarelineColors.darkBlackText,
+                              : (isDark
+                              ? Colors.white
+                              : FlarelineColors.darkBlackText),
                         );
                       })
               ],
@@ -146,17 +151,20 @@ class SideMenuWidget extends StatelessWidget {
     return InkWell(
       child: Container(
         padding: const EdgeInsets.only(left: 50, top: 10, bottom: 10),
-        color: isSelected
-            ? (isDark ? FlarelineColors.darkBackground : FlarelineColors.gray)
-            : Colors.transparent,
+        decoration: BoxDecoration(
+          color: isSelected
+              ? (isDark ? const Color(0xFF316AFF) : const Color(0xFF22C55E))
+              : Colors.transparent,
+        ),
         child: Row(
           children: [
             Expanded(
                 child: Text(
                   itemMenuName,
                   style: TextStyle(
-                      color: isDark ? Colors.white : FlarelineColors
-                          .darkBlackText),
+                      color: isSelected
+                          ? Colors.white
+                          : (isDark ? Colors.white : FlarelineColors.darkBlackText)),
                 )),
           ],
         ),
