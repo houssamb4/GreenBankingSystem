@@ -32,29 +32,44 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 1000;
+
     return ChangeNotifierProvider.value(
       value: _provider,
       child: Consumer<DashboardProvider>(
         builder: (context, provider, child) {
           return Scaffold(
             backgroundColor: AsanaColors.pageBg,
+            drawer: isMobile
+                ? Drawer(
+                    child: AsanaSidebar(
+                      currentRoute: '/dashboard',
+                      userName: provider.userName,
+                      userEmail: provider.userEmail,
+                      userInitials: provider.userInitials,
+                      isExpanded: true,
+                      onLogout: () => provider.logout(context),
+                    ),
+                  )
+                : null,
             body: Row(
               children: [
-                AsanaSidebar(
-                  currentRoute: '/dashboard',
-                  userName: provider.userName,
-                  userEmail: provider.userEmail,
-                  userInitials: provider.userInitials,
-                  isExpanded: _sidebarExpanded,
-                  onExpandedChanged: (expanded) {
-                    setState(() {
-                      _sidebarExpanded = expanded;
-                    });
-                  },
-                  onLogout: () => provider.logout(context),
-                ),
+                if (!isMobile)
+                  AsanaSidebar(
+                    currentRoute: '/dashboard',
+                    userName: provider.userName,
+                    userEmail: provider.userEmail,
+                    userInitials: provider.userInitials,
+                    isExpanded: _sidebarExpanded,
+                    onExpandedChanged: (expanded) {
+                      setState(() {
+                        _sidebarExpanded = expanded;
+                      });
+                    },
+                    onLogout: () => provider.logout(context),
+                  ),
                 Expanded(
-                  child: _buildMainContent(provider),
+                  child: _buildMainContent(provider, isMobile),
                 ),
               ],
             ),
@@ -64,10 +79,10 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget _buildMainContent(DashboardProvider provider) {
+  Widget _buildMainContent(DashboardProvider provider, bool isMobile) {
     return Column(
       children: [
-        _buildTopBar(provider),
+        _buildTopBar(provider, isMobile),
         if (provider.error != null)
           Container(
             margin: const EdgeInsets.all(16),
@@ -105,15 +120,15 @@ class _DashboardPageState extends State<DashboardPage> {
                   onRefresh: provider.refreshData,
                   color: AsanaColors.green,
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(32),
+                    padding: EdgeInsets.all(isMobile ? 16 : 32),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildWelcomeSection(provider),
                         const SizedBox(height: 32),
-                        _buildStatsCards(provider),
+                        _buildStatsCards(provider, isMobile),
                         const SizedBox(height: 32),
-                        _buildMainGrid(provider),
+                        _buildMainGrid(provider, isMobile),
                       ],
                     ),
                   ),
@@ -123,66 +138,80 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget _buildTopBar(DashboardProvider provider) {
-    return Container(
-      height: 64,
-      padding: const EdgeInsets.symmetric(horizontal: 32),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          bottom: BorderSide(color: AsanaColors.border),
+  Widget _buildTopBar(DashboardProvider provider, bool isMobile) {
+    return Builder(builder: (context) {
+      return Container(
+        height: 64,
+        padding: EdgeInsets.symmetric(horizontal: isMobile ? 16 : 32),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            bottom: BorderSide(color: AsanaColors.border),
+          ),
         ),
-      ),
-      child: Row(
-        children: [
-          Text(
-            'Home',
-            style: TextStyle(
-              color: AsanaColors.textPrimary,
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
+        child: Row(
+          children: [
+            if (isMobile) ...[
+              IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () => Scaffold.of(context).openDrawer(),
+              ),
+              const SizedBox(width: 8),
+            ],
+            Text(
+              'Home',
+              style: TextStyle(
+                color: AsanaColors.textPrimary,
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-          ),
-          const SizedBox(width: 16),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: AsanaColors.green.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.eco_rounded, size: 16, color: AsanaColors.green),
-                const SizedBox(width: 6),
-                Text(
-                  'Eco Score: ${provider.ecoScore.toStringAsFixed(0)}',
-                  style: TextStyle(
-                    color: AsanaColors.green,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                  ),
+            const SizedBox(width: 16),
+            if (!isMobile)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: AsanaColors.green.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(16),
                 ),
-              ],
-            ),
-          ),
-          const Spacer(),
-          _buildTopBarButton(Icons.add, 'Create', AsanaColors.green, () {
-            _showCreateTransactionDialog(context, provider);
-          }),
-          const SizedBox(width: 12),
-          IconButton(
-            icon: Icon(Icons.notifications_outlined,
-                color: AsanaColors.textSecondary),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(Icons.help_outline, color: AsanaColors.textSecondary),
-            onPressed: () {},
-          ),
-        ],
-      ),
-    );
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.eco_rounded, size: 16, color: AsanaColors.green),
+                    const SizedBox(width: 6),
+                    Text(
+                      'Eco Score: ${provider.ecoScore.toStringAsFixed(0)}',
+                      style: TextStyle(
+                        color: AsanaColors.green,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            const Spacer(),
+            _buildTopBarButton(
+                Icons.add, isMobile ? '' : 'Create', AsanaColors.green, () {
+              _showCreateTransactionDialog(context, provider);
+            }),
+            if (!isMobile) ...[
+              const SizedBox(width: 12),
+              IconButton(
+                icon: Icon(Icons.notifications_outlined,
+                    color: AsanaColors.textSecondary),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon:
+                    Icon(Icons.help_outline, color: AsanaColors.textSecondary),
+                onPressed: () {},
+              ),
+            ],
+          ],
+        ),
+      );
+    });
   }
 
   Widget _buildTopBarButton(
@@ -247,10 +276,10 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget _buildStatsCards(DashboardProvider provider) {
+  Widget _buildStatsCards(DashboardProvider provider, bool isMobile) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isWide = constraints.maxWidth > 900;
+        final isWide = constraints.maxWidth > 900 && !isMobile;
         // Use live backend data from provider
         final monthlyCarbon = provider.monthlyCarbon;
         final carbonPercentage = provider.carbonPercentage;
@@ -443,10 +472,10 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget _buildMainGrid(DashboardProvider provider) {
+  Widget _buildMainGrid(DashboardProvider provider, bool isMobile) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isWide = constraints.maxWidth > 1000;
+        final isWide = constraints.maxWidth > 1000 && !isMobile;
 
         if (isWide) {
           return Row(

@@ -114,33 +114,49 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 1000;
+
     return ChangeNotifierProvider.value(
       value: _provider,
       child: Consumer<ProfileProvider>(
         builder: (context, provider, child) {
           return Scaffold(
             backgroundColor: AsanaColors.pageBg,
+            drawer: isMobile
+                ? Drawer(
+                    child: AsanaSidebar(
+                      currentRoute: '/profile',
+                      userName: provider.userName,
+                      userEmail: provider.userEmail,
+                      userInitials: provider.userInitials,
+                      isExpanded: true,
+                      onExpandedChanged: (_) {},
+                      onLogout: () => provider.logout(context),
+                    ),
+                  )
+                : null,
             body: Row(
               children: [
-                AsanaSidebar(
-                  currentRoute: '/profile',
-                  userName: provider.userName,
-                  userEmail: provider.userEmail,
-                  userInitials: provider.userInitials,
-                  isExpanded: _sidebarExpanded,
-                  onExpandedChanged: (expanded) {
-                    setState(() {
-                      _sidebarExpanded = expanded;
-                    });
-                  },
-                  onLogout: () => provider.logout(context),
-                ),
+                if (!isMobile)
+                  AsanaSidebar(
+                    currentRoute: '/profile',
+                    userName: provider.userName,
+                    userEmail: provider.userEmail,
+                    userInitials: provider.userInitials,
+                    isExpanded: _sidebarExpanded,
+                    onExpandedChanged: (expanded) {
+                      setState(() {
+                        _sidebarExpanded = expanded;
+                      });
+                    },
+                    onLogout: () => provider.logout(context),
+                  ),
                 Expanded(
                   child: Column(
                     children: [
-                      _buildTopBar(provider),
+                      _buildTopBar(provider, isMobile),
                       Expanded(
-                        child: _buildContent(provider),
+                        child: _buildContent(provider, isMobile),
                       ),
                     ],
                   ),
@@ -153,10 +169,10 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildTopBar(ProfileProvider provider) {
+  Widget _buildTopBar(ProfileProvider provider, bool isMobile) {
     return Container(
       height: 64,
-      padding: const EdgeInsets.symmetric(horizontal: 32),
+      padding: EdgeInsets.symmetric(horizontal: isMobile ? 16 : 32),
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
@@ -165,11 +181,18 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       child: Row(
         children: [
+          if (isMobile) ...[
+            IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+            ),
+            const SizedBox(width: 8),
+          ],
           Text(
             'Profile',
             style: TextStyle(
               color: AsanaColors.textPrimary,
-              fontSize: 20,
+              fontSize: isMobile ? 18 : 20,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -178,15 +201,17 @@ class _ProfilePageState extends State<ProfilePage> {
             onPressed: () => Navigator.of(context).pushNamed('/settings'),
             icon:
                 Icon(Icons.settings_outlined, color: AsanaColors.textSecondary),
-            label: Text('Settings',
-                style: TextStyle(color: AsanaColors.textSecondary)),
+            label: isMobile
+                ? const SizedBox.shrink()
+                : Text('Settings',
+                    style: TextStyle(color: AsanaColors.textSecondary)),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildContent(ProfileProvider provider) {
+  Widget _buildContent(ProfileProvider provider, bool isMobile) {
     if (provider.isLoading) {
       return Center(
         child: CircularProgressIndicator(color: AsanaColors.green),
@@ -197,48 +222,57 @@ class _ProfilePageState extends State<ProfilePage> {
       onRefresh: provider.loadProfile,
       color: AsanaColors.green,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(32),
+        padding: EdgeInsets.all(isMobile ? 16 : 32),
         child: Column(
           children: [
-            _buildProfileHeader(provider),
+            _buildProfileHeader(provider, isMobile),
             const SizedBox(height: 32),
-            _buildStatsRow(provider),
+            _buildStatsRow(provider, isMobile),
             const SizedBox(height: 32),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    children: [
-                      _buildAccountSettings(provider),
-                      const SizedBox(height: 24),
-                      _buildCarbonSettings(provider),
-                    ],
+            if (isMobile) ...[
+              _buildAccountSettings(provider),
+              const SizedBox(height: 24),
+              _buildCarbonSettings(provider),
+              const SizedBox(height: 24),
+              _buildAchievements(),
+              const SizedBox(height: 24),
+              _buildSecurityCard(provider),
+            ] else
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      children: [
+                        _buildAccountSettings(provider),
+                        const SizedBox(height: 24),
+                        _buildCarbonSettings(provider),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(width: 24),
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                    children: [
-                      _buildAchievements(),
-                      const SizedBox(height: 24),
-                      _buildSecurityCard(provider),
-                    ],
+                  const SizedBox(width: 24),
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      children: [
+                        _buildAchievements(),
+                        const SizedBox(height: 24),
+                        _buildSecurityCard(provider),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildProfileHeader(ProfileProvider provider) {
+  Widget _buildProfileHeader(ProfileProvider provider, bool isMobile) {
     return Container(
-      padding: const EdgeInsets.all(32),
+      padding: EdgeInsets.all(isMobile ? 16 : 32),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -251,90 +285,135 @@ class _ProfilePageState extends State<ProfilePage> {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AsanaColors.green.withOpacity(0.2)),
       ),
-      child: Row(
+      child: Column(
         children: [
-          Container(
-            width: 100,
-            height: 100,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [AsanaColors.purple, AsanaColors.pink],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(50),
-              boxShadow: [
-                BoxShadow(
-                  color: AsanaColors.purple.withOpacity(0.3),
-                  blurRadius: 20,
-                  offset: const Offset(0, 8),
-                ),
-              ],
-            ),
-            child: Center(
-              child: Text(
-                provider.userInitials,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 36,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 32),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  provider.userName,
-                  style: TextStyle(
-                    color: AsanaColors.textPrimary,
-                    fontSize: 28,
-                    fontWeight: FontWeight.w700,
+          Row(
+            children: [
+              Container(
+                width: isMobile ? 60 : 100,
+                height: isMobile ? 60 : 100,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [AsanaColors.purple, AsanaColors.pink],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  provider.userEmail,
-                  style: TextStyle(
-                    color: AsanaColors.textSecondary,
-                    fontSize: 16,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  children: [
-                    _buildProfileBadge(
-                      icon: Icons.eco_rounded,
-                      label: 'Eco Warrior',
-                      color: AsanaColors.green,
-                    ),
-                    const SizedBox(width: 12),
-                    _buildProfileBadge(
-                      icon: Icons.star_rounded,
-                      label:
-                          'Score ${provider.carbonStats?.ecoScore.toStringAsFixed(0) ?? provider.currentUser?.ecoScore.toStringAsFixed(0) ?? "0"}',
-                      color: AsanaColors.yellow,
+                  borderRadius: BorderRadius.circular(isMobile ? 30 : 50),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AsanaColors.purple.withOpacity(0.3),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
                     ),
                   ],
                 ),
+                child: Center(
+                  child: Text(
+                    provider.userInitials,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: isMobile ? 24 : 36,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: isMobile ? 16 : 32),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      provider.userName,
+                      style: TextStyle(
+                        color: AsanaColors.textPrimary,
+                        fontSize: isMobile ? 20 : 28,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      provider.userEmail,
+                      style: TextStyle(
+                        color: AsanaColors.textSecondary,
+                        fontSize: isMobile ? 14 : 16,
+                      ),
+                    ),
+                    if (!isMobile) ...[
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          _buildProfileBadge(
+                            icon: Icons.eco_rounded,
+                            label: 'Eco Warrior',
+                            color: AsanaColors.green,
+                          ),
+                          const SizedBox(width: 12),
+                          _buildProfileBadge(
+                            icon: Icons.star_rounded,
+                            label:
+                                'Score ${provider.carbonStats?.ecoScore.toStringAsFixed(0) ?? provider.currentUser?.ecoScore.toStringAsFixed(0) ?? "0"}',
+                            color: AsanaColors.yellow,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              if (!isMobile)
+                OutlinedButton.icon(
+                  onPressed: () {
+                    // TODO: Edit profile
+                  },
+                  icon: Icon(Icons.edit_outlined,
+                      size: 18, color: AsanaColors.green),
+                  label: Text('Edit Profile',
+                      style: TextStyle(color: AsanaColors.green)),
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: AsanaColors.green),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 12),
+                  ),
+                ),
+            ],
+          ),
+          if (isMobile) ...[
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                _buildProfileBadge(
+                  icon: Icons.eco_rounded,
+                  label: 'Eco Warrior',
+                  color: AsanaColors.green,
+                ),
+                const SizedBox(width: 12),
+                _buildProfileBadge(
+                  icon: Icons.star_rounded,
+                  label:
+                      'Score ${provider.carbonStats?.ecoScore.toStringAsFixed(0) ?? provider.currentUser?.ecoScore.toStringAsFixed(0) ?? "0"}',
+                  color: AsanaColors.yellow,
+                ),
               ],
             ),
-          ),
-          OutlinedButton.icon(
-            onPressed: () {
-              // TODO: Edit profile
-            },
-            icon: Icon(Icons.edit_outlined, size: 18, color: AsanaColors.green),
-            label: Text('Edit Profile',
-                style: TextStyle(color: AsanaColors.green)),
-            style: OutlinedButton.styleFrom(
-              side: BorderSide(color: AsanaColors.green),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () {
+                  // TODO: Edit profile
+                },
+                icon: Icon(Icons.edit_outlined,
+                    size: 18, color: AsanaColors.green),
+                label: Text('Edit Profile',
+                    style: TextStyle(color: AsanaColors.green)),
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(color: AsanaColors.green),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+              ),
             ),
-          ),
+          ],
         ],
       ),
     );
@@ -370,7 +449,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildStatsRow(ProfileProvider provider) {
+  Widget _buildStatsRow(ProfileProvider provider, bool isMobile) {
     final stats = [
       (
         icon: Icons.eco_rounded,
@@ -401,6 +480,25 @@ class _ProfilePageState extends State<ProfilePage> {
             '${provider.carbonStats?.ecoScore.toStringAsFixed(0) ?? provider.currentUser?.ecoScore.toStringAsFixed(0) ?? "0"}/100',
       ),
     ];
+
+    if (isMobile) {
+      return GridView.count(
+        crossAxisCount: 2,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        mainAxisSpacing: 16,
+        crossAxisSpacing: 16,
+        childAspectRatio: 1.2,
+        children: stats.map((stat) {
+          return _buildStatCard(
+            icon: stat.icon,
+            color: stat.color,
+            title: stat.title,
+            value: stat.value,
+          );
+        }).toList(),
+      );
+    }
 
     return Row(
       children: stats.map((stat) {

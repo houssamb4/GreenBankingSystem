@@ -112,31 +112,47 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 1000;
+
     return ChangeNotifierProvider.value(
       value: _provider,
       child: Consumer<SettingsProvider>(
         builder: (context, provider, child) {
           return Scaffold(
             backgroundColor: AsanaColors.pageBg,
+            drawer: isMobile
+                ? Drawer(
+                    child: AsanaSidebar(
+                      currentRoute: '/settings',
+                      userName: provider.userName,
+                      userEmail: provider.userEmail,
+                      userInitials: provider.userInitials,
+                      isExpanded: true,
+                      onExpandedChanged: (_) {},
+                      onLogout: () => provider.logout(context),
+                    ),
+                  )
+                : null,
             body: Row(
               children: [
-                AsanaSidebar(
-                  currentRoute: '/settings',
-                  userName: provider.userName,
-                  userEmail: provider.userEmail,
-                  userInitials: provider.userInitials,
-                  isExpanded: _sidebarExpanded,
-                  onExpandedChanged: (expanded) {
-                    setState(() {
-                      _sidebarExpanded = expanded;
-                    });
-                  },
-                  onLogout: () => provider.logout(context),
-                ),
+                if (!isMobile)
+                  AsanaSidebar(
+                    currentRoute: '/settings',
+                    userName: provider.userName,
+                    userEmail: provider.userEmail,
+                    userInitials: provider.userInitials,
+                    isExpanded: _sidebarExpanded,
+                    onExpandedChanged: (expanded) {
+                      setState(() {
+                        _sidebarExpanded = expanded;
+                      });
+                    },
+                    onLogout: () => provider.logout(context),
+                  ),
                 Expanded(
                   child: Column(
                     children: [
-                      _buildTopBar(),
+                      _buildTopBar(isMobile),
                       Expanded(
                         child: _buildContent(provider),
                       ),
@@ -151,10 +167,10 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget _buildTopBar() {
+  Widget _buildTopBar(bool isMobile) {
     return Container(
       height: 64,
-      padding: const EdgeInsets.symmetric(horizontal: 32),
+      padding: EdgeInsets.symmetric(horizontal: isMobile ? 16 : 32),
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
@@ -163,11 +179,18 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       child: Row(
         children: [
+          if (isMobile) ...[
+            IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+            ),
+            const SizedBox(width: 8),
+          ],
           Text(
             'Settings',
             style: TextStyle(
               color: AsanaColors.textPrimary,
-              fontSize: 20,
+              fontSize: isMobile ? 18 : 20,
               fontWeight: FontWeight.w600,
             ),
           ),

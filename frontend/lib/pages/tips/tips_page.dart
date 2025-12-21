@@ -194,31 +194,47 @@ class _TipsPageState extends State<TipsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 1000;
+
     return ChangeNotifierProvider.value(
       value: _provider,
       child: Consumer<TipsProvider>(
         builder: (context, provider, child) {
           return Scaffold(
             backgroundColor: AsanaColors.pageBg,
+            drawer: isMobile
+                ? Drawer(
+                    child: AsanaSidebar(
+                      currentRoute: '/tips',
+                      userName: provider.userName,
+                      userEmail: provider.userEmail,
+                      userInitials: provider.userInitials,
+                      isExpanded: true,
+                      onExpandedChanged: (_) {},
+                      onLogout: () => provider.logout(context),
+                    ),
+                  )
+                : null,
             body: Row(
               children: [
-                AsanaSidebar(
-                  currentRoute: '/tips',
-                  userName: provider.userName,
-                  userEmail: provider.userEmail,
-                  userInitials: provider.userInitials,
-                  isExpanded: _sidebarExpanded,
-                  onExpandedChanged: (expanded) {
-                    setState(() {
-                      _sidebarExpanded = expanded;
-                    });
-                  },
-                  onLogout: () => provider.logout(context),
-                ),
+                if (!isMobile)
+                  AsanaSidebar(
+                    currentRoute: '/tips',
+                    userName: provider.userName,
+                    userEmail: provider.userEmail,
+                    userInitials: provider.userInitials,
+                    isExpanded: _sidebarExpanded,
+                    onExpandedChanged: (expanded) {
+                      setState(() {
+                        _sidebarExpanded = expanded;
+                      });
+                    },
+                    onLogout: () => provider.logout(context),
+                  ),
                 Expanded(
                   child: Column(
                     children: [
-                      _buildTopBar(),
+                      _buildTopBar(isMobile),
                       Expanded(
                         child: _buildContent(provider),
                       ),
@@ -233,10 +249,10 @@ class _TipsPageState extends State<TipsPage> {
     );
   }
 
-  Widget _buildTopBar() {
+  Widget _buildTopBar(bool isMobile) {
     return Container(
       height: 64,
-      padding: const EdgeInsets.symmetric(horizontal: 32),
+      padding: EdgeInsets.symmetric(horizontal: isMobile ? 16 : 32),
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
@@ -245,38 +261,46 @@ class _TipsPageState extends State<TipsPage> {
       ),
       child: Row(
         children: [
+          if (isMobile) ...[
+            IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+            ),
+            const SizedBox(width: 8),
+          ],
           Icon(Icons.lightbulb_outline, color: AsanaColors.orange, size: 24),
           const SizedBox(width: 12),
           Text(
             'Green Tips',
             style: TextStyle(
               color: AsanaColors.textPrimary,
-              fontSize: 20,
+              fontSize: isMobile ? 18 : 20,
               fontWeight: FontWeight.w600,
             ),
           ),
           const Spacer(),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: AsanaColors.green.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.eco, color: AsanaColors.green, size: 16),
-                const SizedBox(width: 4),
-                Text(
-                  '12 tips available',
-                  style: TextStyle(
-                    color: AsanaColors.green,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
+          if (!isMobile)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: AsanaColors.green.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.eco, color: AsanaColors.green, size: 16),
+                  const SizedBox(width: 4),
+                  Text(
+                    '12 tips available',
+                    style: TextStyle(
+                      color: AsanaColors.green,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
         ],
       ),
     );

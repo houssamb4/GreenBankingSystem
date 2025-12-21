@@ -117,30 +117,45 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 1000;
+
     return ChangeNotifierProvider.value(
       value: _provider,
       child: Consumer<TransactionsProvider>(
         builder: (context, provider, child) {
           return Scaffold(
             backgroundColor: AsanaColors.pageBg,
+            drawer: isMobile
+                ? Drawer(
+                    child: AsanaSidebar(
+                      currentRoute: '/transactions',
+                      isExpanded: true,
+                      onExpandedChanged: (_) {},
+                      onLogout: () async {
+                        await _provider.logout(context);
+                      },
+                    ),
+                  )
+                : null,
             body: Row(
               children: [
-                AsanaSidebar(
-                  currentRoute: '/transactions',
-                  isExpanded: _sidebarExpanded,
-                  onExpandedChanged: (expanded) {
-                    setState(() {
-                      _sidebarExpanded = expanded;
-                    });
-                  },
-                  onLogout: () async {
-                    await _provider.logout(context);
-                  },
-                ),
+                if (!isMobile)
+                  AsanaSidebar(
+                    currentRoute: '/transactions',
+                    isExpanded: _sidebarExpanded,
+                    onExpandedChanged: (expanded) {
+                      setState(() {
+                        _sidebarExpanded = expanded;
+                      });
+                    },
+                    onLogout: () async {
+                      await _provider.logout(context);
+                    },
+                  ),
                 Expanded(
                   child: Column(
                     children: [
-                      _buildTopBar(provider),
+                      _buildTopBar(provider, isMobile),
                       Expanded(
                         child: _buildContent(provider),
                       ),
@@ -155,33 +170,56 @@ class _TransactionsPageState extends State<TransactionsPage> {
     );
   }
 
-  Widget _buildTopBar(TransactionsProvider provider) {
+  Widget _buildTopBar(TransactionsProvider provider, bool isMobile) {
     return Container(
-      height: 64,
-      padding: const EdgeInsets.symmetric(horizontal: 32),
+      height: isMobile ? null : 64,
+      padding: EdgeInsets.symmetric(
+          horizontal: isMobile ? 16 : 32, vertical: isMobile ? 12 : 0),
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
           bottom: BorderSide(color: AsanaColors.border),
         ),
       ),
-      child: Row(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            'Transactions',
-            style: TextStyle(
-              color: AsanaColors.textPrimary,
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-            ),
+          Row(
+            children: [
+              if (isMobile) ...[
+                IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () => Scaffold.of(context).openDrawer(),
+                ),
+                const SizedBox(width: 8),
+              ],
+              Text(
+                'Transactions',
+                style: TextStyle(
+                  color: AsanaColors.textPrimary,
+                  fontSize: isMobile ? 18 : 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const Spacer(),
+              if (!isMobile) ...[
+                _buildFilterChips(provider),
+                const SizedBox(width: 16),
+              ],
+              _buildTopBarButton(
+                  Icons.add, isMobile ? '' : 'Add Transaction', AsanaColors.green,
+                  () {
+                _showCreateTransactionDialog(context, provider);
+              }),
+            ],
           ),
-          const Spacer(),
-          _buildFilterChips(provider),
-          const SizedBox(width: 16),
-          _buildTopBarButton(Icons.add, 'Add Transaction', AsanaColors.green,
-              () {
-            _showCreateTransactionDialog(context, provider);
-          }),
+          if (isMobile) ...[
+            const SizedBox(height: 12),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: _buildFilterChips(provider),
+            ),
+          ],
         ],
       ),
     );

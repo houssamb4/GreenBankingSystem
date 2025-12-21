@@ -90,6 +90,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 800;
+
     return ChangeNotifierProvider(
       create: (_) => RegisterProvider(),
       builder: (providerContext, child) {
@@ -99,19 +101,20 @@ class _RegisterPageState extends State<RegisterPage> {
               backgroundColor: AsanaColors.pageBg,
               body: Center(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(24),
+                  padding: EdgeInsets.all(isMobile ? 16 : 24),
                   child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 1000),
+                    constraints: BoxConstraints(maxWidth: isMobile ? 450 : 1000),
                     child: Row(
                       children: [
                         // Left side - Branding
-                        Expanded(
-                          child: _buildBrandingSide(),
-                        ),
-                        const SizedBox(width: 64),
+                        if (!isMobile)
+                          Expanded(
+                            child: _buildBrandingSide(),
+                          ),
+                        if (!isMobile) const SizedBox(width: 64),
                         // Right side - Form
                         Expanded(
-                          child: _buildFormSide(provider, providerContext),
+                          child: _buildFormSide(provider, providerContext, isMobile),
                         ),
                       ],
                     ),
@@ -238,9 +241,9 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Widget _buildFormSide(RegisterProvider provider, BuildContext providerContext) {
+  Widget _buildFormSide(RegisterProvider provider, BuildContext providerContext, bool isMobile) {
     return Container(
-      padding: const EdgeInsets.all(48),
+      padding: EdgeInsets.all(isMobile ? 24 : 48),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
@@ -258,16 +261,35 @@ class _RegisterPageState extends State<RegisterPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
+            if (isMobile) ...[
+              Center(
+                child: Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [AsanaColors.green, AsanaColors.teal],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(Icons.eco_rounded,
+                      color: Colors.white, size: 28),
+                ),
+              ),
+              const SizedBox(height: 24),
+            ],
             Text(
               'Create your account',
               style: TextStyle(
                 color: AsanaColors.textPrimary,
-                fontSize: 28,
+                fontSize: isMobile ? 24 : 28,
                 fontWeight: FontWeight.w700,
               ),
             ),
             const SizedBox(height: 8),
-            Row(
+            Wrap(
               children: [
                 Text(
                   'Already have an account? ',
@@ -295,37 +317,62 @@ class _RegisterPageState extends State<RegisterPage> {
               ],
             ),
             const SizedBox(height: 32),
-            Row(
-              children: [
-                Expanded(
-                  child: _buildTextField(
-                    controller: _firstNameController,
-                    label: 'First Name',
-                    hint: 'Your First Name',
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'First name is required';
-                      }
-                      return null;
-                    },
+            if (isMobile) ...[
+              _buildTextField(
+                controller: _firstNameController,
+                label: 'First Name',
+                hint: 'Your First Name',
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'First name is required';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 20),
+              _buildTextField(
+                controller: _lastNameController,
+                label: 'Last Name',
+                hint: 'Your Last Name',
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Last name is required';
+                  }
+                  return null;
+                },
+              ),
+            ] else
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildTextField(
+                      controller: _firstNameController,
+                      label: 'First Name',
+                      hint: 'Your First Name',
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'First name is required';
+                        }
+                        return null;
+                      },
+                    ),
                   ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildTextField(
-                    controller: _lastNameController,
-                    label: 'Your Last Name',
-                    hint: 'Last Name',
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Last name is required';
-                      }
-                      return null;
-                    },
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: _buildTextField(
+                      controller: _lastNameController,
+                      label: 'Last Name',
+                      hint: 'Your Last Name',
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Last name is required';
+                        }
+                        return null;
+                      },
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
             const SizedBox(height: 20),
             _buildTextField(
               controller: _emailController,

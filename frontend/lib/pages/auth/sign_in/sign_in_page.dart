@@ -69,26 +69,30 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 800;
+
     return Scaffold(
       backgroundColor: AsanaColors.pageBg,
       body: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(isMobile ? 16 : 24),
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 1000),
-            child: Row(
-              children: [
-                // Left side - Branding
-                Expanded(
-                  child: _buildBrandingSide(),
-                ),
-                const SizedBox(width: 64),
-                // Right side - Form
-                Expanded(
-                  child: _buildFormSide(),
-                ),
-              ],
-            ),
+            constraints: BoxConstraints(maxWidth: isMobile ? 450 : 1000),
+            child: isMobile
+                ? _buildFormSide(isMobile)
+                : Row(
+                    children: [
+                      // Left side - Branding
+                      Expanded(
+                        child: _buildBrandingSide(),
+                      ),
+                      const SizedBox(width: 64),
+                      // Right side - Form
+                      Expanded(
+                        child: _buildFormSide(isMobile),
+                      ),
+                    ],
+                  ),
           ),
         ),
       ),
@@ -209,9 +213,9 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  Widget _buildFormSide() {
+  Widget _buildFormSide(bool isMobile) {
     return Container(
-      padding: const EdgeInsets.all(48),
+      padding: EdgeInsets.all(isMobile ? 24 : 48),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),

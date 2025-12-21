@@ -42,20 +42,24 @@ class _SidebarState extends State<Sidebar> {
 
   @override
   Widget build(BuildContext context) {
+    final isDrawer = Scaffold.maybeOf(context)?.hasDrawer ?? false;
+
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovering = true),
       onExit: (_) => setState(() => _isHovering = false),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        width: _isExpanded ? 260 : 72,
+        width: isDrawer ? double.infinity : (_isExpanded ? 260 : 72),
         decoration: BoxDecoration(
           color: AsanaColors.sidebarBg,
-          border: Border(
-            right: BorderSide(
-              color: AsanaColors.border,
-              width: 1,
-            ),
-          ),
+          border: isDrawer
+              ? null
+              : Border(
+                  right: BorderSide(
+                    color: AsanaColors.border,
+                    width: 1,
+                  ),
+                ),
         ),
         child: Column(
           children: [
@@ -130,6 +134,8 @@ class _SidebarState extends State<Sidebar> {
   }
 
   Widget _buildHeader() {
+    final isDrawer = Scaffold.maybeOf(context)?.hasDrawer ?? false;
+
     return Container(
       padding: const EdgeInsets.all(16),
       child: Row(
@@ -153,7 +159,7 @@ class _SidebarState extends State<Sidebar> {
               ),
             ),
           ),
-          if (_isExpanded) ...[
+          if (_isExpanded || isDrawer) ...[
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -177,19 +183,25 @@ class _SidebarState extends State<Sidebar> {
                 ],
               ),
             ),
-            IconButton(
-              icon: Icon(
-                _isExpanded ? Icons.chevron_left : Icons.chevron_right,
-                color: AsanaColors.textSecondary,
-                size: 20,
+            if (!isDrawer)
+              IconButton(
+                icon: Icon(
+                  _isExpanded ? Icons.chevron_left : Icons.chevron_right,
+                  color: AsanaColors.textSecondary,
+                  size: 20,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isExpanded = !_isExpanded;
+                  });
+                  widget.onExpandedChanged?.call(_isExpanded);
+                },
+              )
+            else
+              IconButton(
+                icon: const Icon(Icons.close, size: 20, color: Colors.white),
+                onPressed: () => Navigator.pop(context),
               ),
-              onPressed: () {
-                setState(() {
-                  _isExpanded = !_isExpanded;
-                });
-                widget.onExpandedChanged?.call(_isExpanded);
-              },
-            ),
           ],
         ],
       ),
