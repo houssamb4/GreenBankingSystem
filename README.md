@@ -4,6 +4,9 @@ A comprehensive digital banking platform that **automatically calculates the car
 
 ![Java](https://img.shields.io/badge/Java-21-orange) ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4.0-brightgreen) ![Flutter](https://img.shields.io/badge/Flutter-3.24.4-blue) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue) ![GraphQL](https://img.shields.io/badge/GraphQL-22.0-E10098)
 
+<img width="600" height="560" alt="Cover" src="https://github.com/user-attachments/assets/340d65ca-f9e3-4e43-9d2b-4de30f678cb2" />
+
+
 ## 📖 Table of Contents
 
 - [Overview](#-overview)
@@ -14,10 +17,6 @@ A comprehensive digital banking platform that **automatically calculates the car
 - [Quick Start](#-quick-start)
 - [Documentation](#-documentation)
 - [Project Structure](#-project-structure)
-- [Development](#-development)
-- [Deployment](#-deployment)
-- [Contributing](#-contributing)
-- [License](#-license)
 
 ## 🎯 Overview
 
