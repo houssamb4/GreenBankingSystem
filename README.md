@@ -54,9 +54,11 @@ Green Banking System is a full-stack application that bridges the gap between fi
 
 ## 🏗️ Architecture
 
-The system follows a modern three-tier architecture with clear separation of concerns:
+### 🌍 Global System Architecture
+<img src="https://github.com/user-attachments/assets/f423e897-a767-4952-90d2-0c009b8bbf40" alt="Global Architecture" />
 
-<img width="3346" height="5528" alt="Untitled diagram-2025-12-20-171142" src="https://github.com/user-attachments/assets/2488ad4d-c3a1-451b-b673-2be12032a6e2" />
+### 🧠 Backend Logical Architecture
+<img src="https://github.com/user-attachments/assets/d19697c2-9a59-4794-a806-917cf8566752" alt="Backend Architecture" />
 
 ### Component Communication
 
