@@ -283,21 +283,26 @@ class _SignInPageState extends State<SignInPage> {
               ),
             ),
             const SizedBox(height: 8),
-            TextFormField(
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your email';
-                }
-                if (!value.contains('@')) {
-                  return 'Please enter a valid email';
-                }
-                return null;
-              },
-              decoration: _inputDecoration(
-                hintText: 'Enter your email',
-                prefixIcon: Icons.email_outlined,
+            Semantics(
+              label: 'usernameField',
+              container: true,
+              child: TextFormField(
+                key: const Key('usernameField'),
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  }
+                  if (!value.contains('@')) {
+                    return 'Please enter a valid email';
+                  }
+                  return null;
+                },
+                decoration: _inputDecoration(
+                  hintText: 'Enter your email',
+                  prefixIcon: Icons.email_outlined,
+                ),
               ),
             ),
             const SizedBox(height: 20),
@@ -311,33 +316,38 @@ class _SignInPageState extends State<SignInPage> {
               ),
             ),
             const SizedBox(height: 8),
-            TextFormField(
-              controller: _passwordController,
-              obscureText: _obscurePassword,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your password';
-                }
-                if (value.length < 6) {
-                  return 'Password must be at least 6 characters';
-                }
-                return null;
-              },
-              decoration: _inputDecoration(
-                hintText: 'Enter your password',
-                prefixIcon: Icons.lock_outline,
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _obscurePassword
-                        ? Icons.visibility_off_outlined
-                        : Icons.visibility_outlined,
-                    color: AsanaColors.textMuted,
+            Semantics(
+              label: 'passwordField',
+              container: true,
+              child: TextFormField(
+                key: const Key('passwordField'),
+                controller: _passwordController,
+                obscureText: _obscurePassword,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your password';
+                  }
+                  if (value.length < 6) {
+                    return 'Password must be at least 6 characters';
+                  }
+                  return null;
+                },
+                decoration: _inputDecoration(
+                  hintText: 'Enter your password',
+                  prefixIcon: Icons.lock_outline,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscurePassword
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined,
+                      color: AsanaColors.textMuted,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
                   ),
-                  onPressed: () {
-                    setState(() {
-                      _obscurePassword = !_obscurePassword;
-                    });
-                  },
                 ),
               ),
             ),
@@ -346,6 +356,7 @@ class _SignInPageState extends State<SignInPage> {
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
+                key: const Key('forgotPasswordButton'),
                 onPressed: () {
                   // TODO: Implement forgot password
                 },
@@ -363,33 +374,38 @@ class _SignInPageState extends State<SignInPage> {
             SizedBox(
               width: double.infinity,
               height: 50,
-              child: ElevatedButton(
-                onPressed: _isLoading ? null : _signIn,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AsanaColors.green,
-                  foregroundColor: Colors.white,
-                  disabledBackgroundColor: AsanaColors.green.withOpacity(0.6),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+              child: Semantics(
+                label: 'loginButton',
+                button: true,
+                child: ElevatedButton(
+                  key: const Key('loginButton'),
+                  onPressed: _isLoading ? null : _signIn,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AsanaColors.green,
+                    foregroundColor: Colors.white,
+                    disabledBackgroundColor: AsanaColors.green.withOpacity(0.6),
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
+                  child: _isLoading
+                      ? const SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : const Text(
+                          'Sign in',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                 ),
-                child: _isLoading
-                    ? const SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2,
-                        ),
-                      )
-                    : const Text(
-                        'Sign in',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
               ),
             ),
             const SizedBox(height: 24),
@@ -416,6 +432,7 @@ class _SignInPageState extends State<SignInPage> {
               children: [
                 Expanded(
                   child: _buildSocialButtonWithImage(
+                    key: const Key('googleSignInButton'),
                     imagePath: 'assets/logo/google_logo.svg',
                     label: 'Google',
                     onPressed: () {
@@ -426,6 +443,7 @@ class _SignInPageState extends State<SignInPage> {
                 const SizedBox(width: 16),
                 Expanded(
                   child: _buildSocialButton(
+                    key: const Key('appleSignInButton'),
                     icon: FontAwesomeIcons.apple,
                     label: 'Apple',
                     onPressed: () {
@@ -449,6 +467,7 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                   TextButton(
+                    key: const Key('signUpLink'),
                     onPressed: () {
                       Navigator.of(context).pushReplacementNamed('/register');
                     },
@@ -512,11 +531,13 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Widget _buildSocialButton({
+    Key? key,
     required IconData icon,
     required String label,
     required VoidCallback onPressed,
   }) {
     return OutlinedButton(
+      key: key,
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
         padding: const EdgeInsets.symmetric(vertical: 14),
@@ -547,11 +568,13 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Widget _buildSocialButtonWithImage({
+    Key? key,
     required String imagePath,
     required String label,
     required VoidCallback onPressed,
   }) {
     return OutlinedButton(
+      key: key,
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
         padding: const EdgeInsets.symmetric(vertical: 14),

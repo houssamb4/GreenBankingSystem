@@ -67,8 +67,17 @@ public class UserService {
         OffsetDateTime startDate = OffsetDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
         OffsetDateTime endDate = startDate.plusMonths(1);
         BigDecimal monthlyCarbon = transactionRepository.getMonthlyCarbonByUserId(userId, startDate, endDate);
+        
+        // Calculate total carbon from all transactions
+        BigDecimal totalCarbon = transactionRepository.getTotalCarbonByUserId(userId);
+        if (totalCarbon == null) {
+            totalCarbon = BigDecimal.ZERO;
+        }
 
         BigDecimal budget = user.getMonthlyCarbonBudget();
+
+        // Update total carbon saved
+        user.setTotalCarbonSaved(totalCarbon);
 
         if (budget.compareTo(BigDecimal.ZERO) <= 0) {
             user.setEcoScore(100);

@@ -8,7 +8,6 @@ class GraphQLService {
 
   GraphQLService._();
 
-  // Override with: flutter run --dart-define=GRAPHQL_ENDPOINT=http://localhost:8081/graphql
   static const String _endpoint = String.fromEnvironment(
     'GRAPHQL_ENDPOINT',
     defaultValue: 'http://localhost:8081/graphql',

@@ -319,6 +319,7 @@ class _RegisterPageState extends State<RegisterPage> {
             const SizedBox(height: 32),
             if (isMobile) ...[
               _buildTextField(
+                key: const Key('firstNameField'),
                 controller: _firstNameController,
                 label: 'First Name',
                 hint: 'Your First Name',
@@ -331,6 +332,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               const SizedBox(height: 20),
               _buildTextField(
+                key: const Key('lastNameField'),
                 controller: _lastNameController,
                 label: 'Last Name',
                 hint: 'Your Last Name',
@@ -346,6 +348,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 children: [
                   Expanded(
                     child: _buildTextField(
+                      key: const Key('firstNameField'),
                       controller: _firstNameController,
                       label: 'First Name',
                       hint: 'Your First Name',
@@ -360,6 +363,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(width: 16),
                   Expanded(
                     child: _buildTextField(
+                      key: const Key('lastNameField'),
                       controller: _lastNameController,
                       label: 'Last Name',
                       hint: 'Your Last Name',
@@ -375,6 +379,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             const SizedBox(height: 20),
             _buildTextField(
+              key: const Key('emailField'),
               controller: _emailController,
               label: 'Email',
               hint: 'Your Email',
@@ -391,6 +396,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             const SizedBox(height: 20),
             _buildTextField(
+              key: const Key('passwordField'),
               controller: _passwordController,
               label: 'Password',
               hint: '••••••••',
@@ -412,6 +418,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             const SizedBox(height: 20),
             _buildTextField(
+              key: const Key('confirmPasswordField'),
               controller: _confirmPasswordController,
               label: 'Confirm Password',
               hint: '••••••••',
@@ -436,6 +443,7 @@ class _RegisterPageState extends State<RegisterPage> {
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
+                key: const Key('registerButton'),
                 onPressed: provider.isLoading
                     ? null
                     : () => _handleRegister(providerContext),
@@ -517,6 +525,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Widget _buildTextField({
+    Key? key,
     required TextEditingController controller,
     required String label,
     required String hint,
@@ -538,6 +547,7 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         const SizedBox(height: 8),
         TextFormField(
+          key: key,
           controller: controller,
           keyboardType: keyboardType,
           obscureText: obscureText,

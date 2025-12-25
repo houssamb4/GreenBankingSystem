@@ -38,8 +38,10 @@ class _DashboardPageState extends State<DashboardPage> {
       value: _provider,
       child: Consumer<DashboardProvider>(
         builder: (context, provider, child) {
-          return Scaffold(
-            backgroundColor: AsanaColors.pageBg,
+          return Semantics(
+            label: 'dashboard',
+            child: Scaffold(
+              backgroundColor: AsanaColors.pageBg,
             drawer: isMobile
                 ? Drawer(
                     child: AsanaSidebar(
@@ -73,6 +75,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               ],
             ),
+          ),
           );
         },
       ),
@@ -181,6 +184,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     const SizedBox(width: 6),
                     Text(
                       'Eco Score: ${provider.ecoScore.toStringAsFixed(0)}',
+                      key: const Key('ecoScoreText'),
                       style: TextStyle(
                         color: AsanaColors.green,
                         fontSize: 13,
@@ -192,9 +196,13 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
             const Spacer(),
             _buildTopBarButton(
-                Icons.add, isMobile ? '' : 'Create', AsanaColors.green, () {
-              _showCreateTransactionDialog(context, provider);
-            }),
+                key: const Key('createTransactionButton'),
+                icon: Icons.add,
+                label: isMobile ? '' : 'Create',
+                color: AsanaColors.green,
+                onTap: () {
+                  _showCreateTransactionDialog(context, provider);
+                }),
             if (!isMobile) ...[
               const SizedBox(width: 12),
               IconButton(
@@ -214,9 +222,15 @@ class _DashboardPageState extends State<DashboardPage> {
     });
   }
 
-  Widget _buildTopBarButton(
-      IconData icon, String label, Color color, VoidCallback onTap) {
+  Widget _buildTopBarButton({
+    Key? key,
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
     return Material(
+      key: key,
       color: color,
       borderRadius: BorderRadius.circular(8),
       child: InkWell(
@@ -1026,6 +1040,7 @@ class _DashboardPageState extends State<DashboardPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
+                key: const Key('amountField'),
                 controller: amountController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
@@ -1038,6 +1053,7 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
               const SizedBox(height: 16),
               TextField(
+                key: const Key('merchantField'),
                 controller: merchantController,
                 decoration: InputDecoration(
                   labelText: 'Merchant',
@@ -1048,6 +1064,7 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
+                key: const Key('categoryDropdown'),
                 value: selectedCategory,
                 decoration: InputDecoration(
                   labelText: 'Category',
@@ -1064,6 +1081,7 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
               const SizedBox(height: 16),
               TextField(
+                key: const Key('descriptionField'),
                 controller: descriptionController,
                 maxLines: 2,
                 decoration: InputDecoration(
@@ -1078,11 +1096,13 @@ class _DashboardPageState extends State<DashboardPage> {
         ),
         actions: [
           TextButton(
+            key: const Key('cancelTransactionButton'),
             onPressed: () => Navigator.pop(context),
             child: Text('Cancel',
                 style: TextStyle(color: AsanaColors.textSecondary)),
           ),
           ElevatedButton(
+            key: const Key('submitTransactionButton'),
             onPressed: () async {
               final amount = double.tryParse(amountController.text);
               if (amount != null && merchantController.text.isNotEmpty) {
