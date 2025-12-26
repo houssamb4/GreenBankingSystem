@@ -175,7 +175,7 @@ class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
                 border: Border.all(color: const Color(0xFFE5E7EB)),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withValues(alpha: 0.05),
                     blurRadius: 8,
                     spreadRadius: 0,
                   ),
@@ -295,7 +295,7 @@ class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
                 border: Border.all(color: const Color(0xFFE5E7EB)),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withValues(alpha: 0.05),
                     blurRadius: 8,
                     spreadRadius: 0,
                   ),
@@ -330,7 +330,7 @@ class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
                 color: const Color(0xFFF0FDF4),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: const Color(0xFF10B981).withOpacity(0.3),
+                  color: const Color(0xFF10B981).withValues(alpha: 0.3),
                 ),
               ),
               child: Column(
@@ -514,7 +514,7 @@ class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                value: categories.contains(selectedCategory) ? selectedCategory : 'OTHER',
+                initialValue: categories.contains(selectedCategory) ? selectedCategory : 'OTHER',
                 decoration: InputDecoration(
                   labelText: 'Category',
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),

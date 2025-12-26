@@ -94,7 +94,7 @@ class _DataProvider extends ChangeNotifier {
       Model('New South Wales', Color.fromRGBO(255, 215, 0, 1.0),
           '       New\nSouth Wales'),
       Model('Queensland', Color.fromRGBO(72, 209, 204, 1.0), 'Queensland'),
-      Model('Northern Territory', Colors.red.withOpacity(0.85),
+      Model('Northern Territory', Colors.red.withValues(alpha: 0.85),
           'Northern\nTerritory'),
       Model('Victoria', Color.fromRGBO(171, 56, 224, 0.75), 'Victoria'),
       Model('South Australia', Color.fromRGBO(126, 247, 74, 0.75),

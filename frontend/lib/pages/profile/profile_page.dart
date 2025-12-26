@@ -276,14 +276,14 @@ class _ProfilePageState extends State<ProfilePage> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AsanaColors.green.withOpacity(0.1),
-            AsanaColors.teal.withOpacity(0.05),
+            AsanaColors.green.withValues(alpha: 0.1),
+            AsanaColors.teal.withValues(alpha: 0.05),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AsanaColors.green.withOpacity(0.2)),
+        border: Border.all(color: AsanaColors.green.withValues(alpha: 0.2)),
       ),
       child: Column(
         children: [
@@ -301,7 +301,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(isMobile ? 30 : 50),
                   boxShadow: [
                     BoxShadow(
-                      color: AsanaColors.purple.withOpacity(0.3),
+                      color: AsanaColors.purple.withValues(alpha: 0.3),
                       blurRadius: 20,
                       offset: const Offset(0, 8),
                     ),
@@ -427,9 +427,9 @@ class _ProfilePageState extends State<ProfilePage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -538,7 +538,7 @@ class _ProfilePageState extends State<ProfilePage> {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(icon, color: color, size: 20),
@@ -681,9 +681,9 @@ class _ProfilePageState extends State<ProfilePage> {
               return Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: achievement.color.withOpacity(0.1),
+                  color: achievement.color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: achievement.color.withOpacity(0.2)),
+                  border: Border.all(color: achievement.color.withValues(alpha: 0.2)),
                 ),
                 child: Column(
                   children: [
@@ -746,7 +746,7 @@ class _ProfilePageState extends State<ProfilePage> {
               icon: const Icon(Icons.logout_rounded),
               label: const Text('Log Out'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AsanaColors.red.withOpacity(0.1),
+                backgroundColor: AsanaColors.red.withValues(alpha: 0.1),
                 foregroundColor: AsanaColors.red,
                 elevation: 0,
                 padding: const EdgeInsets.symmetric(vertical: 12),

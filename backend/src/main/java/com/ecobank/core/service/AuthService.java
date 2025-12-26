@@ -1,92 +1,101 @@
 package com.ecobank.core.service;
 
-
-import com.ecobank.core.dto.LoginRequest;
-import com.ecobank.core.dto.RegisterRequest;
-import com.ecobank.core.dto.AuthResponse;
+import com.ecobank.core.entity.Account;
 import com.ecobank.core.entity.User;
+import com.ecobank.core.repository.AccountRepository;
 import com.ecobank.core.repository.UserRepository;
 import com.ecobank.core.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.math.BigDecimal;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 @Transactional
 public class AuthService {
-    
+
     private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final UserService userService;
-    
-    public AuthResponse register(RegisterRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already exists");
+    private final JwtTokenProvider tokenProvider;
+
+    public Map<String, Object> register(String email, String password, String firstName, String lastName) {
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new RuntimeException("User already exists");
         }
-        
-        User user = new User();
-        user.setEmail(request.getEmail());
-        user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setPhoneNumber(request.getPhoneNumber());
-        
-        User savedUser = userRepository.save(user);
-        
-        String token = jwtTokenProvider.generateToken(savedUser.getEmail());
-        String refreshToken = jwtTokenProvider.generateRefreshToken(savedUser.getEmail());
-        
-        return AuthResponse.builder()
-                .token(token)
-                .refreshToken(refreshToken)
-                .user(userService.mapToUserProfile(savedUser))
+
+        User user = User.builder()
+                .email(email)
+                .passwordHash(passwordEncoder.encode(password))
+                .firstName(firstName)
+                .lastName(lastName)
+                .fullName(firstName + " " + lastName)
+                .isActive(true)
+                .twoFactorEnabled(false)
+                .preferences(new HashMap<>())
                 .build();
-    }
-    
-    public AuthResponse login(LoginRequest request) {
-        Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
-        
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        
-        String token = jwtTokenProvider.generateToken(user.getEmail());
-        String refreshToken = jwtTokenProvider.generateRefreshToken(user.getEmail());
-        
-        return AuthResponse.builder()
-                .token(token)
-                .refreshToken(refreshToken)
-                .user(userService.mapToUserProfile(user))
+
+        user = userRepository.saveAndFlush(user);
+
+        // Create default account
+        Account account = Account.builder()
+                .user(user)
+                .name("Compte Principal")
+                .accountType("CHECKING")
+                .currency("EUR")
+                .balance(BigDecimal.ZERO)
+                .isActive(true)
                 .build();
+        
+        accountRepository.save(account);
+
+        String token = tokenProvider.generateToken(email);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("token", token);
+        result.put("user", convertUserToMap(user));
+        
+        return result;
     }
-    
-    public AuthResponse refreshToken(String refreshToken) {
-        if (!jwtTokenProvider.validateToken(refreshToken)) {
-            throw new RuntimeException("Invalid refresh token");
+
+    public Map<String, Object> login(String email, String password) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+
+        if (!passwordEncoder.matches(password, user.getPasswordHash())) {
+            throw new RuntimeException("Invalid credentials");
         }
+
+        String token = tokenProvider.generateToken(email);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("token", token);
+        result.put("user", convertUserToMap(user));
         
-        String email = jwtTokenProvider.getUsernameFromToken(refreshToken);
+        return result;
+    }
+
+    public Map<String, Object> getCurrentUser(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        
-        String newToken = jwtTokenProvider.generateToken(user.getEmail());
-        String newRefreshToken = jwtTokenProvider.generateRefreshToken(user.getEmail());
-        
-        return AuthResponse.builder()
-                .token(newToken)
-                .refreshToken(newRefreshToken)
-                .user(userService.mapToUserProfile(user))
-                .build();
+        return convertUserToMap(user);
+    }
+
+    private Map<String, Object> convertUserToMap(User user) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", user.getId().toString());
+        map.put("email", user.getEmail());
+        map.put("firstName", user.getFirstName());
+        map.put("lastName", user.getLastName());
+        map.put("fullName", user.getFullName());
+        map.put("phoneNumber", user.getPhoneNumber());
+        map.put("createdAt", user.getCreatedAt());
+        map.put("updatedAt", user.getUpdatedAt());
+        return map;
     }
 }

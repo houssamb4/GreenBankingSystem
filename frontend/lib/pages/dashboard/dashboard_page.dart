@@ -91,9 +91,9 @@ class _DashboardPageState extends State<DashboardPage> {
             margin: const EdgeInsets.all(16),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AsanaColors.red.withOpacity(0.1),
+              color: AsanaColors.red.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: AsanaColors.red.withOpacity(0.3)),
+              border: Border.all(color: AsanaColors.red.withValues(alpha: 0.3)),
             ),
             child: Row(
               children: [
@@ -174,7 +174,7 @@ class _DashboardPageState extends State<DashboardPage> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: AsanaColors.green.withOpacity(0.1),
+                  color: AsanaColors.green.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Row(
@@ -389,7 +389,7 @@ class _DashboardPageState extends State<DashboardPage> {
         border: Border.all(color: AsanaColors.border),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -404,7 +404,7 @@ class _DashboardPageState extends State<DashboardPage> {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: card.iconColor.withOpacity(0.1),
+                  color: card.iconColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(card.icon, color: card.iconColor, size: 22),
@@ -415,7 +415,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: (card.trendUp ? AsanaColors.green : AsanaColors.red)
-                        .withOpacity(0.1),
+                        .withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
@@ -598,7 +598,7 @@ class _DashboardPageState extends State<DashboardPage> {
               decoration: BoxDecoration(
                 color: (categoryColors[transaction.category] ??
                         AsanaColors.textSecondary)
-                    .withOpacity(0.1),
+                    .withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(
@@ -831,7 +831,7 @@ class _DashboardPageState extends State<DashboardPage> {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(icon, color: color, size: 24),
@@ -887,7 +887,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: AsanaColors.green.withOpacity(0.1),
+                    color: AsanaColors.green.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Icon(tip.icon, color: AsanaColors.green, size: 18),
@@ -936,7 +936,7 @@ class _DashboardPageState extends State<DashboardPage> {
         border: Border.all(color: AsanaColors.border),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),

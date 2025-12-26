@@ -117,7 +117,7 @@ class _SignInPageState extends State<SignInPage> {
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: AsanaColors.green.withOpacity(0.3),
+                color: AsanaColors.green.withValues(alpha: 0.3),
                 blurRadius: 20,
                 offset: const Offset(0, 8),
               ),
@@ -183,7 +183,7 @@ class _SignInPageState extends State<SignInPage> {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: AsanaColors.green.withOpacity(0.1),
+            color: AsanaColors.green.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(icon, color: AsanaColors.green, size: 24),
@@ -221,7 +221,7 @@ class _SignInPageState extends State<SignInPage> {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withValues(alpha: 0.08),
             blurRadius: 40,
             offset: const Offset(0, 8),
           ),
@@ -254,9 +254,9 @@ class _SignInPageState extends State<SignInPage> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: AsanaColors.red.withOpacity(0.1),
+                  color: AsanaColors.red.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AsanaColors.red.withOpacity(0.3)),
+                  border: Border.all(color: AsanaColors.red.withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   children: [
@@ -383,7 +383,7 @@ class _SignInPageState extends State<SignInPage> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AsanaColors.green,
                     foregroundColor: Colors.white,
-                    disabledBackgroundColor: AsanaColors.green.withOpacity(0.6),
+                    disabledBackgroundColor: AsanaColors.green.withValues(alpha: 0.6),
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),

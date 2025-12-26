@@ -45,44 +45,53 @@ class DashboardProvider extends ChangeNotifier {
   List<Transaction> get recentTransactions => _transactions.take(5).toList();
 
   Future<void> loadDashboardData() async {
+    print('📊 DASHBOARD PROVIDER: Loading dashboard data...');
     _isLoading = true;
     _error = null;
     notifyListeners();
 
     try {
       // Get user ID from storage
+      print('📊 DASHBOARD PROVIDER: Retrieving user ID from storage...');
       final userId = await _tokenStorage.getUserId();
-      print('DEBUG: User ID from storage: $userId');
+      print('📊 DASHBOARD PROVIDER: User ID: $userId');
 
       // Load user data
+      print('📊 DASHBOARD PROVIDER: Loading user data...');
       final userData = await _authService.getCurrentUser();
-      print('DEBUG: User data loaded: $userData');
       if (userData != null) {
         _currentUser = User.fromJson(userData);
-        print('DEBUG: Current user: ${_currentUser?.fullName}');
+        print('✅ DASHBOARD PROVIDER: User data loaded - ${_currentUser?.fullName}');
+      } else {
+        print('⚠️ DASHBOARD PROVIDER: No user data returned');
       }
 
       // Load carbon stats
       if (userId != null) {
-        print('DEBUG: Loading carbon stats for user: $userId');
+        print('📊 DASHBOARD PROVIDER: Loading carbon stats...');
         _carbonStats = await _transactionService.getCarbonStats(userId);
-        print('DEBUG: Carbon stats: ${_carbonStats?.monthlyCarbon}');
-        
-        print('DEBUG: Loading transactions for user: $userId');
+        if (_carbonStats != null) {
+          print('✅ DASHBOARD PROVIDER: Carbon stats loaded - Monthly: ${_carbonStats?.monthlyCarbon} g CO2e');
+        }
+
+        print('📊 DASHBOARD PROVIDER: Loading transactions...');
         _transactions = await _transactionService.getUserTransactions(userId);
-        print('DEBUG: Loaded ${_transactions.length} transactions');
-        
-        print('DEBUG: Loading category breakdown for user: $userId');
+        print('✅ DASHBOARD PROVIDER: Loaded ${_transactions.length} transactions');
+
+        print('📊 DASHBOARD PROVIDER: Loading category breakdown...');
         _categoryBreakdown =
             await _transactionService.getCategoryBreakdown(userId);
-        print('DEBUG: Loaded ${_categoryBreakdown.length} categories');
+        print('✅ DASHBOARD PROVIDER: Loaded ${_categoryBreakdown.length} categories');
+      } else {
+        print('⚠️ DASHBOARD PROVIDER: No user ID, skipping data load');
       }
 
       _isLoading = false;
+      print('✅ DASHBOARD PROVIDER: Dashboard data loaded successfully');
       notifyListeners();
     } catch (e, stackTrace) {
-      print('DEBUG ERROR: $e');
-      print('DEBUG STACK: $stackTrace');
+      print('❌ DASHBOARD PROVIDER ERROR: Failed to load dashboard data: $e');
+      print('❌ DASHBOARD PROVIDER ERROR: Stack trace: $stackTrace');
       _error = e.toString();
       _isLoading = false;
       notifyListeners();
@@ -90,6 +99,7 @@ class DashboardProvider extends ChangeNotifier {
   }
 
   Future<void> refreshData() async {
+    print('🔄 DASHBOARD PROVIDER: Refreshing dashboard data...');
     await loadDashboardData();
   }
 
@@ -99,8 +109,9 @@ class DashboardProvider extends ChangeNotifier {
     required String merchant,
     String? description,
   }) async {
+    print('💳 DASHBOARD PROVIDER: Creating transaction...');
+    print('💳 DASHBOARD PROVIDER: Amount: €$amount, Category: $category, Merchant: $merchant');
     try {
-      print('DEBUG: Creating transaction: amount=$amount, category=$category, merchant=$merchant');
       final transaction = await _transactionService.createTransaction(
         amount: amount,
         category: category,
@@ -109,18 +120,19 @@ class DashboardProvider extends ChangeNotifier {
       );
 
       if (transaction != null) {
-        print('DEBUG: Transaction created successfully: ${transaction.id}');
+        print('✅ DASHBOARD PROVIDER: Transaction created - ID: ${transaction.id}');
         _transactions.insert(0, transaction);
+        print('🔄 DASHBOARD PROVIDER: Refreshing dashboard stats...');
         await refreshData(); // Refresh stats after new transaction
         notifyListeners();
       } else {
-        print('DEBUG: Transaction creation returned null');
+        print('⚠️ DASHBOARD PROVIDER: Transaction creation returned null');
       }
 
       return transaction;
     } catch (e, stackTrace) {
-      print('DEBUG ERROR creating transaction: $e');
-      print('DEBUG STACK: $stackTrace');
+      print('❌ DASHBOARD PROVIDER ERROR: Failed to create transaction: $e');
+      print('❌ DASHBOARD PROVIDER ERROR: Stack trace: $stackTrace');
       _error = e.toString();
       notifyListeners();
       return null;
@@ -128,26 +140,38 @@ class DashboardProvider extends ChangeNotifier {
   }
 
   Future<void> updateCarbonBudget(double budget) async {
+    print('⚙️ DASHBOARD PROVIDER: Updating carbon budget to: $budget g CO2e');
     try {
       await _transactionService.updateCarbonBudget(budget);
+      print('✅ DASHBOARD PROVIDER: Budget updated, refreshing data...');
       await refreshData();
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print('❌ DASHBOARD PROVIDER ERROR: Failed to update carbon budget: $e');
+      print('❌ DASHBOARD PROVIDER ERROR: Stack trace: $stackTrace');
       _error = e.toString();
       notifyListeners();
     }
   }
 
   Future<void> logout(BuildContext context) async {
-    await _authService.logout();
-    _currentUser = null;
-    _carbonStats = null;
-    _transactions = [];
-    _categoryBreakdown = [];
-    notifyListeners();
+    print('🚪 DASHBOARD PROVIDER: Logging out user...');
+    try {
+      await _authService.logout();
+      _currentUser = null;
+      _carbonStats = null;
+      _transactions = [];
+      _categoryBreakdown = [];
+      print('✅ DASHBOARD PROVIDER: User logged out, clearing dashboard data');
+      notifyListeners();
 
-    if (context.mounted) {
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil('/signIn', (route) => false);
+      if (context.mounted) {
+        print('🚪 DASHBOARD PROVIDER: Navigating to sign-in page');
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil('/signIn', (route) => false);
+      }
+    } catch (e, stackTrace) {
+      print('❌ DASHBOARD PROVIDER ERROR: Logout failed: $e');
+      print('❌ DASHBOARD PROVIDER ERROR: Stack trace: $stackTrace');
     }
   }
 

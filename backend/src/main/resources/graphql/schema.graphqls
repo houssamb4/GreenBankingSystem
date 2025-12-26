@@ -72,7 +72,6 @@ input TransactionInput {
 # Response Types
 type AuthResponse {
     token: String!
-    refreshToken: String!
     user: User!
 }
 
@@ -81,25 +80,21 @@ type User {
     email: String!
     firstName: String
     lastName: String
+    fullName: String
     phoneNumber: String
-    ecoScore: Int!
-    totalCarbonSaved: BigDecimal!
-    monthlyCarbonBudget: BigDecimal!
-    transactions: [Transaction!]
     createdAt: DateTime!
     updatedAt: DateTime!
 }
 
 type Transaction {
     id: UUID!
-    user: User!
     amount: BigDecimal!
     currency: String!
     category: String!
-    merchant: String
+    merchantName: String
     description: String
     carbonFootprint: BigDecimal!
-    transactionDate: DateTime!
+    date: DateTime!
     createdAt: DateTime!
     updatedAt: DateTime!
 }

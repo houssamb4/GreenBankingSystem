@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:greenpay/core/services/auth_service.dart';
-import 'package:greenpay/core/services/token_storage_service.dart';
 import 'package:greenpay/core/theme/asana_colors.dart';
 import 'package:greenpay/widgets/sidebar.dart';
 
 class SettingsProvider extends ChangeNotifier {
   final AuthService _authService = AuthService.instance;
-  final TokenStorageService _tokenStorage = TokenStorageService.instance;
 
   bool _darkMode = false;
   bool _carbonAlerts = true;
@@ -389,7 +387,7 @@ class _SettingsPageState extends State<SettingsPage> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AsanaColors.red.withOpacity(0.3)),
+        border: Border.all(color: AsanaColors.red.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -429,7 +427,7 @@ class _SettingsPageState extends State<SettingsPage> {
               onPressed: () => _showDeleteAccountDialog(),
               style: OutlinedButton.styleFrom(
                 foregroundColor: AsanaColors.red,
-                side: BorderSide(color: AsanaColors.red.withOpacity(0.5)),
+                side: BorderSide(color: AsanaColors.red.withValues(alpha: 0.5)),
                 padding: const EdgeInsets.symmetric(vertical: 12),
               ),
               child: const Text('Delete Account'),
@@ -514,7 +512,7 @@ class _SettingsPageState extends State<SettingsPage> {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: AsanaColors.green,
+            activeTrackColor: AsanaColors.green,
           ),
         ],
       ),

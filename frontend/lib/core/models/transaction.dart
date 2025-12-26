@@ -25,12 +25,12 @@ class Transaction {
     return Transaction(
       id: json['id'] as String,
       amount: (json['amount'] as num).toDouble(),
-      currency: json['currency'] as String? ?? 'USD',
+      currency: json['currency'] as String? ?? 'EUR',
       category: json['category'] as String,
-      merchant: json['merchant'] as String,
+      merchant: json['merchantName'] as String? ?? json['merchant'] as String? ?? '',
       description: json['description'] as String?,
       carbonFootprint: (json['carbonFootprint'] as num).toDouble(),
-      transactionDate: DateTime.parse(json['transactionDate'] as String),
+      transactionDate: DateTime.parse(json['date'] as String? ?? json['transactionDate'] as String),
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
   }

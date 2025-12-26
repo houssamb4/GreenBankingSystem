@@ -6,8 +6,8 @@ class GlobalTheme {
   static const _lightFillColor = GlobalColors.darkBackgroundColor;
   static const _darkFillColor = GlobalColors.gray;
 
-  static final Color _lightFocusColor = Colors.black.withOpacity(0.12);
-  static final Color _darkFocusColor = Colors.white.withOpacity(0.12);
+  static final Color _lightFocusColor = Colors.black.withValues(alpha: 0.12);
+  static final Color _darkFocusColor = Colors.white.withValues(alpha: 0.12);
 
   static ThemeData lightThemeData = theme(lightColorScheme, _lightFocusColor,
       lightAppBarTheme, GlobalColors.darkText, lightCardTheme);
@@ -37,8 +37,8 @@ class GlobalTheme {
   static CardThemeData darkCardTheme = CardThemeData(
     margin: EdgeInsets.zero,
     color: GlobalColors.darkAppBar,
-    surfaceTintColor: GlobalColors.border.withOpacity(0.05),
-    shadowColor: GlobalColors.darkAppBar.withOpacity(0.2),
+    surfaceTintColor: GlobalColors.border.withValues(alpha: 0.05),
+    shadowColor: GlobalColors.darkAppBar.withValues(alpha: 0.2),
     elevation: 0,
   );
 
@@ -54,9 +54,7 @@ class GlobalTheme {
     primaryContainer: GlobalColors.gray,
     secondary: GlobalColors.border,
     secondaryContainer: GlobalColors.border,
-    background: GlobalColors.gray,
     surface: Color(0xFFFAFBFB),
-    onBackground: Colors.white,
     error: _lightFillColor,
     onError: _lightFillColor,
     onPrimary: _lightFillColor,
@@ -70,10 +68,7 @@ class GlobalTheme {
     primaryContainer: Colors.white,
     secondary: GlobalColors.primary,
     secondaryContainer: GlobalColors.primary,
-    background: GlobalColors.darkBackgroundColor,
     surface: Colors.white,
-    onBackground: Color(0x0DFFFFFF),
-    // White with 0.05 opacity
     error: _darkFillColor,
     onError: _darkFillColor,
     onPrimary: _darkFillColor,

@@ -10,17 +10,18 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
-@Component
+// @Component - Disabled because database is already seeded via SQL
 @RequiredArgsConstructor
 public class DataSeeder implements CommandLineRunner {
 
-    private final CarbonFactorRepository carbonFactorRepository;
+    // private final CarbonFactorRepository carbonFactorRepository;
 
     @Override
     public void run(String... args) throws Exception {
-        seedCarbonFactors();
+        // seedCarbonFactors(); - Database already seeded
     }
 
+    /*
     private void seedCarbonFactors() {
         if (carbonFactorRepository.count() > 0) {
             return;
@@ -54,4 +55,5 @@ public class DataSeeder implements CommandLineRunner {
                 .description(description)
                 .build();
     }
+    */
 }

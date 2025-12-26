@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:greenpay/core/theme/global_colors.dart';
 import 'package:greenpay/core/theme/asana_colors.dart';
 
 /// Alias for Sidebar widget for backwards compatibility
@@ -32,7 +31,6 @@ class Sidebar extends StatefulWidget {
 
 class _SidebarState extends State<Sidebar> {
   late bool _isExpanded;
-  bool _isHovering = false;
 
   @override
   void initState() {
@@ -44,10 +42,7 @@ class _SidebarState extends State<Sidebar> {
   Widget build(BuildContext context) {
     final isDrawer = Scaffold.maybeOf(context)?.hasDrawer ?? false;
 
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovering = true),
-      onExit: (_) => setState(() => _isHovering = false),
-      child: AnimatedContainer(
+    return AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         width: isDrawer ? double.infinity : (_isExpanded ? 260 : 72),
         decoration: BoxDecoration(
@@ -129,7 +124,6 @@ class _SidebarState extends State<Sidebar> {
             _buildFooter(),
           ],
         ),
-      ),
     );
   }
 
@@ -400,7 +394,7 @@ class _SidebarState extends State<Sidebar> {
           width: 40,
           height: 40,
           decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Center(
@@ -487,7 +481,7 @@ class _SidebarState extends State<Sidebar> {
           width: 40,
           height: 40,
           decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(icon, color: color, size: 18),

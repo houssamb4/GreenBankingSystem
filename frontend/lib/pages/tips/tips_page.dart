@@ -283,7 +283,7 @@ class _TipsPageState extends State<TipsPage> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: AsanaColors.green.withOpacity(0.1),
+                color: AsanaColors.green.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
@@ -396,7 +396,7 @@ class _TipsPageState extends State<TipsPage> {
           Text(
             'If you follow all tips',
             style: TextStyle(
-              color: Colors.white.withOpacity(0.8),
+              color: Colors.white.withValues(alpha: 0.8),
               fontSize: 13,
             ),
           ),
@@ -522,7 +522,7 @@ class _TipsPageState extends State<TipsPage> {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: AsanaColors.green.withOpacity(0.1),
+                  color: AsanaColors.green.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
@@ -535,7 +535,7 @@ class _TipsPageState extends State<TipsPage> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: difficultyColor.withOpacity(0.1),
+                  color: difficultyColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -575,7 +575,7 @@ class _TipsPageState extends State<TipsPage> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
-              color: AsanaColors.green.withOpacity(0.1),
+              color: AsanaColors.green.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(

@@ -3,6 +3,7 @@ class User {
   final String email;
   final String firstName;
   final String lastName;
+  final String? phoneNumber;
   final double ecoScore;
   final double totalCarbonSaved;
   final double monthlyCarbonBudget;
@@ -14,6 +15,7 @@ class User {
     required this.email,
     required this.firstName,
     required this.lastName,
+    this.phoneNumber,
     required this.ecoScore,
     required this.totalCarbonSaved,
     required this.monthlyCarbonBudget,
@@ -25,8 +27,9 @@ class User {
     return User(
       id: json['id'] as String,
       email: json['email'] as String,
-      firstName: json['firstName'] as String,
-      lastName: json['lastName'] as String,
+      firstName: json['firstName'] as String? ?? '',
+      lastName: json['lastName'] as String? ?? '',
+      phoneNumber: json['phoneNumber'] as String?,
       ecoScore: (json['ecoScore'] as num?)?.toDouble() ?? 0.0,
       totalCarbonSaved: (json['totalCarbonSaved'] as num?)?.toDouble() ?? 0.0,
       monthlyCarbonBudget:
@@ -46,6 +49,7 @@ class User {
       'email': email,
       'firstName': firstName,
       'lastName': lastName,
+      'phoneNumber': phoneNumber,
       'ecoScore': ecoScore,
       'totalCarbonSaved': totalCarbonSaved,
       'monthlyCarbonBudget': monthlyCarbonBudget,

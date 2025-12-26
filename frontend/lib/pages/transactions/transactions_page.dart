@@ -244,7 +244,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
             selected: isSelected,
             onSelected: (_) => provider.setFilter(filter.$1),
             backgroundColor: Colors.white,
-            selectedColor: AsanaColors.green.withOpacity(0.1),
+            selectedColor: AsanaColors.green.withValues(alpha: 0.1),
             labelStyle: TextStyle(
               color: isSelected ? AsanaColors.green : AsanaColors.textSecondary,
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
@@ -426,7 +426,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: iconColor.withOpacity(0.1),
+                color: iconColor.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(icon, color: iconColor, size: 22),
@@ -582,7 +582,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                     width: 36,
                     height: 36,
                     decoration: BoxDecoration(
-                      color: color.withOpacity(0.1),
+                      color: color.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Icon(icon, color: color, size: 18),
@@ -609,7 +609,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -717,7 +717,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AsanaColors.green.withOpacity(0.1),
+                color: AsanaColors.green.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(Icons.add_circle_outline, color: AsanaColors.green),
@@ -762,7 +762,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                value: selectedCategory,
+                initialValue: selectedCategory,
                 decoration: InputDecoration(
                   labelText: 'Category',
                   border: OutlineInputBorder(
