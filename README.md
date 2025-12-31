@@ -994,9 +994,5 @@ refactor: Simplify carbon calculator
 <div align="center">
 
 **🌱 Making Finance More Sustainable, One Transaction at a Time 🌍**
-
-Made with ❤️ for the planet
-
 [⬆ Back to top](#-green-banking-system)
-
 </div>
